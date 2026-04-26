@@ -315,8 +315,8 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </BoxRow>
             )}
 
-            {/* Carrier */}
-            {storage && (
+            {/* Carrier — skipped for laptops */}
+            {storage && device?.type !== "Laptop" && (
               <BoxRow label={device?.type === "Tablet" ? "Connectivity" : "Carrier"}>
                 <div className="flex flex-wrap gap-2">
                   {(device?.type === "Tablet"
