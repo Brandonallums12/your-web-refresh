@@ -25,9 +25,11 @@ export const Hero = ({ onPrimary }: HeroProps) => {
             <span className="text-primary">.</span>
           </h1>
 
-          <p className="mt-7 text-lg md:text-xl text-silver-300 max-w-[52ch] mx-auto lg:mx-0 text-pretty">
-            We buy iPhones, Samsungs, and Pixels for instant cash. Walk in with your old phone,
-            walk out with money — usually in under <span className="text-white font-semibold">10 minutes</span>.
+          <p className="mt-7 text-xl md:text-2xl leading-relaxed text-silver-200 max-w-[56ch] mx-auto lg:mx-0 text-pretty font-light">
+            We buy <span className="text-white font-semibold">iPhones</span>,{" "}
+            <span className="text-white font-semibold">Samsungs</span>, and{" "}
+            <span className="text-white font-semibold">more</span> for{" "}
+            <span className="text-primary font-semibold">instant cash</span>.
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
