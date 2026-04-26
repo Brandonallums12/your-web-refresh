@@ -11,13 +11,13 @@ const STEPS = [
     n: "02",
     icon: Store,
     title: "Meet Up Locally",
-    body: "We'll arrange a safe local meetup in the West Covina area. Quick inspection together to confirm condition and functionality — usually wraps up in about 3 minutes.",
+    body: "We'll arrange a safe local meetup near the West Covina area. Quick inspection together to confirm condition and functionality — usually wraps up in about 10 minutes.",
   },
   {
     n: "03",
     icon: Banknote,
     title: "Get Paid On The Spot",
-    body: "Walk away with payment your way — cash, Zelle, and other options available. Your data is securely wiped before we part ways.",
+    body: "Walk away with payment your way — Cash, Zelle, and other options available. Your data is securely wiped before we part ways.",
   },
 ];
 
