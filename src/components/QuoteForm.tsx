@@ -17,15 +17,36 @@ import {
 } from "@/data/devices";
 import { toast } from "sonner";
 
+export type LockStatus = "clean" | "locked";
+
 export type QuoteSubmission = {
   device: Device;
   storage: Storage;
   carrier: Carrier;
   condition: Condition;
+  lockStatus: LockStatus;
+  imei: string;       // empty string if user reports clean
   name: string;
   phone: string;
   email: string;
 };
+
+// ---------- Zod schemas ----------
+const imeiSchema = z
+  .string()
+  .trim()
+  .regex(/^\d{14,17}$/, { message: "IMEI must be 14–17 digits (numbers only)." });
+
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Please enter your name.").max(100),
+  phone: z
+    .string()
+    .trim()
+    .min(7, "Phone number is too short.")
+    .max(20, "Phone number is too long.")
+    .regex(/^[+()\-.\s\d]+$/, "Phone number contains invalid characters."),
+  email: z.union([z.literal(""), z.string().trim().email("Invalid email address.").max(255)]),
+});
 
 interface QuoteFormProps {
   onSubmit: (data: QuoteSubmission) => void;
