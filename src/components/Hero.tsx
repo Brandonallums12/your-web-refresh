@@ -56,26 +56,6 @@ export const Hero = ({ onPrimary }: HeroProps) => {
 
       </div>
 
-      {/* marquee */}
-      <div className="relative border-y border-border bg-surface/40 overflow-hidden">
-        <div className="flex whitespace-nowrap animate-marquee py-4 gap-12 font-mono text-xs uppercase tracking-[0.3em] text-silver-400">
-          {Array.from({ length: 2 }).flatMap((_, j) => [
-            "iPhone 15 Pro Max — up to $920",
-            "Galaxy S24 Ultra — up to $760",
-            "Pixel 8 Pro — up to $480",
-            "iPhone 14 Pro — up to $640",
-            "Galaxy Z Fold 5 — up to $880",
-            "iPhone 13 — up to $315",
-            "Pixel 7 — up to $220",
-            "iPad Pro M2 — up to $710",
-          ].map((t, i) => (
-            <span key={`${j}-${i}`} className="inline-flex items-center gap-12">
-              <span className="text-primary">●</span>
-              <span>{t}</span>
-            </span>
-          )))}
-        </div>
-      </div>
     </section>
   );
 };
