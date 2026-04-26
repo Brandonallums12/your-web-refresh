@@ -89,6 +89,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [otherDescription, setOtherDescription] = useState("");
   const [contactErrors, setContactErrors] = useState<{ name?: string; phone?: string; email?: string }>({});
 
   // Brands available for the chosen category (derived from data)
@@ -191,6 +192,19 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
     setStorage(null);
     setCarrier(null);
     setSearch("");
+    if (c === "Other") {
+      // Auto-select the synthetic "Other" device — user describes it via textarea.
+      const other = DEVICES.find((d) => d.id === "other");
+      if (other) {
+        setBrand("Other");
+        setDevice(other);
+        setStorage(null);
+        setCarrier("Unlocked");
+        setLockStatus("clean");
+      }
+    } else {
+      setOtherDescription("");
+    }
   };
   const pickBrand = (b: Brand) => {
     setBrand(b);
