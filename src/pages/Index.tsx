@@ -27,7 +27,7 @@ const Index = () => {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <Header onCTA={goQuote} />
+      <Header onCTA={goQuote} onLogoClick={goHome} />
       {route === "home" && (
         <>
           <Hero onPrimary={goQuote} />
