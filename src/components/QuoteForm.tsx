@@ -195,24 +195,36 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             </div>
             <p className="text-silver-400 mb-8">One tap leads to the next — we'll fly through this.</p>
 
-            {/* Brand */}
-            <BoxRow label="Brand">
-              <div className="flex flex-wrap gap-2">
-                {BRANDS.map((b) => (
-                  <Chip key={b} active={brand === b} onClick={() => pickBrand(b)}>
-                    {b}
-                  </Chip>
-                ))}
+            {/* Category */}
+            <BoxRow label="Category">
+              <div className="grid grid-cols-3 gap-2">
+                {CATEGORIES.map(({ id, label, icon: Icon }) => {
+                  const active = category === id;
+                  return (
+                    <button
+                      key={id}
+                      onClick={() => pickCategory(id)}
+                      className={`flex flex-col items-center justify-center gap-2 px-3 py-5 border transition-all ${
+                        active
+                          ? "border-primary bg-primary/10 shadow-red text-white"
+                          : "border-border bg-background/40 text-silver-300 hover:border-silver-500 hover:text-white"
+                      }`}
+                    >
+                      <Icon className={`size-6 ${active ? "text-primary" : "text-silver-400"}`} />
+                      <span className="font-display text-xs md:text-sm uppercase tracking-widest">{label}</span>
+                    </button>
+                  );
+                })}
               </div>
             </BoxRow>
 
-            {/* Type (Apple only) */}
-            {brand === "Apple" && (
-              <BoxRow label="Type">
+            {/* Brand — only brands that make this category */}
+            {category && (
+              <BoxRow label="Brand">
                 <div className="flex flex-wrap gap-2">
-                  {(["Phone", "Tablet"] as DeviceType[]).map((t) => (
-                    <Chip key={t} active={deviceType === t} onClick={() => pickType(t)}>
-                      {t === "Phone" ? "iPhone" : "iPad"}
+                  {availableBrands.map((b) => (
+                    <Chip key={b} active={brand === b} onClick={() => pickBrand(b)}>
+                      {b}
                     </Chip>
                   ))}
                 </div>
@@ -220,14 +232,14 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             )}
 
             {/* Model — pick a series first, then a variant */}
-            {brand && effectiveType && !series && (
+            {brand && category && !series && (
               <BoxRow label="Model line">
                 <div className="relative mb-4">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-silver-500" />
                   <input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder={`Search ${effectiveType === "Tablet" ? "iPad" : brand} models...`}
+                    placeholder={`Search ${brand} ${category.toLowerCase()}s...`}
                     className="w-full bg-background border border-border pl-10 pr-4 py-3 focus:outline-none focus:border-primary text-sm"
                   />
                 </div>
@@ -253,7 +265,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </BoxRow>
             )}
 
-            {brand && effectiveType && series && (
+            {brand && category && series && (
               <BoxRow label={`${series} — pick variant`}>
                 <div className="flex flex-wrap gap-2 mb-1">
                   <button
