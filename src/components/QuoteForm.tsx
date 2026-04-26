@@ -539,9 +539,9 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               Be honest — we verify in person.<br />
               Selling:{" "}
               <span className="text-white font-semibold">
-                {device.brand} {device.model}
-              </span>{" "}
-              · {storage} · {carrier}
+                {isOther ? otherDescription.trim() || "Other device" : `${device.brand} ${device.model}`}
+              </span>
+              {!isOther && <> · {storage} · {carrier}</>}
               <br /><br />
             </p>
 
