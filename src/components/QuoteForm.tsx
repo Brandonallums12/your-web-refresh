@@ -550,7 +550,9 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                     {lockStatus === "clean" && <Check className="size-5 text-primary" />}
                   </div>
                   <p className="text-sm text-silver-400 leading-relaxed">
-                    {isApple
+                    {!isAccountDevice
+                      ? "I can sign out of any linked account and factory reset before hand-off."
+                      : isApple
                       ? "I can sign out of iCloud and remove the device from my account. No activation lock."
                       : "I can sign out of my Google account and factory reset. No FRP lock will trigger."}
                   </p>
@@ -571,7 +573,9 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                     {lockStatus === "locked" && <Check className="size-5 text-primary" />}
                   </div>
                   <p className="text-sm text-silver-400 leading-relaxed">
-                    {isApple
+                    {!isAccountDevice
+                      ? "Account still linked — we'll need the serial number to verify clean status."
+                      : isApple
                       ? "Account still signed in — we'll need the IMEI / serial to verify clean status."
                       : "Google account still signed in — we'll need the IMEI / serial to verify clean status."}
                   </p>
