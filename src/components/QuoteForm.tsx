@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
-import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search, Tablet, Laptop } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search, Tablet, Laptop, ShieldCheck, ShieldAlert } from "lucide-react";
+import { z } from "zod";
 import {
   DEVICES,
   CONDITIONS,
