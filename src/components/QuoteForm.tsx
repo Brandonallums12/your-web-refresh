@@ -568,8 +568,8 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               })}
             </div>
 
-            {/* --- Ownership / account-lock verification --- */}
-            {(() => {
+            {/* --- Ownership / account-lock verification (skipped for "Other") --- */}
+            {!isOther && (() => {
               const isApple = device.brand === "Apple";
               const isAccountDevice = device.type === "Phone" || device.type === "Tablet" || device.type === "Laptop";
               const lockName = !isAccountDevice
