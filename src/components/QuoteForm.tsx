@@ -146,7 +146,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
       const r = imeiSchema.safeParse(imei);
       if (!r.success) {
         setImeiError(r.error.issues[0]?.message ?? "Invalid IMEI.");
-        setStep(2);
+        setStep(1);
         return;
       }
     }
