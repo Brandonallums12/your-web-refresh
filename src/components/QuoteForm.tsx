@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
-import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search, Tablet, Laptop } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search, Tablet, Laptop, ShieldCheck, ShieldAlert } from "lucide-react";
+import { z } from "zod";
 import {
   DEVICES,
   CONDITIONS,
@@ -16,15 +17,36 @@ import {
 } from "@/data/devices";
 import { toast } from "sonner";
 
+export type LockStatus = "clean" | "locked";
+
 export type QuoteSubmission = {
   device: Device;
   storage: Storage;
   carrier: Carrier;
   condition: Condition;
+  lockStatus: LockStatus;
+  imei: string;       // empty string if user reports clean
   name: string;
   phone: string;
   email: string;
 };
+
+// ---------- Zod schemas ----------
+const imeiSchema = z
+  .string()
+  .trim()
+  .regex(/^\d{14,17}$/, { message: "IMEI must be 14–17 digits (numbers only)." });
+
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Please enter your name.").max(100),
+  phone: z
+    .string()
+    .trim()
+    .min(7, "Phone number is too short.")
+    .max(20, "Phone number is too long.")
+    .regex(/^[+()\-.\s\d]+$/, "Phone number contains invalid characters."),
+  email: z.union([z.literal(""), z.string().trim().email("Invalid email address.").max(255)]),
+});
 
 interface QuoteFormProps {
   onSubmit: (data: QuoteSubmission) => void;
@@ -38,7 +60,7 @@ const CATEGORIES: { id: DeviceType; label: string; icon: typeof Smartphone }[] =
 ];
 
 export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
-  const [step, setStep] = useState(0); // 0 device, 1 condition, 2 contact
+  const [step, setStep] = useState(0); // 0 device, 1 condition, 2 verification, 3 contact
 
   // Device cascading
   const [category, setCategory] = useState<DeviceType | null>(null);
@@ -50,9 +72,15 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
   const [condition, setCondition] = useState<Condition | null>(null);
 
+  // Verification (anti-stolen)
+  const [lockStatus, setLockStatus] = useState<LockStatus | null>(null);
+  const [imei, setImei] = useState("");
+  const [imeiError, setImeiError] = useState<string | null>(null);
+
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [contactErrors, setContactErrors] = useState<{ name?: string; phone?: string; email?: string }>({});
 
   // Brands available for the chosen category (derived from data)
   const availableBrands = useMemo<Brand[]>(() => {
@@ -112,12 +140,37 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   );
 
   const handleSubmit = () => {
-    if (!device || !condition || !storage || !carrier) return;
-    if (!name.trim() || !phone.trim()) {
-      toast.error("Please add your name and phone so we can confirm.");
+    if (!device || !condition || !storage || !carrier || !lockStatus) return;
+    // Validate IMEI if locked
+    if (lockStatus === "locked") {
+      const r = imeiSchema.safeParse(imei);
+      if (!r.success) {
+        setImeiError(r.error.issues[0]?.message ?? "Invalid IMEI.");
+        setStep(2);
+        return;
+      }
+    }
+    // Validate contact
+    const c = contactSchema.safeParse({ name, phone, email });
+    if (!c.success) {
+      const errs: { name?: string; phone?: string; email?: string } = {};
+      for (const issue of c.error.issues) {
+        const k = issue.path[0] as "name" | "phone" | "email";
+        if (k && !errs[k]) errs[k] = issue.message;
+      }
+      setContactErrors(errs);
+      toast.error("Please fix the highlighted fields.");
       return;
     }
-    onSubmit({ device, storage, carrier, condition, name, phone, email });
+    setContactErrors({});
+    onSubmit({
+      device, storage, carrier, condition,
+      lockStatus,
+      imei: lockStatus === "locked" ? imei.trim() : "",
+      name: name.trim(),
+      phone: phone.trim(),
+      email: email.trim(),
+    });
   };
 
   // Auto-advance helpers
@@ -176,6 +229,29 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
     setCondition(c);
     setTimeout(() => setStep(2), 180);
   };
+  const pickLock = (s: LockStatus) => {
+    setLockStatus(s);
+    setImeiError(null);
+    if (s === "clean") {
+      setImei("");
+      setTimeout(() => setStep(3), 180);
+    }
+  };
+  const submitLockStep = () => {
+    if (!lockStatus) {
+      toast.error("Please confirm the device's account-lock status.");
+      return;
+    }
+    if (lockStatus === "locked") {
+      const r = imeiSchema.safeParse(imei);
+      if (!r.success) {
+        setImeiError(r.error.issues[0]?.message ?? "Invalid IMEI.");
+        return;
+      }
+    }
+    setImeiError(null);
+    setStep(3);
+  };
 
   return (
     <section className="relative min-h-[calc(100vh-4rem)] bg-grad-hero py-16 md:py-24 px-5 md:px-8 overflow-hidden">
@@ -189,7 +265,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             <ArrowLeft className="size-3.5" /> Back
           </button>
           <span className="text-silver-600">/</span>
-          {["Device", "Condition", "Contact"].map((label, i) => (
+          {["Device", "Condition", "Verify", "Contact"].map((label, i) => (
             <span key={label} className="flex items-center gap-3">
               <button
                 onClick={() => i < step && setStep(i)}
@@ -198,7 +274,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               >
                 0{i + 1} {label}
               </button>
-              {i < 2 && <ChevronRight className="size-3 text-silver-600" />}
+              {i < 3 && <ChevronRight className="size-3 text-silver-600" />}
             </span>
           ))}
         </div>
@@ -429,8 +505,122 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
           </div>
         )}
 
-        {/* STEP 2 — Contact */}
+        {/* STEP 2 — Verification (account lock + IMEI) */}
         {step === 2 && device && condition && (
+          <div className="bg-surface/60 backdrop-blur-md border border-border p-6 md:p-10 animate-fade-up">
+            <div className="flex items-center gap-3 mb-2">
+              <ShieldCheck className="size-6 text-primary" />
+              <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tighter">
+                <span className="text-primary">Verify</span> ownership.
+              </h2>
+            </div>
+            <p className="text-silver-400 mb-3">
+              We <span className="text-white font-semibold">do not buy stolen or activation-locked devices</span>.
+              Confirm the status below — we'll verify on hand-off.
+            </p>
+            {device.brand === "Apple" && (
+              <p className="text-silver-500 text-sm font-mono mb-8">
+                // {device.type === "Phone" ? "iCloud / Find My iPhone" : device.type === "Tablet" ? "iCloud / Find My iPad" : "Find My Mac / Activation Lock"}
+              </p>
+            )}
+            {device.brand !== "Apple" && (
+              <p className="text-silver-500 text-sm font-mono mb-8">
+                // {device.type === "Laptop" ? "Microsoft / Google account lock, MDM, or BIOS password" : "Google FRP, Samsung / carrier lock, or MDM"}
+              </p>
+            )}
+
+            <div className="grid sm:grid-cols-2 gap-3 mb-6">
+              <button
+                onClick={() => pickLock("clean")}
+                className={`text-left p-5 border transition-all ${
+                  lockStatus === "clean"
+                    ? "border-primary bg-primary/10 shadow-red"
+                    : "border-border bg-background/40 hover:border-silver-600"
+                }`}
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <div className="font-display text-xl uppercase tracking-tight inline-flex items-center gap-2">
+                    <ShieldCheck className="size-5 text-primary" /> Clean / Unlocked
+                  </div>
+                  {lockStatus === "clean" && <Check className="size-5 text-primary" />}
+                </div>
+                <p className="text-sm text-silver-400 leading-relaxed">
+                  Signed out of all accounts. No activation lock, MDM, or carrier hold.
+                </p>
+              </button>
+
+              <button
+                onClick={() => pickLock("locked")}
+                className={`text-left p-5 border transition-all ${
+                  lockStatus === "locked"
+                    ? "border-primary bg-primary/10 shadow-red"
+                    : "border-border bg-background/40 hover:border-silver-600"
+                }`}
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <div className="font-display text-xl uppercase tracking-tight inline-flex items-center gap-2">
+                    <ShieldAlert className="size-5 text-primary" /> Still Locked
+                  </div>
+                  {lockStatus === "locked" && <Check className="size-5 text-primary" />}
+                </div>
+                <p className="text-sm text-silver-400 leading-relaxed">
+                  Account still signed in — we'll need the IMEI / serial to verify clean status.
+                </p>
+              </button>
+            </div>
+
+            {lockStatus === "locked" && (
+              <div className="border border-primary/40 bg-primary/5 p-5 mb-6 animate-fade-up">
+                <Field label={device.type === "Laptop" ? "Serial number (10–17 chars)" : "IMEI (14–17 digits)"}>
+                  <input
+                    value={imei}
+                    onChange={(e) => {
+                      // strip spaces/dashes for IMEIs; keep alphanumerics for serials
+                      const cleaned = device.type === "Laptop"
+                        ? e.target.value.replace(/[^A-Za-z0-9]/g, "").slice(0, 20)
+                        : e.target.value.replace(/\D/g, "").slice(0, 17);
+                      setImei(cleaned);
+                      if (imeiError) setImeiError(null);
+                    }}
+                    placeholder={device.type === "Laptop" ? "C02XXXXXXXX" : "Dial *#06# on the device"}
+                    inputMode={device.type === "Laptop" ? "text" : "numeric"}
+                    autoComplete="off"
+                    maxLength={20}
+                    className={`w-full bg-background border px-4 py-3.5 focus:outline-none ${
+                      imeiError ? "border-primary" : "border-border focus:border-primary"
+                    }`}
+                  />
+                </Field>
+                {imeiError && (
+                  <p className="text-primary text-xs mt-2 font-mono">{imeiError}</p>
+                )}
+                <p className="text-silver-500 text-xs mt-3 font-mono">
+                  // We check this against blacklist & carrier records before any payout.
+                </p>
+              </div>
+            )}
+
+            <div className="flex justify-between mt-6">
+              <button
+                onClick={() => setStep(1)}
+                className="inline-flex items-center gap-2 border border-silver-600/60 px-6 py-4 uppercase font-bold tracking-widest text-silver-200 hover:border-primary hover:text-white transition-colors"
+              >
+                <ArrowLeft className="size-4" /> Back
+              </button>
+              {lockStatus === "locked" && (
+                <button
+                  onClick={submitLockStep}
+                  className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest hover:shadow-red transition-all"
+                >
+                  Continue <ChevronRight className="size-4" />
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* STEP 3 — Contact */}
+        {step === 3 && device && condition && lockStatus && (
           <div className="bg-surface/60 backdrop-blur-md border border-border p-6 md:p-10 animate-fade-up grid md:grid-cols-5 gap-8">
             <div className="md:col-span-3">
               <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tighter mb-2">Lock it in.</h2>
@@ -440,34 +630,43 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                 <Field label="Your name">
                   <input
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => { setName(e.target.value); if (contactErrors.name) setContactErrors({ ...contactErrors, name: undefined }); }}
                     placeholder="Jane Doe"
-                    className="w-full bg-background border border-border px-4 py-3.5 focus:outline-none focus:border-primary"
+                    maxLength={100}
+                    autoComplete="name"
+                    className={`w-full bg-background border px-4 py-3.5 focus:outline-none ${contactErrors.name ? "border-primary" : "border-border focus:border-primary"}`}
                   />
+                  {contactErrors.name && <p className="text-primary text-xs mt-1 font-mono">{contactErrors.name}</p>}
                 </Field>
                 <Field label="Phone">
                   <input
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => { setPhone(e.target.value); if (contactErrors.phone) setContactErrors({ ...contactErrors, phone: undefined }); }}
                     placeholder="(626) 555-0123"
                     inputMode="tel"
-                    className="w-full bg-background border border-border px-4 py-3.5 focus:outline-none focus:border-primary"
+                    maxLength={20}
+                    autoComplete="tel"
+                    className={`w-full bg-background border px-4 py-3.5 focus:outline-none ${contactErrors.phone ? "border-primary" : "border-border focus:border-primary"}`}
                   />
+                  {contactErrors.phone && <p className="text-primary text-xs mt-1 font-mono">{contactErrors.phone}</p>}
                 </Field>
                 <Field label="Email (optional)">
                   <input
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => { setEmail(e.target.value); if (contactErrors.email) setContactErrors({ ...contactErrors, email: undefined }); }}
                     placeholder="you@email.com"
                     type="email"
-                    className="w-full bg-background border border-border px-4 py-3.5 focus:outline-none focus:border-primary"
+                    maxLength={255}
+                    autoComplete="email"
+                    className={`w-full bg-background border px-4 py-3.5 focus:outline-none ${contactErrors.email ? "border-primary" : "border-border focus:border-primary"}`}
                   />
+                  {contactErrors.email && <p className="text-primary text-xs mt-1 font-mono">{contactErrors.email}</p>}
                 </Field>
               </div>
 
               <div className="flex justify-between mt-7">
                 <button
-                  onClick={() => setStep(1)}
+                  onClick={() => setStep(2)}
                   className="inline-flex items-center gap-2 border border-silver-600/60 px-6 py-4 uppercase font-bold tracking-widest text-silver-200 hover:border-primary hover:text-white transition-colors"
                 >
                   <ArrowLeft className="size-4" /> Back
@@ -487,7 +686,14 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                 {device.brand} {device.model}
               </div>
               <div className="text-silver-300 text-sm mt-1">{storage} · {carrier}</div>
-              <div className="text-silver-400 text-sm mb-5">Condition: {condition.label}</div>
+              <div className="text-silver-400 text-sm">Condition: {condition.label}</div>
+              <div className="text-silver-400 text-sm mb-5 inline-flex items-center gap-1.5">
+                {lockStatus === "clean" ? (
+                  <><ShieldCheck className="size-3.5 text-primary" /> Clean / Unlocked</>
+                ) : (
+                  <><ShieldAlert className="size-3.5 text-primary" /> IMEI provided · pending check</>
+                )}
+              </div>
               <div className="border-t border-border pt-5">
                 <div className="text-xs uppercase tracking-widest text-silver-500 mb-2">Custom cash offer</div>
                 <div className="font-mono text-sm text-silver-200 leading-relaxed">
