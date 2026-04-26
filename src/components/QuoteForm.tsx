@@ -107,6 +107,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   const pickBrand = (b: Brand) => {
     setBrand(b);
     setDeviceType(b === "Apple" ? null : "Phone");
+    setSeries(null);
     setDevice(null);
     setStorage(null);
     setCarrier(null);
@@ -114,6 +115,13 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   };
   const pickType = (t: DeviceType) => {
     setDeviceType(t);
+    setSeries(null);
+    setDevice(null);
+    setStorage(null);
+    setCarrier(null);
+  };
+  const pickSeries = (name: string) => {
+    setSeries(name);
     setDevice(null);
     setStorage(null);
     setCarrier(null);
