@@ -494,19 +494,25 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               })}
             </div>
 
-            {/* --- Ownership / iCloud lock verification --- */}
+            {/* --- Ownership / account-lock verification --- */}
+            {(() => {
+              const isApple = device.brand === "Apple";
+              const lockName = isApple ? "iCloud" : "Google FRP";
+              const lockTitle = isApple ? "iCloud locked" : "Google FRP locked";
+              return (
             <div className="mt-10 pt-8 border-t border-border">
               <div className="flex items-center gap-3 mb-2">
                 <ShieldCheck className="size-6 text-primary" />
                 <h3 className="font-display text-2xl md:text-3xl uppercase tracking-tighter">
-                  Is it <span className="text-primary">iCloud locked</span>?
+                  Is it <span className="text-primary">{lockTitle}</span>?
                 </h3>
               </div>
               <p className="text-silver-400 mb-2">
-                Confirm the status — we'll verify on hand-off.
+                Confirm the status — we'll verify on hand-off.{" "}
+                <span className="text-white font-semibold">We do not buy devices reported lost or stolen.</span>
               </p>
               <p className="text-silver-500 text-sm font-mono mb-6">
-                {device.brand === "Apple"
+                {isApple
                   ? `// ${device.type === "Phone" ? "iCloud / Find My iPhone" : device.type === "Tablet" ? "iCloud / Find My iPad" : "Find My Mac / Activation Lock"}`
                   : `// ${device.type === "Laptop" ? "Microsoft / Google account lock, MDM, or BIOS password" : "Google FRP, Samsung / carrier lock, or MDM"}`}
               </p>
@@ -522,12 +528,14 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                 >
               <div className="flex items-start justify-between mb-2">
                     <div className="font-display text-xl uppercase tracking-tight inline-flex items-center gap-2">
-                      <ShieldCheck className="size-5 text-primary" /> Able to Remove iCloud
+                      <ShieldCheck className="size-5 text-primary" /> Able to Remove {lockName}
                     </div>
                     {lockStatus === "clean" && <Check className="size-5 text-primary" />}
                   </div>
                   <p className="text-sm text-silver-400 leading-relaxed">
-                    I can sign out of iCloud and remove the device from my account. No activation lock.
+                    {isApple
+                      ? "I can sign out of iCloud and remove the device from my account. No activation lock."
+                      : "I can sign out of my Google account and factory reset. No FRP lock will trigger."}
                   </p>
                 </button>
 
@@ -541,12 +549,14 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div className="font-display text-xl uppercase tracking-tight inline-flex items-center gap-2">
-                      <ShieldAlert className="size-5 text-primary" /> Still iCloud Locked
+                      <ShieldAlert className="size-5 text-primary" /> Still {lockName} Locked
                     </div>
                     {lockStatus === "locked" && <Check className="size-5 text-primary" />}
                   </div>
                   <p className="text-sm text-silver-400 leading-relaxed">
-                    Account still signed in — we'll need the IMEI / serial to verify clean status.
+                    {isApple
+                      ? "Account still signed in — we'll need the IMEI / serial to verify clean status."
+                      : "Google account still signed in — we'll need the IMEI / serial to verify clean status."}
                   </p>
                 </button>
               </div>
