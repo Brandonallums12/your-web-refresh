@@ -13,15 +13,36 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        display: ["var(--font-display)"],
+        sans: ["var(--font-sans)"],
+        mono: ["var(--font-mono)"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        surface: {
+          DEFAULT: "hsl(var(--surface))",
+          2: "hsl(var(--surface-2))",
+          3: "hsl(var(--surface-3))",
+        },
+        silver: {
+          50: "hsl(var(--silver-50))",
+          100: "hsl(var(--silver-100))",
+          200: "hsl(var(--silver-200))",
+          300: "hsl(var(--silver-300))",
+          400: "hsl(var(--silver-400))",
+          500: "hsl(var(--silver-500))",
+          600: "hsl(var(--silver-600))",
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          glow: "hsl(var(--primary-glow))",
+          deep: "hsl(var(--primary-deep))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -84,6 +105,9 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-glow": "pulse-glow 2.4s ease-out infinite",
+        "marquee": "marquee 38s linear infinite",
+        "fade-up": "fade-up 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both",
       },
     },
   },
