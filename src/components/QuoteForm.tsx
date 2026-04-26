@@ -139,12 +139,14 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   };
   const pickDevice = (d: Device) => {
     setDevice(d);
-    // Sensible defaults so tablets/laptops can breeze through
+    const opts = getStorageOptions(d);
+    // Sensible defaults: smallest available for tablets, mid-tier for laptops
     if (d.type === "Tablet") {
-      setStorage("128 GB");
-      setCarrier("Other"); // "Wi-Fi only" label
+      setStorage(opts[0] ?? null);
+      setCarrier("Other"); // "Wi-Fi only"
     } else if (d.type === "Laptop") {
-      setStorage("256 GB");
+      // pick 256/512 if present, else first
+      setStorage(opts.find((o) => o === "256 GB") ?? opts.find((o) => o === "512 GB") ?? opts[0] ?? null);
       setCarrier("Unlocked");
     } else {
       setStorage(null);
