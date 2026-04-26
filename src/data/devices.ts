@@ -123,6 +123,18 @@ export const DEVICES: Device[] = [
   { id: "tabs8",      brand: "Samsung", type: "Tablet", model: "Galaxy Tab S8" },
   { id: "tabs7plus",  brand: "Samsung", type: "Tablet", model: "Galaxy Tab S7+" },
   { id: "tabs7",      brand: "Samsung", type: "Tablet", model: "Galaxy Tab S7" },
+  { id: "tabs7fe",    brand: "Samsung", type: "Tablet", model: "Galaxy Tab S7 FE" },
+  { id: "tabs6lite", brand: "Samsung", type: "Tablet", model: "Galaxy Tab S6 Lite" },
+  // Galaxy Tab A line (budget, 2020+)
+  { id: "taba9plus",  brand: "Samsung", type: "Tablet", model: "Galaxy Tab A9+" },
+  { id: "taba9",      brand: "Samsung", type: "Tablet", model: "Galaxy Tab A9" },
+  { id: "taba8",      brand: "Samsung", type: "Tablet", model: "Galaxy Tab A8" },
+  { id: "taba7lite",  brand: "Samsung", type: "Tablet", model: "Galaxy Tab A7 Lite" },
+  { id: "taba7",      brand: "Samsung", type: "Tablet", model: "Galaxy Tab A7" },
+  // Galaxy Tab Active rugged line
+  { id: "tabact5",    brand: "Samsung", type: "Tablet", model: "Galaxy Tab Active 5" },
+  { id: "tabact4pro", brand: "Samsung", type: "Tablet", model: "Galaxy Tab Active 4 Pro" },
+  { id: "tabact3",    brand: "Samsung", type: "Tablet", model: "Galaxy Tab Active 3" },
 
   // ===== Google Tablets =====
   { id: "pixtab",     brand: "Google",  type: "Tablet", model: "Pixel Tablet" },
