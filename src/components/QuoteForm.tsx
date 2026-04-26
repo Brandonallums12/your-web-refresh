@@ -3,8 +3,9 @@ import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search, Tablet, L
 import {
   DEVICES,
   CONDITIONS,
-  STORAGE_OPTIONS,
   CARRIER_OPTIONS,
+  getStorageOptions,
+  tabletSupportsCellular,
   type Device,
   type Condition,
   type Storage,
