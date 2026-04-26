@@ -2,13 +2,14 @@ import { Phone, MapPin } from "lucide-react";
 
 interface HeaderProps {
   onCTA: () => void;
+  onLogoClick?: () => void;
 }
 
-export const Header = ({ onCTA }: HeaderProps) => {
+export const Header = ({ onCTA, onLogoClick }: HeaderProps) => {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border">
       <div className="mx-auto max-w-7xl px-5 md:px-8 h-16 flex items-center justify-between">
-        <a href="#" className="flex items-center gap-2.5 group">
+        <a href="#" onClick={(e) => { e.preventDefault(); onLogoClick?.(); }} className="flex items-center gap-2.5 group cursor-pointer">
           <div className="font-display text-xl tracking-tighter uppercase">
             Tech<span className="text-primary">Buyer</span>
           </div>
