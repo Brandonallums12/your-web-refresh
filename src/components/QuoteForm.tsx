@@ -503,7 +503,6 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                 </h3>
               </div>
               <p className="text-silver-400 mb-2">
-                We <span className="text-white font-semibold">do not buy stolen or activation-locked devices</span>.
                 Confirm the status — we'll verify on hand-off.
               </p>
               <p className="text-silver-500 text-sm font-mono mb-6">
