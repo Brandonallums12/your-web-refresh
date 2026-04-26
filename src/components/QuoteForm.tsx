@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ArrowRight, ArrowLeft, Check, ChevronRight, Smartphone, Sparkles } from "lucide-react";
+import { useState, useMemo } from "react";
+import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search } from "lucide-react";
 import {
   DEVICES,
   CONDITIONS,
@@ -9,6 +9,8 @@ import {
   type Condition,
   type Storage,
   type Carrier,
+  type Brand,
+  type DeviceType,
 } from "@/data/devices";
 import { toast } from "sonner";
 
@@ -27,27 +29,35 @@ interface QuoteFormProps {
   onCancel: () => void;
 }
 
-type Brand = Device["brand"];
 const BRANDS: Brand[] = ["Apple", "Samsung", "Google"];
 
 export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   const [step, setStep] = useState(0); // 0 device, 1 condition, 2 contact
 
-  // Device box state (cascading)
+  // Device cascading
   const [brand, setBrand] = useState<Brand | null>(null);
+  const [deviceType, setDeviceType] = useState<DeviceType | null>(null);
   const [device, setDevice] = useState<Device | null>(null);
   const [storage, setStorage] = useState<Storage | null>(null);
   const [carrier, setCarrier] = useState<Carrier | null>(null);
+  const [search, setSearch] = useState("");
 
-  // Condition box
   const [condition, setCondition] = useState<Condition | null>(null);
 
-  // Contact
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
-  const deviceComplete = !!(brand && device && storage && carrier);
+  const appleHasTablets = brand === "Apple";
+  const effectiveType: DeviceType | null = appleHasTablets ? deviceType : "Phone";
+
+  const models = useMemo(() => {
+    if (!brand || !effectiveType) return [];
+    const list = DEVICES.filter((d) => d.brand === brand && d.type === effectiveType);
+    if (!search.trim()) return list;
+    const q = search.toLowerCase();
+    return list.filter((d) => d.model.toLowerCase().includes(q));
+  }, [brand, effectiveType, search]);
 
   const handleSubmit = () => {
     if (!device || !condition || !storage || !carrier) return;
@@ -58,7 +68,36 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
     onSubmit({ device, storage, carrier, condition, name, phone, email });
   };
 
-  const models = brand ? DEVICES.filter((d) => d.brand === brand) : [];
+  // Auto-advance helpers
+  const pickBrand = (b: Brand) => {
+    setBrand(b);
+    setDeviceType(b === "Apple" ? null : "Phone");
+    setDevice(null);
+    setStorage(null);
+    setCarrier(null);
+    setSearch("");
+  };
+  const pickType = (t: DeviceType) => {
+    setDeviceType(t);
+    setDevice(null);
+    setStorage(null);
+    setCarrier(null);
+  };
+  const pickDevice = (d: Device) => {
+    setDevice(d);
+    setStorage(null);
+    setCarrier(null);
+  };
+  const pickStorage = (s: Storage) => setStorage(s);
+  const pickCarrier = (c: Carrier) => {
+    setCarrier(c);
+    // auto-advance to condition
+    setTimeout(() => setStep(1), 180);
+  };
+  const pickCondition = (c: Condition) => {
+    setCondition(c);
+    setTimeout(() => setStep(2), 180);
+  };
 
   return (
     <section className="relative min-h-[calc(100vh-4rem)] bg-grad-hero py-16 md:py-24 px-5 md:px-8 overflow-hidden">
@@ -67,16 +106,20 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
       <div className="relative mx-auto max-w-4xl">
         {/* progress */}
-        <div className="flex items-center gap-3 mb-10 font-mono text-xs uppercase tracking-[0.25em] text-silver-400">
+        <div className="flex items-center gap-3 mb-10 font-mono text-xs uppercase tracking-[0.25em] text-silver-400 flex-wrap">
           <button onClick={onCancel} className="hover:text-primary transition-colors flex items-center gap-1">
             <ArrowLeft className="size-3.5" /> Back
           </button>
           <span className="text-silver-600">/</span>
           {["Device", "Condition", "Contact"].map((label, i) => (
             <span key={label} className="flex items-center gap-3">
-              <span className={i === step ? "text-primary" : i < step ? "text-silver-200" : "text-silver-600"}>
+              <button
+                onClick={() => i < step && setStep(i)}
+                disabled={i > step}
+                className={`${i === step ? "text-primary" : i < step ? "text-silver-200 hover:text-primary" : "text-silver-600"} disabled:cursor-not-allowed`}
+              >
                 0{i + 1} {label}
-              </span>
+              </button>
               {i < 2 && <ChevronRight className="size-3 text-silver-600" />}
             </span>
           ))}
@@ -91,34 +134,49 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                 Your <span className="text-primary">device</span>.
               </h2>
             </div>
-            <p className="text-silver-400 mb-8">Tell us what you're selling.</p>
+            <p className="text-silver-400 mb-8">One tap leads to the next — we'll fly through this.</p>
 
             {/* Brand */}
             <BoxRow label="Brand">
               <div className="flex flex-wrap gap-2">
                 {BRANDS.map((b) => (
-                  <Chip
-                    key={b}
-                    active={brand === b}
-                    onClick={() => {
-                      setBrand(b);
-                      setDevice(null);
-                    }}
-                  >
+                  <Chip key={b} active={brand === b} onClick={() => pickBrand(b)}>
                     {b}
                   </Chip>
                 ))}
               </div>
             </BoxRow>
 
+            {/* Type (Apple only) */}
+            {brand === "Apple" && (
+              <BoxRow label="Type">
+                <div className="flex flex-wrap gap-2">
+                  {(["Phone", "Tablet"] as DeviceType[]).map((t) => (
+                    <Chip key={t} active={deviceType === t} onClick={() => pickType(t)}>
+                      {t === "Phone" ? "iPhone" : "iPad"}
+                    </Chip>
+                  ))}
+                </div>
+              </BoxRow>
+            )}
+
             {/* Model */}
-            {brand && (
+            {brand && effectiveType && (
               <BoxRow label="Model">
-                <div className="grid sm:grid-cols-2 gap-2">
+                <div className="relative mb-3">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-silver-500" />
+                  <input
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder={`Search ${effectiveType === "Tablet" ? "iPad" : brand} models...`}
+                    className="w-full bg-background border border-border pl-10 pr-4 py-3 focus:outline-none focus:border-primary text-sm"
+                  />
+                </div>
+                <div className="grid sm:grid-cols-2 gap-2 max-h-80 overflow-y-auto pr-1">
                   {models.map((d) => (
                     <button
                       key={d.id}
-                      onClick={() => setDevice(d)}
+                      onClick={() => pickDevice(d)}
                       className={`text-left px-4 py-3 border transition-all ${
                         device?.id === d.id
                           ? "border-primary bg-primary/10 shadow-red"
@@ -128,6 +186,9 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                       <div className="font-display text-base uppercase tracking-tight">{d.model}</div>
                     </button>
                   ))}
+                  {models.length === 0 && (
+                    <div className="text-silver-500 text-sm col-span-2 py-3">No matches.</div>
+                  )}
                 </div>
               </BoxRow>
             )}
@@ -137,7 +198,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               <BoxRow label="Storage">
                 <div className="flex flex-wrap gap-2">
                   {STORAGE_OPTIONS.map((s) => (
-                    <Chip key={s} active={storage === s} onClick={() => setStorage(s)}>
+                    <Chip key={s} active={storage === s} onClick={() => pickStorage(s)}>
                       {s}
                     </Chip>
                   ))}
@@ -147,26 +208,20 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
             {/* Carrier */}
             {storage && (
-              <BoxRow label="Carrier">
+              <BoxRow label={device?.type === "Tablet" ? "Connectivity" : "Carrier"}>
                 <div className="flex flex-wrap gap-2">
-                  {CARRIER_OPTIONS.map((c) => (
-                    <Chip key={c} active={carrier === c} onClick={() => setCarrier(c)}>
-                      {c}
+                  {(device?.type === "Tablet"
+                    ? (["Unlocked", "Other"] as Carrier[])
+                    : (CARRIER_OPTIONS as readonly Carrier[])
+                  ).map((c) => (
+                    <Chip key={c} active={carrier === c} onClick={() => pickCarrier(c)}>
+                      {device?.type === "Tablet" && c === "Unlocked" ? "Wi-Fi + Cellular" : c === "Other" && device?.type === "Tablet" ? "Wi-Fi only" : c}
                     </Chip>
                   ))}
                 </div>
+                <p className="text-xs text-silver-500 mt-3 font-mono">// auto-advances when selected</p>
               </BoxRow>
             )}
-
-            <div className="flex justify-end mt-8">
-              <button
-                disabled={!deviceComplete}
-                onClick={() => setStep(1)}
-                className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest disabled:opacity-30 disabled:cursor-not-allowed hover:shadow-red transition-all"
-              >
-                Continue <ArrowRight className="size-4" />
-              </button>
-            </div>
           </div>
         )}
 
@@ -193,7 +248,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                 return (
                   <button
                     key={c.id}
-                    onClick={() => setCondition(c)}
+                    onClick={() => pickCondition(c)}
                     className={`text-left p-5 border transition-all ${
                       active
                         ? "border-primary bg-primary/10 shadow-red"
@@ -210,19 +265,12 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               })}
             </div>
 
-            <div className="flex justify-between mt-8">
+            <div className="flex justify-start mt-8">
               <button
                 onClick={() => setStep(0)}
                 className="inline-flex items-center gap-2 border border-silver-600/60 px-6 py-4 uppercase font-bold tracking-widest text-silver-200 hover:border-primary hover:text-white transition-colors"
               >
                 <ArrowLeft className="size-4" /> Back
-              </button>
-              <button
-                disabled={!condition}
-                onClick={() => setStep(2)}
-                className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest disabled:opacity-30 disabled:cursor-not-allowed hover:shadow-red transition-all"
-              >
-                Continue <ArrowRight className="size-4" />
               </button>
             </div>
           </div>
@@ -275,7 +323,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                   onClick={handleSubmit}
                   className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest hover:shadow-red transition-all"
                 >
-                  Send my quote <ArrowRight className="size-4" />
+                  Send my quote
                 </button>
               </div>
             </div>
