@@ -38,8 +38,8 @@ export const Footer = ({ onCTA: _onCTA }: FooterProps) => {
       </div>
 
       {/* Main footer */}
-      <div className="mx-auto max-w-7xl px-5 md:px-8 py-16 grid md:grid-cols-12 gap-10">
-        <div className="md:col-span-8">
+      <div className="mx-auto max-w-7xl px-5 md:px-8 py-16 grid md:grid-cols-12 gap-10 md:divide-x md:divide-border">
+        <div className="md:col-span-8 md:pr-10">
           <div className="flex items-center gap-2.5 mb-5">
             <div className="size-9 bg-grad-red shadow-red flex items-center justify-center">
               <span className="font-display text-white text-base">T</span>
@@ -54,7 +54,7 @@ export const Footer = ({ onCTA: _onCTA }: FooterProps) => {
           </p>
         </div>
 
-        <div className="md:col-span-4">
+        <div className="md:col-span-4 md:pl-10">
           <div className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-5">
             // Quick links
           </div>
