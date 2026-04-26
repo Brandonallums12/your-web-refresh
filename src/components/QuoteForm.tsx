@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search, Tablet, Laptop, ShieldCheck, ShieldAlert } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search, Tablet, Laptop, Gamepad2, Camera, Plane, ShieldCheck, ShieldAlert } from "lucide-react";
 import { z } from "zod";
 import {
   DEVICES,
@@ -37,6 +37,11 @@ const imeiSchema = z
   .trim()
   .regex(/^\d{14,17}$/, { message: "IMEI must be 14–17 digits (numbers only)." });
 
+const serialSchema = z
+  .string()
+  .trim()
+  .regex(/^[A-Za-z0-9-]{6,20}$/, { message: "Serial must be 6–20 letters/numbers." });
+
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Please enter your name.").max(100),
   phone: z
@@ -54,9 +59,12 @@ interface QuoteFormProps {
 }
 
 const CATEGORIES: { id: DeviceType; label: string; icon: typeof Smartphone }[] = [
-  { id: "Phone",  label: "Phones",  icon: Smartphone },
-  { id: "Tablet", label: "Tablets", icon: Tablet },
-  { id: "Laptop", label: "Laptops", icon: Laptop },
+  { id: "Phone",   label: "Phones",   icon: Smartphone },
+  { id: "Tablet",  label: "Tablets",  icon: Tablet },
+  { id: "Laptop",  label: "Laptops",  icon: Laptop },
+  { id: "Console", label: "Consoles", icon: Gamepad2 },
+  { id: "Camera",  label: "Cameras",  icon: Camera },
+  { id: "Drone",   label: "Drones",   icon: Plane },
 ];
 
 export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
@@ -143,7 +151,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
     if (!device || !condition || !storage || !carrier || !lockStatus) return;
     // Validate IMEI if locked
     if (lockStatus === "locked") {
-      const r = imeiSchema.safeParse(imei);
+      const r = (device.type === "Phone" ? imeiSchema : serialSchema).safeParse(imei);
       if (!r.success) {
         setImeiError(r.error.issues[0]?.message ?? "Invalid IMEI.");
         setStep(1);
@@ -204,7 +212,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
     if (d.type === "Tablet") {
       setStorage(opts[0] ?? null);
       setCarrier("Other"); // "Wi-Fi only"
-    } else if (d.type === "Laptop") {
+    } else if (d.type === "Laptop" || d.type === "Console" || d.type === "Camera" || d.type === "Drone") {
       // pick 256/512 if present, else first
       setStorage(opts.find((o) => o === "256 GB") ?? opts.find((o) => o === "512 GB") ?? opts[0] ?? null);
       setCarrier("Unlocked");
@@ -215,8 +223,8 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   };
   const pickStorage = (s: Storage) => {
     setStorage(s);
-    // Laptops skip carrier — auto-advance straight to condition
-    if (category === "Laptop") {
+    // Categories without a carrier step — auto-advance straight to condition
+    if (category === "Laptop" || category === "Console" || category === "Camera" || category === "Drone") {
       setCarrier("Unlocked");
       setTimeout(() => setStep(1), 180);
     }
@@ -243,7 +251,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
       return;
     }
     if (lockStatus === "locked") {
-      const r = imeiSchema.safeParse(imei);
+      const r = (device.type === "Phone" ? imeiSchema : serialSchema).safeParse(imei);
       if (!r.success) {
         setImeiError(r.error.issues[0]?.message ?? "Invalid IMEI.");
         return;
@@ -292,7 +300,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
             {/* Category */}
             <BoxRow label="Category">
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                 {CATEGORIES.map(({ id, label, icon: Icon }) => {
                   const active = category === id;
                   return (
@@ -400,7 +408,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             {/* Storage */}
             {device && (
               <BoxRow label="Storage">
-                {(device.type === "Tablet" || device.type === "Laptop") && (
+                {(device.type === "Tablet" || device.type === "Laptop" || device.type === "Console" || device.type === "Camera" || device.type === "Drone") && (
                   <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
                     // Default selected — change only if needed
                   </p>
@@ -415,8 +423,8 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </BoxRow>
             )}
 
-            {/* Carrier / Connectivity — laptops skip; Wi-Fi-only tablets skip */}
-            {storage && device && device.type !== "Laptop" && !(device.type === "Tablet" && !tabletSupportsCellular(device)) && (
+            {/* Carrier / Connectivity — laptops/consoles/cameras/drones skip; Wi-Fi-only tablets skip */}
+            {storage && device && device.type !== "Laptop" && device.type !== "Console" && device.type !== "Camera" && device.type !== "Drone" && !(device.type === "Tablet" && !tabletSupportsCellular(device)) && (
               <BoxRow label={device.type === "Tablet" ? "Connectivity" : "Carrier"}>
                 {device.type === "Tablet" && (
                   <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
@@ -440,8 +448,8 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </BoxRow>
             )}
 
-            {/* Continue button — for tablets & laptops with defaults already set */}
-            {device && (device.type === "Tablet" || device.type === "Laptop") && storage && (
+            {/* Continue button — for categories with defaults already set */}
+            {device && (device.type === "Tablet" || device.type === "Laptop" || device.type === "Console" || device.type === "Camera" || device.type === "Drone") && storage && (
               <div className="flex justify-end mt-6">
                 <button
                   onClick={() => setStep(1)}
@@ -499,8 +507,13 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             {/* --- Ownership / account-lock verification --- */}
             {(() => {
               const isApple = device.brand === "Apple";
-              const lockName = isApple ? "iCloud" : "Google FRP";
-              const lockTitle = isApple ? "ICLOUD LOCKED" : "GOOGLE FRP LOCKED";
+              const isAccountDevice = device.type === "Phone" || device.type === "Tablet" || device.type === "Laptop";
+              const lockName = !isAccountDevice
+                ? "account / activation"
+                : isApple ? "iCloud" : "Google FRP";
+              const lockTitle = !isAccountDevice
+                ? "ACCOUNT LOCKED"
+                : isApple ? "ICLOUD LOCKED" : "GOOGLE FRP LOCKED";
               return (
             <div className="mt-10 pt-8 border-t border-border">
               <div className="flex items-center gap-3 mb-2">
@@ -514,7 +527,9 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                 <span className="text-white font-semibold">We do not buy devices reported lost or stolen.</span>
               </p>
               <p className="text-silver-500 text-sm font-mono mb-6">
-                {isApple
+                {!isAccountDevice
+                  ? `// ${device.type === "Console" ? "PSN / Xbox / Nintendo / Steam account, MDM, or activation lock" : device.type === "Camera" ? "Owner account / cloud lock or registration" : "DJI / Autel / Skydio account binding or activation lock"}`
+                  : isApple
                   ? `// ${device.type === "Phone" ? "iCloud / Find My iPhone" : device.type === "Tablet" ? "iCloud / Find My iPad" : "Find My Mac / Activation Lock"}`
                   : `// ${device.type === "Laptop" ? "Microsoft / Google account lock, MDM, or BIOS password" : "Google FRP, Samsung / carrier lock, or MDM"}`}
               </p>
@@ -535,7 +550,9 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                     {lockStatus === "clean" && <Check className="size-5 text-primary" />}
                   </div>
                   <p className="text-sm text-silver-400 leading-relaxed">
-                    {isApple
+                    {!isAccountDevice
+                      ? "I can sign out of any linked account and factory reset before hand-off."
+                      : isApple
                       ? "I can sign out of iCloud and remove the device from my account. No activation lock."
                       : "I can sign out of my Google account and factory reset. No FRP lock will trigger."}
                   </p>
@@ -556,7 +573,9 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                     {lockStatus === "locked" && <Check className="size-5 text-primary" />}
                   </div>
                   <p className="text-sm text-silver-400 leading-relaxed">
-                    {isApple
+                    {!isAccountDevice
+                      ? "Account still linked — we'll need the serial number to verify clean status."
+                      : isApple
                       ? "Account still signed in — we'll need the IMEI / serial to verify clean status."
                       : "Google account still signed in — we'll need the IMEI / serial to verify clean status."}
                   </p>
@@ -565,18 +584,18 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
               {lockStatus === "locked" && (
                 <div className="border border-primary/40 bg-primary/5 p-6 md:p-8 mt-6 max-w-2xl animate-fade-up">
-                  <Field label={device.type === "Laptop" ? "Serial number (10–17 chars)" : "IMEI (14–17 digits)"}>
+                  <Field label={device.type === "Phone" ? "IMEI (14–17 digits)" : "Serial number (6–20 chars)"}>
                     <input
                       value={imei}
                       onChange={(e) => {
-                        const cleaned = device.type === "Laptop"
-                          ? e.target.value.replace(/[^A-Za-z0-9]/g, "").slice(0, 20)
-                          : e.target.value.replace(/\D/g, "").slice(0, 17);
+                        const cleaned = device.type === "Phone"
+                          ? e.target.value.replace(/\D/g, "").slice(0, 17)
+                          : e.target.value.replace(/[^A-Za-z0-9-]/g, "").slice(0, 20);
                         setImei(cleaned);
                         if (imeiError) setImeiError(null);
                       }}
-                      placeholder={device.type === "Laptop" ? "C02XXXXXXXX" : isApple ? "Find IMEI in Settings › General › About" : "Dial *#06# on the device"}
-                      inputMode={device.type === "Laptop" ? "text" : "numeric"}
+                      placeholder={device.type === "Phone" ? (isApple ? "Find IMEI in Settings › General › About" : "Dial *#06# on the device") : "Found on the device or original box"}
+                      inputMode={device.type === "Phone" ? "numeric" : "text"}
                       autoComplete="off"
                       maxLength={20}
                       className={`w-full bg-background border px-4 py-3.5 focus:outline-none ${
@@ -587,7 +606,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                   {imeiError && (
                     <p className="text-primary text-xs mt-2 font-mono">{imeiError}</p>
                   )}
-                  {isApple && device.type !== "Laptop" && (
+                  {isApple && device.type === "Phone" && (
                     <p className="text-silver-400 text-xs mt-3">
                       Not sure where to find it?{" "}
                       <a
