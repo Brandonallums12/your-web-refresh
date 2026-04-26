@@ -229,6 +229,29 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
     setCondition(c);
     setTimeout(() => setStep(2), 180);
   };
+  const pickLock = (s: LockStatus) => {
+    setLockStatus(s);
+    setImeiError(null);
+    if (s === "clean") {
+      setImei("");
+      setTimeout(() => setStep(3), 180);
+    }
+  };
+  const submitLockStep = () => {
+    if (!lockStatus) {
+      toast.error("Please confirm the device's account-lock status.");
+      return;
+    }
+    if (lockStatus === "locked") {
+      const r = imeiSchema.safeParse(imei);
+      if (!r.success) {
+        setImeiError(r.error.issues[0]?.message ?? "Invalid IMEI.");
+        return;
+      }
+    }
+    setImeiError(null);
+    setStep(3);
+  };
 
   return (
     <section className="relative min-h-[calc(100vh-4rem)] bg-grad-hero py-16 md:py-24 px-5 md:px-8 overflow-hidden">
