@@ -502,8 +502,13 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             {/* --- Ownership / account-lock verification --- */}
             {(() => {
               const isApple = device.brand === "Apple";
-              const lockName = isApple ? "iCloud" : "Google FRP";
-              const lockTitle = isApple ? "ICLOUD LOCKED" : "GOOGLE FRP LOCKED";
+              const isAccountDevice = device.type === "Phone" || device.type === "Tablet" || device.type === "Laptop";
+              const lockName = !isAccountDevice
+                ? "account / activation"
+                : isApple ? "iCloud" : "Google FRP";
+              const lockTitle = !isAccountDevice
+                ? "ACCOUNT LOCKED"
+                : isApple ? "ICLOUD LOCKED" : "GOOGLE FRP LOCKED";
               return (
             <div className="mt-10 pt-8 border-t border-border">
               <div className="flex items-center gap-3 mb-2">
@@ -517,7 +522,9 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                 <span className="text-white font-semibold">We do not buy devices reported lost or stolen.</span>
               </p>
               <p className="text-silver-500 text-sm font-mono mb-6">
-                {isApple
+                {!isAccountDevice
+                  ? `// ${device.type === "Console" ? "PSN / Xbox / Nintendo / Steam account, MDM, or activation lock" : device.type === "Camera" ? "Owner account / cloud lock or registration" : "DJI / Autel / Skydio account binding or activation lock"}`
+                  : isApple
                   ? `// ${device.type === "Phone" ? "iCloud / Find My iPhone" : device.type === "Tablet" ? "iCloud / Find My iPad" : "Find My Mac / Activation Lock"}`
                   : `// ${device.type === "Laptop" ? "Microsoft / Google account lock, MDM, or BIOS password" : "Google FRP, Samsung / carrier lock, or MDM"}`}
               </p>
