@@ -138,8 +138,17 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   };
   const pickDevice = (d: Device) => {
     setDevice(d);
-    setStorage(null);
-    setCarrier(null);
+    // Sensible defaults so tablets/laptops can breeze through
+    if (d.type === "Tablet") {
+      setStorage("128 GB");
+      setCarrier("Other"); // "Wi-Fi only" label
+    } else if (d.type === "Laptop") {
+      setStorage("256 GB");
+      setCarrier("Unlocked");
+    } else {
+      setStorage(null);
+      setCarrier(null);
+    }
   };
   const pickStorage = (s: Storage) => {
     setStorage(s);
@@ -305,6 +314,11 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             {/* Storage */}
             {device && (
               <BoxRow label="Storage">
+                {(device.type === "Tablet" || device.type === "Laptop") && (
+                  <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
+                    // Default selected — change only if needed
+                  </p>
+                )}
                 <div className="flex flex-wrap gap-2">
                   {STORAGE_OPTIONS.map((s) => (
                     <Chip key={s} active={storage === s} onClick={() => pickStorage(s)}>
@@ -318,6 +332,11 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             {/* Carrier — skipped for laptops */}
             {storage && device?.type !== "Laptop" && (
               <BoxRow label={device?.type === "Tablet" ? "Connectivity" : "Carrier"}>
+                {device?.type === "Tablet" && (
+                  <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
+                    // Default: Wi-Fi only — change only if needed
+                  </p>
+                )}
                 <div className="flex flex-wrap gap-2">
                   {(device?.type === "Tablet"
                     ? (["Unlocked", "Other"] as Carrier[])
@@ -328,8 +347,19 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                     </Chip>
                   ))}
                 </div>
-                <p className="text-xs text-silver-500 mt-3 font-mono">// auto-advances when selected</p>
               </BoxRow>
+            )}
+
+            {/* Continue button — for tablets & laptops with defaults already set */}
+            {device && (device.type === "Tablet" || device.type === "Laptop") && storage && (
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={() => setStep(1)}
+                  className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest hover:shadow-red transition-all"
+                >
+                  Continue <ChevronRight className="size-4" />
+                </button>
+              </div>
             )}
           </div>
         )}
