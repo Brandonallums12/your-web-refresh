@@ -149,9 +149,12 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
     [series, seriesGroups]
   );
 
+  const isOther = category === "Other";
+
   const handleSubmit = () => {
-    if (!device || !condition || !storage || !carrier || !lockStatus) return;
-    // Validate IMEI if locked
+    if (!device || !condition || !lockStatus) return;
+    if (!isOther && (!storage || !carrier)) return;
+    // Validate IMEI if locked (Other category is auto "clean" so this is skipped)
     if (lockStatus === "locked") {
       const r = (device.type === "Phone" ? imeiSchema : serialSchema).safeParse(imei);
       if (!r.success) {
@@ -173,8 +176,15 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
       return;
     }
     setContactErrors({});
+    // For "Other", embed the user's description as the device model so it shows up everywhere.
+    const submittedDevice = isOther
+      ? { ...device, model: otherDescription.trim() || "Other device" }
+      : device;
     onSubmit({
-      device, storage, carrier, condition,
+      device: submittedDevice,
+      storage: storage ?? ("—" as Storage),
+      carrier: carrier ?? ("Unlocked" as Carrier),
+      condition,
       lockStatus,
       imei: lockStatus === "locked" ? imei.trim() : "",
       name: name.trim(),
