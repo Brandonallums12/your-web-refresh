@@ -65,7 +65,7 @@ export const Hero = ({ onPrimary }: HeroProps) => {
               height={1600}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/0 to-transparent" />
+            
             {/* floating quote chip */}
             <div className="absolute bottom-5 left-5 right-5 bg-background/85 backdrop-blur-md border border-primary/40 p-4 flex items-center justify-between">
               <div>
