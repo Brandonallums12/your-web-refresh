@@ -11,7 +11,7 @@ const STEPS = [
     n: "02",
     icon: Store,
     title: "Drop By The Shop",
-    body: "Bring your phone to our West Covina location. A 3-minute diagnostic confirms the condition.",
+    body: "Visit our West Covina location. We'll inspect your device together — checking condition, functionality, and details. Takes about 3 minutes.",
   },
   {
     n: "03",
