@@ -25,18 +25,21 @@ export const Confirmation = ({ data, onBack }: ConfirmationProps) => {
           <p className="text-silver-300 text-lg max-w-xl">
             We'll text <span className="font-mono text-white">{data.phone}</span> shortly with your
             custom cash offer for your{" "}
-            <span className="text-white font-semibold">{data.device.brand} {data.device.model}</span>{" "}
-            ({data.storage} · {data.carrier}).
+            <span className="text-white font-semibold">
+              {data.device.type === "Other" ? data.device.model : `${data.device.brand} ${data.device.model}`}
+            </span>
+            {data.device.type !== "Other" && <> ({data.storage} · {data.carrier})</>}.
           </p>
 
           <div className="mt-10 grid sm:grid-cols-2 gap-4">
             <div className="bg-background border border-border p-6">
               <div className="text-[10px] uppercase tracking-widest text-silver-500 mb-1">Submission</div>
               <div className="font-display text-2xl uppercase tracking-tight text-white">
-                {data.device.model}
+                {data.device.type === "Other" ? "Other device" : data.device.model}
               </div>
               <div className="text-xs text-silver-400 mt-2 font-mono uppercase tracking-widest">
-                {data.condition.label} · {data.storage} · {data.carrier}
+                {data.condition.label}
+                {data.device.type !== "Other" && <> · {data.storage} · {data.carrier}</>}
               </div>
             </div>
             <div className="bg-background border border-border p-6 space-y-3 text-sm">
