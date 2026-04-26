@@ -140,12 +140,37 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   );
 
   const handleSubmit = () => {
-    if (!device || !condition || !storage || !carrier) return;
-    if (!name.trim() || !phone.trim()) {
-      toast.error("Please add your name and phone so we can confirm.");
+    if (!device || !condition || !storage || !carrier || !lockStatus) return;
+    // Validate IMEI if locked
+    if (lockStatus === "locked") {
+      const r = imeiSchema.safeParse(imei);
+      if (!r.success) {
+        setImeiError(r.error.issues[0]?.message ?? "Invalid IMEI.");
+        setStep(2);
+        return;
+      }
+    }
+    // Validate contact
+    const c = contactSchema.safeParse({ name, phone, email });
+    if (!c.success) {
+      const errs: { name?: string; phone?: string; email?: string } = {};
+      for (const issue of c.error.issues) {
+        const k = issue.path[0] as "name" | "phone" | "email";
+        if (k && !errs[k]) errs[k] = issue.message;
+      }
+      setContactErrors(errs);
+      toast.error("Please fix the highlighted fields.");
       return;
     }
-    onSubmit({ device, storage, carrier, condition, name, phone, email });
+    setContactErrors({});
+    onSubmit({
+      device, storage, carrier, condition,
+      lockStatus,
+      imei: lockStatus === "locked" ? imei.trim() : "",
+      name: name.trim(),
+      phone: phone.trim(),
+      email: email.trim(),
+    });
   };
 
   // Auto-advance helpers
