@@ -562,7 +562,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </div>
 
               {lockStatus === "locked" && (
-                <div className="border border-primary/40 bg-primary/5 p-5 mt-4 animate-fade-up">
+                <div className="border border-primary/40 bg-primary/5 p-6 md:p-8 mt-6 max-w-2xl animate-fade-up">
                   <Field label={device.type === "Laptop" ? "Serial number (10–17 chars)" : "IMEI (14–17 digits)"}>
                     <input
                       value={imei}
