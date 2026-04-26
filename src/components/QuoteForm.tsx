@@ -37,6 +37,11 @@ const imeiSchema = z
   .trim()
   .regex(/^\d{14,17}$/, { message: "IMEI must be 14–17 digits (numbers only)." });
 
+const serialSchema = z
+  .string()
+  .trim()
+  .regex(/^[A-Za-z0-9-]{6,20}$/, { message: "Serial must be 6–20 letters/numbers." });
+
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Please enter your name.").max(100),
   phone: z
