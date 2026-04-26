@@ -580,18 +580,18 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
               {lockStatus === "locked" && (
                 <div className="border border-primary/40 bg-primary/5 p-6 md:p-8 mt-6 max-w-2xl animate-fade-up">
-                  <Field label={device.type === "Laptop" ? "Serial number (10–17 chars)" : "IMEI (14–17 digits)"}>
+                  <Field label={device.type === "Phone" ? "IMEI (14–17 digits)" : "Serial number (6–20 chars)"}>
                     <input
                       value={imei}
                       onChange={(e) => {
-                        const cleaned = device.type === "Laptop"
-                          ? e.target.value.replace(/[^A-Za-z0-9]/g, "").slice(0, 20)
-                          : e.target.value.replace(/\D/g, "").slice(0, 17);
+                        const cleaned = device.type === "Phone"
+                          ? e.target.value.replace(/\D/g, "").slice(0, 17)
+                          : e.target.value.replace(/[^A-Za-z0-9-]/g, "").slice(0, 20);
                         setImei(cleaned);
                         if (imeiError) setImeiError(null);
                       }}
-                      placeholder={device.type === "Laptop" ? "C02XXXXXXXX" : isApple ? "Find IMEI in Settings › General › About" : "Dial *#06# on the device"}
-                      inputMode={device.type === "Laptop" ? "text" : "numeric"}
+                      placeholder={device.type === "Phone" ? (isApple ? "Find IMEI in Settings › General › About" : "Dial *#06# on the device") : "Found on the device or original box"}
+                      inputMode={device.type === "Phone" ? "numeric" : "text"}
                       autoComplete="off"
                       maxLength={20}
                       className={`w-full bg-background border px-4 py-3.5 focus:outline-none ${
@@ -602,7 +602,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                   {imeiError && (
                     <p className="text-primary text-xs mt-2 font-mono">{imeiError}</p>
                   )}
-                  {isApple && device.type !== "Laptop" && (
+                  {isApple && device.type === "Phone" && (
                     <p className="text-silver-400 text-xs mt-3">
                       Not sure where to find it?{" "}
                       <a
