@@ -403,7 +403,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             {/* Storage */}
             {device && (
               <BoxRow label="Storage">
-                {(device.type === "Tablet" || device.type === "Laptop") && (
+                {(device.type === "Tablet" || device.type === "Laptop" || device.type === "Console" || device.type === "Camera" || device.type === "Drone") && (
                   <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
                     // Default selected — change only if needed
                   </p>
@@ -418,8 +418,8 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </BoxRow>
             )}
 
-            {/* Carrier / Connectivity — laptops skip; Wi-Fi-only tablets skip */}
-            {storage && device && device.type !== "Laptop" && !(device.type === "Tablet" && !tabletSupportsCellular(device)) && (
+            {/* Carrier / Connectivity — laptops/consoles/cameras/drones skip; Wi-Fi-only tablets skip */}
+            {storage && device && device.type !== "Laptop" && device.type !== "Console" && device.type !== "Camera" && device.type !== "Drone" && !(device.type === "Tablet" && !tabletSupportsCellular(device)) && (
               <BoxRow label={device.type === "Tablet" ? "Connectivity" : "Carrier"}>
                 {device.type === "Tablet" && (
                   <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
@@ -443,8 +443,8 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </BoxRow>
             )}
 
-            {/* Continue button — for tablets & laptops with defaults already set */}
-            {device && (device.type === "Tablet" || device.type === "Laptop") && storage && (
+            {/* Continue button — for categories with defaults already set */}
+            {device && (device.type === "Tablet" || device.type === "Laptop" || device.type === "Console" || device.type === "Camera" || device.type === "Drone") && storage && (
               <div className="flex justify-end mt-6">
                 <button
                   onClick={() => setStep(1)}
