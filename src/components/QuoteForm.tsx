@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search, Tablet, Laptop, Gamepad2, Camera, Plane, ShieldCheck, ShieldAlert } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search, Tablet, Laptop, Gamepad2, Camera, Plane, HelpCircle, ShieldCheck, ShieldAlert } from "lucide-react";
 import { z } from "zod";
 import {
   DEVICES,
@@ -65,6 +65,7 @@ const CATEGORIES: { id: DeviceType; label: string; icon: typeof Smartphone }[] =
   { id: "Console", label: "Consoles", icon: Gamepad2 },
   { id: "Camera",  label: "Cameras",  icon: Camera },
   { id: "Drone",   label: "Drones",   icon: Plane },
+  { id: "Other",   label: "Other",    icon: HelpCircle },
 ];
 
 export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
