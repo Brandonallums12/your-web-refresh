@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search, Tablet, Laptop, Gamepad2, Camera, Plane, ShieldCheck, ShieldAlert } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search, Tablet, Laptop, Gamepad2, Camera, Plane, HelpCircle, ShieldCheck, ShieldAlert } from "lucide-react";
 import { z } from "zod";
 import {
   DEVICES,
@@ -65,6 +65,7 @@ const CATEGORIES: { id: DeviceType; label: string; icon: typeof Smartphone }[] =
   { id: "Console", label: "Consoles", icon: Gamepad2 },
   { id: "Camera",  label: "Cameras",  icon: Camera },
   { id: "Drone",   label: "Drones",   icon: Plane },
+  { id: "Other",   label: "Other",    icon: HelpCircle },
 ];
 
 export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
@@ -88,6 +89,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [otherDescription, setOtherDescription] = useState("");
   const [contactErrors, setContactErrors] = useState<{ name?: string; phone?: string; email?: string }>({});
 
   // Brands available for the chosen category (derived from data)
@@ -147,9 +149,12 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
     [series, seriesGroups]
   );
 
+  const isOther = category === "Other";
+
   const handleSubmit = () => {
-    if (!device || !condition || !storage || !carrier || !lockStatus) return;
-    // Validate IMEI if locked
+    if (!device || !condition || !lockStatus) return;
+    if (!isOther && (!storage || !carrier)) return;
+    // Validate IMEI if locked (Other category is auto "clean" so this is skipped)
     if (lockStatus === "locked") {
       const r = (device.type === "Phone" ? imeiSchema : serialSchema).safeParse(imei);
       if (!r.success) {
@@ -171,8 +176,15 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
       return;
     }
     setContactErrors({});
+    // For "Other", embed the user's description as the device model so it shows up everywhere.
+    const submittedDevice = isOther
+      ? { ...device, model: otherDescription.trim() || "Other device" }
+      : device;
     onSubmit({
-      device, storage, carrier, condition,
+      device: submittedDevice,
+      storage: storage ?? ("—" as Storage),
+      carrier: carrier ?? ("Unlocked" as Carrier),
+      condition,
       lockStatus,
       imei: lockStatus === "locked" ? imei.trim() : "",
       name: name.trim(),
@@ -190,6 +202,19 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
     setStorage(null);
     setCarrier(null);
     setSearch("");
+    if (c === "Other") {
+      // Auto-select the synthetic "Other" device — user describes it via textarea.
+      const other = DEVICES.find((d) => d.id === "other");
+      if (other) {
+        setBrand("Other");
+        setDevice(other);
+        setStorage(null);
+        setCarrier("Unlocked");
+        setLockStatus("clean");
+      }
+    } else {
+      setOtherDescription("");
+    }
   };
   const pickBrand = (b: Brand) => {
     setBrand(b);
@@ -322,7 +347,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             </BoxRow>
 
             {/* Brand — only brands that make this category */}
-            {category && (
+            {category && !isOther && (
               <BoxRow label="Brand">
                 <div className="flex flex-wrap gap-2">
                   {availableBrands.map((b) => (
@@ -335,7 +360,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             )}
 
             {/* Model — pick a series first, then a variant */}
-            {brand && category && !series && (
+            {brand && category && !isOther && !series && (
               <BoxRow label="Model line">
                 <div className="relative mb-4">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-silver-500" />
@@ -368,7 +393,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </BoxRow>
             )}
 
-            {brand && category && series && (
+            {brand && category && !isOther && series && (
               <BoxRow label={`${series} — pick variant`}>
                 <div className="flex flex-wrap gap-2 mb-1">
                   <button
@@ -406,7 +431,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             )}
 
             {/* Storage */}
-            {device && (
+            {device && !isOther && (
               <BoxRow label="Storage">
                 {(device.type === "Tablet" || device.type === "Laptop" || device.type === "Console" || device.type === "Camera" || device.type === "Drone") && (
                   <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
@@ -424,7 +449,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             )}
 
             {/* Carrier / Connectivity — laptops/consoles/cameras/drones skip; Wi-Fi-only tablets skip */}
-            {storage && device && device.type !== "Laptop" && device.type !== "Console" && device.type !== "Camera" && device.type !== "Drone" && !(device.type === "Tablet" && !tabletSupportsCellular(device)) && (
+            {storage && device && !isOther && device.type !== "Laptop" && device.type !== "Console" && device.type !== "Camera" && device.type !== "Drone" && !(device.type === "Tablet" && !tabletSupportsCellular(device)) && (
               <BoxRow label={device.type === "Tablet" ? "Connectivity" : "Carrier"}>
                 {device.type === "Tablet" && (
                   <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
@@ -448,12 +473,51 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </BoxRow>
             )}
 
+            {/* Other category — free-text description */}
+            {isOther && (
+              <BoxRow label="Tell us what you have">
+                <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
+                  // Brand, model, storage, color — anything you know
+                </p>
+                <textarea
+                  value={otherDescription}
+                  onChange={(e) => setOtherDescription(e.target.value.slice(0, 300))}
+                  placeholder="e.g. Apple Watch Series 9 45mm GPS, Sony WH-1000XM5 headphones, LG C3 65&quot; OLED TV..."
+                  rows={4}
+                  maxLength={300}
+                  className="w-full bg-background border border-border px-4 py-3 focus:outline-none focus:border-primary text-sm resize-none"
+                />
+                <div className="text-[10px] font-mono text-silver-500 mt-2 uppercase tracking-widest text-right">
+                  {otherDescription.length}/300
+                </div>
+              </BoxRow>
+            )}
+
             {/* Continue button — for categories with defaults already set */}
-            {device && (device.type === "Tablet" || device.type === "Laptop" || device.type === "Console" || device.type === "Camera" || device.type === "Drone") && storage && (
+            {device && !isOther && (device.type === "Tablet" || device.type === "Laptop" || device.type === "Console" || device.type === "Camera" || device.type === "Drone") && storage && (
               <div className="flex justify-end mt-6">
                 <button
                   onClick={() => setStep(1)}
                   className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest hover:shadow-red transition-all"
+                >
+                  Continue <ChevronRight className="size-4" />
+                </button>
+              </div>
+            )}
+
+            {/* Continue button — Other category */}
+            {isOther && (
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={() => {
+                    if (otherDescription.trim().length < 3) {
+                      toast.error("Please describe what you're selling.");
+                      return;
+                    }
+                    setStep(1);
+                  }}
+                  disabled={otherDescription.trim().length < 3}
+                  className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest hover:shadow-red transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none"
                 >
                   Continue <ChevronRight className="size-4" />
                 </button>
@@ -475,9 +539,9 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               Be honest — we verify in person.<br />
               Selling:{" "}
               <span className="text-white font-semibold">
-                {device.brand} {device.model}
-              </span>{" "}
-              · {storage} · {carrier}
+                {isOther ? otherDescription.trim() || "Other device" : `${device.brand} ${device.model}`}
+              </span>
+              {!isOther && <> · {storage} · {carrier}</>}
               <br /><br />
             </p>
 
@@ -504,8 +568,8 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               })}
             </div>
 
-            {/* --- Ownership / account-lock verification --- */}
-            {(() => {
+            {/* --- Ownership / account-lock verification (skipped for "Other") --- */}
+            {!isOther && (() => {
               const isApple = device.brand === "Apple";
               const isAccountDevice = device.type === "Phone" || device.type === "Tablet" || device.type === "Laptop";
               const lockName = !isAccountDevice
@@ -710,17 +774,23 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             <aside className="md:col-span-2 bg-background/60 border border-primary/30 p-6 h-fit">
               <div className="text-[10px] font-bold uppercase tracking-widest text-silver-500 mb-3">// Your submission</div>
               <div className="font-display text-lg uppercase tracking-tight">
-                {device.brand} {device.model}
+                {isOther ? "Other device" : `${device.brand} ${device.model}`}
               </div>
-              <div className="text-silver-300 text-sm mt-1">{storage} · {carrier}</div>
-              <div className="text-silver-400 text-sm">Condition: {condition.label}</div>
-              <div className="text-silver-400 text-sm mb-5 inline-flex items-center gap-1.5">
-                {lockStatus === "clean" ? (
-                  <><ShieldCheck className="size-3.5 text-primary" /> Clean / Unlocked</>
-                ) : (
-                  <><ShieldAlert className="size-3.5 text-primary" /> IMEI provided · pending check</>
-                )}
-              </div>
+              {isOther ? (
+                <div className="text-silver-300 text-sm mt-1 leading-relaxed">{otherDescription.trim() || "—"}</div>
+              ) : (
+                <div className="text-silver-300 text-sm mt-1">{storage} · {carrier}</div>
+              )}
+              <div className="text-silver-400 text-sm mt-1">Condition: {condition.label}</div>
+              {!isOther && (
+                <div className="text-silver-400 text-sm mb-5 inline-flex items-center gap-1.5 mt-1">
+                  {lockStatus === "clean" ? (
+                    <><ShieldCheck className="size-3.5 text-primary" /> Clean / Unlocked</>
+                  ) : (
+                    <><ShieldAlert className="size-3.5 text-primary" /> IMEI provided · pending check</>
+                  )}
+                </div>
+              )}
               <div className="border-t border-border pt-5">
                 <div className="text-xs uppercase tracking-widest text-silver-500 mb-2">Custom cash offer</div>
                 <div className="font-mono text-sm text-silver-200 leading-relaxed">

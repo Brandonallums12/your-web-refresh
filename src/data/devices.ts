@@ -3,8 +3,9 @@ export type Brand =
   | "Dell" | "HP" | "Lenovo" | "ASUS" | "Razer" | "MSI" | "Acer"
   | "Sony" | "Nintendo" | "Valve" | "Meta"
   | "Canon" | "Nikon" | "Fujifilm" | "Panasonic" | "Leica" | "GoPro"
-  | "DJI" | "Autel" | "Skydio" | "Parrot";
-export type DeviceType = "Phone" | "Tablet" | "Laptop" | "Console" | "Camera" | "Drone";
+  | "DJI" | "Autel" | "Skydio" | "Parrot"
+  | "Other";
+export type DeviceType = "Phone" | "Tablet" | "Laptop" | "Console" | "Camera" | "Drone" | "Other";
 
 export type Device = {
   id: string;
@@ -454,6 +455,10 @@ export const DEVICES: Device[] = [
   // Parrot
   { id: "ppanafiai",   brand: "Parrot", type: "Drone", model: "Anafi AI" },
   { id: "ppanafi",     brand: "Parrot", type: "Drone", model: "Anafi" },
+
+  // ===== Other =====
+  // Catch-all for devices not listed above (smartwatches, headphones, e-readers, monitors, etc.)
+  { id: "other",       brand: "Other",  type: "Other",  model: "Other device" },
 ];
 
 export const STORAGE_OPTIONS = ["32 GB", "64 GB", "128 GB", "256 GB", "512 GB", "1 TB", "2 TB", "4 TB", "8 TB"] as const;
@@ -668,6 +673,7 @@ export function getStorageOptions(device: Device): Storage[] {
   if (device.type === "Console") return CONSOLE_STORAGE[id] ?? ["256 GB", "512 GB", "1 TB"];
   if (device.type === "Camera")  return ["32 GB", "64 GB", "128 GB", "256 GB", "512 GB"];
   if (device.type === "Drone")   return ["32 GB", "64 GB", "128 GB", "256 GB"];
+  if (device.type === "Other")   return [];
   return LAPTOP_STORAGE[id] ?? LAPTOP_DEFAULT;
 }
 
