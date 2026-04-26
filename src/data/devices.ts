@@ -665,8 +665,39 @@ export function getStorageOptions(device: Device): Storage[] {
     if (device.brand === "Google")    return PIXEL_STORAGE[id]          ?? ["128 GB", "256 GB"];
     if (device.brand === "Microsoft") return SURFACE_TABLET_STORAGE[id] ?? ["128 GB", "256 GB", "512 GB", "1 TB"];
   }
+  if (device.type === "Console") return CONSOLE_STORAGE[id] ?? ["256 GB", "512 GB", "1 TB"];
+  if (device.type === "Camera")  return ["32 GB", "64 GB", "128 GB", "256 GB", "512 GB"];
+  if (device.type === "Drone")   return ["32 GB", "64 GB", "128 GB", "256 GB"];
   return LAPTOP_STORAGE[id] ?? LAPTOP_DEFAULT;
 }
+
+const CONSOLE_STORAGE: Record<string, Storage[]> = {
+  ps5pro: ["2 TB"],
+  ps5slim: ["1 TB"],
+  ps5: ["512 GB", "1 TB"],
+  ps5de: ["1 TB"],
+  ps4pro: ["1 TB", "2 TB"],
+  ps4slim: ["500 GB" as Storage, "1 TB"], // 500 GB not in list — fall through; keep 1 TB
+  psportal: ["64 GB"],
+  xsx: ["1 TB", "2 TB"],
+  xss: ["512 GB", "1 TB"],
+  xb1x: ["1 TB"],
+  xb1s: ["500 GB" as Storage, "1 TB"],
+  switch2: ["256 GB"],
+  switcholed: ["64 GB"],
+  switchlite: ["32 GB"],
+  switch: ["32 GB"],
+  sdoled: ["512 GB", "1 TB"],
+  sdlcd: ["64 GB", "256 GB", "512 GB"],
+  rogally_x: ["1 TB"],
+  rogally: ["512 GB"],
+  legiongo: ["256 GB", "512 GB", "1 TB"],
+  q3: ["128 GB", "512 GB"],
+  q3s: ["128 GB", "256 GB"],
+  q2: ["128 GB", "256 GB"],
+  qpro: ["256 GB"],
+  psvr2: ["64 GB"],
+};
 
 // Wi-Fi-only tablets (no cellular variant exists)
 const TABLET_NO_CELLULAR = new Set<string>([
