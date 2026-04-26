@@ -54,31 +54,6 @@ export const Hero = ({ onPrimary }: HeroProps) => {
           </div>
         </div>
 
-        {/* Hero image */}
-        <div className="lg:col-span-5 relative">
-          <div className="absolute -inset-6 bg-primary/20 blur-3xl rounded-full" />
-          <div className="relative aspect-[4/5] overflow-hidden border border-silver-600/30 shadow-elev">
-            <img
-              src={heroPhone}
-              alt="Premium smartphone illuminated by red light, ready to be sold for cash"
-              width={1280}
-              height={1600}
-              className="w-full h-full object-cover"
-            />
-            
-            {/* floating quote chip */}
-            <div className="absolute bottom-5 left-5 right-5 bg-background/85 backdrop-blur-md border border-primary/40 p-4 flex items-center justify-between">
-              <div>
-                <div className="text-[10px] font-bold uppercase tracking-widest text-silver-400">Today's top payout</div>
-                <div className="font-mono text-2xl font-bold text-primary mt-0.5">$715.00</div>
-              </div>
-              <div className="text-right">
-                <div className="text-[10px] font-bold uppercase tracking-widest text-silver-400">Model</div>
-                <div className="font-display text-sm uppercase mt-0.5">iPhone 14 Pro Max</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* marquee */}
