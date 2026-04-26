@@ -77,7 +77,6 @@ export const Reviews = () => {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
           <div>
             <div className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-4">
-              // 4.9 / 5 from 320+ neighbors
             </div>
             <h2 className="font-display text-4xl md:text-6xl uppercase tracking-tighter text-balance max-w-2xl">
               Locals don't <span className="text-primary">B.S.</span>
