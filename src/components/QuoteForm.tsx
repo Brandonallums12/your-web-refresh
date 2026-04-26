@@ -774,17 +774,23 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             <aside className="md:col-span-2 bg-background/60 border border-primary/30 p-6 h-fit">
               <div className="text-[10px] font-bold uppercase tracking-widest text-silver-500 mb-3">// Your submission</div>
               <div className="font-display text-lg uppercase tracking-tight">
-                {device.brand} {device.model}
+                {isOther ? "Other device" : `${device.brand} ${device.model}`}
               </div>
-              <div className="text-silver-300 text-sm mt-1">{storage} · {carrier}</div>
-              <div className="text-silver-400 text-sm">Condition: {condition.label}</div>
-              <div className="text-silver-400 text-sm mb-5 inline-flex items-center gap-1.5">
-                {lockStatus === "clean" ? (
-                  <><ShieldCheck className="size-3.5 text-primary" /> Clean / Unlocked</>
-                ) : (
-                  <><ShieldAlert className="size-3.5 text-primary" /> IMEI provided · pending check</>
-                )}
-              </div>
+              {isOther ? (
+                <div className="text-silver-300 text-sm mt-1 leading-relaxed">{otherDescription.trim() || "—"}</div>
+              ) : (
+                <div className="text-silver-300 text-sm mt-1">{storage} · {carrier}</div>
+              )}
+              <div className="text-silver-400 text-sm mt-1">Condition: {condition.label}</div>
+              {!isOther && (
+                <div className="text-silver-400 text-sm mb-5 inline-flex items-center gap-1.5 mt-1">
+                  {lockStatus === "clean" ? (
+                    <><ShieldCheck className="size-3.5 text-primary" /> Clean / Unlocked</>
+                  ) : (
+                    <><ShieldAlert className="size-3.5 text-primary" /> IMEI provided · pending check</>
+                  )}
+                </div>
+              )}
               <div className="border-t border-border pt-5">
                 <div className="text-xs uppercase tracking-widest text-silver-500 mb-2">Custom cash offer</div>
                 <div className="font-mono text-sm text-silver-200 leading-relaxed">
