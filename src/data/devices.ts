@@ -279,11 +279,221 @@ export const DEVICES: Device[] = [
   { id: "atvgo16",   brand: "Acer", type: "Laptop", model: "TravelMate P6 16" },
 ];
 
-export const STORAGE_OPTIONS = ["64 GB", "128 GB", "256 GB", "512 GB", "1 TB", "2 TB"] as const;
+export const STORAGE_OPTIONS = ["32 GB", "64 GB", "128 GB", "256 GB", "512 GB", "1 TB", "2 TB", "4 TB", "8 TB"] as const;
 export const CARRIER_OPTIONS = ["Unlocked", "AT&T", "T-Mobile", "Verizon", "Other"] as const;
 
 export type Storage = typeof STORAGE_OPTIONS[number];
 export type Carrier = typeof CARRIER_OPTIONS[number];
+
+// ---------- Per-device storage configurations (accurate to manufacturer specs) ----------
+
+const IPHONE_STORAGE: Record<string, Storage[]> = {
+  // iPhone 17 — 256GB minimum across line; Pro/Pro Max up to 2TB
+  ip17pm:   ["256 GB", "512 GB", "1 TB", "2 TB"],
+  ip17p:    ["256 GB", "512 GB", "1 TB", "2 TB"],
+  ip17:     ["256 GB", "512 GB"],
+  ip17air:  ["256 GB", "512 GB", "1 TB"],
+  // iPhone 16
+  ip16pm:   ["256 GB", "512 GB", "1 TB"],
+  ip16p:    ["128 GB", "256 GB", "512 GB", "1 TB"],
+  ip16plus: ["128 GB", "256 GB", "512 GB"],
+  ip16:     ["128 GB", "256 GB", "512 GB"],
+  ip16e:    ["128 GB", "256 GB", "512 GB"],
+  // iPhone 15
+  ip15pm:   ["256 GB", "512 GB", "1 TB"],
+  ip15p:    ["128 GB", "256 GB", "512 GB", "1 TB"],
+  ip15plus: ["128 GB", "256 GB", "512 GB"],
+  ip15:     ["128 GB", "256 GB", "512 GB"],
+  // iPhone 14
+  ip14pm:   ["128 GB", "256 GB", "512 GB", "1 TB"],
+  ip14p:    ["128 GB", "256 GB", "512 GB", "1 TB"],
+  ip14plus: ["128 GB", "256 GB", "512 GB"],
+  ip14:     ["128 GB", "256 GB", "512 GB"],
+  // iPhone 13
+  ip13pm:   ["128 GB", "256 GB", "512 GB", "1 TB"],
+  ip13p:    ["128 GB", "256 GB", "512 GB", "1 TB"],
+  ip13:     ["128 GB", "256 GB", "512 GB"],
+  ip13mini: ["128 GB", "256 GB", "512 GB"],
+  // iPhone 12
+  ip12pm:   ["128 GB", "256 GB", "512 GB"],
+  ip12p:    ["128 GB", "256 GB", "512 GB"],
+  ip12:     ["64 GB", "128 GB", "256 GB"],
+  ip12mini: ["64 GB", "128 GB", "256 GB"],
+  // iPhone 11
+  ip11pm:   ["64 GB", "256 GB", "512 GB"],
+  ip11p:    ["64 GB", "256 GB", "512 GB"],
+  ip11:     ["64 GB", "128 GB", "256 GB"],
+  ipse3:    ["64 GB", "128 GB", "256 GB"],
+  ipse2:    ["64 GB", "128 GB", "256 GB"],
+};
+
+const IPAD_STORAGE: Record<string, Storage[]> = {
+  ipadm7:        ["128 GB", "256 GB", "512 GB"],
+  ipadm6:        ["64 GB", "256 GB"],
+  ipad11:        ["128 GB", "256 GB", "512 GB"],
+  ipad10:        ["64 GB", "256 GB"],
+  ipad9:         ["64 GB", "256 GB"],
+  ipadair13m3:   ["128 GB", "256 GB", "512 GB", "1 TB"],
+  ipadair11m3:   ["128 GB", "256 GB", "512 GB", "1 TB"],
+  ipadair13m2:   ["128 GB", "256 GB", "512 GB", "1 TB"],
+  ipadair11m2:   ["128 GB", "256 GB", "512 GB", "1 TB"],
+  ipadair5:      ["64 GB", "256 GB"],
+  ipadair4:      ["64 GB", "256 GB"],
+  ipadprom4_13:  ["256 GB", "512 GB", "1 TB", "2 TB"],
+  ipadprom4_11:  ["256 GB", "512 GB", "1 TB", "2 TB"],
+  ipadprom2_129: ["128 GB", "256 GB", "512 GB", "1 TB", "2 TB"],
+  ipadprom2_11:  ["128 GB", "256 GB", "512 GB", "1 TB", "2 TB"],
+  ipadprom1_129: ["128 GB", "256 GB", "512 GB", "1 TB", "2 TB"],
+  ipadprom1_11:  ["128 GB", "256 GB", "512 GB", "1 TB", "2 TB"],
+};
+
+const SAMSUNG_PHONE_STORAGE: Record<string, Storage[]> = {
+  s25u: ["256 GB", "512 GB", "1 TB"],
+  s25plus: ["256 GB", "512 GB"],
+  s25: ["128 GB", "256 GB", "512 GB"],
+  s24u: ["256 GB", "512 GB", "1 TB"],
+  s24plus: ["256 GB", "512 GB"],
+  s24: ["128 GB", "256 GB"],
+  s24fe: ["128 GB", "256 GB", "512 GB"],
+  s23u: ["256 GB", "512 GB", "1 TB"],
+  s23plus: ["256 GB", "512 GB"],
+  s23: ["128 GB", "256 GB"],
+  s23fe: ["128 GB", "256 GB"],
+  s22u: ["128 GB", "256 GB", "512 GB", "1 TB"],
+  s22plus: ["128 GB", "256 GB"],
+  s22: ["128 GB", "256 GB"],
+  s21u: ["128 GB", "256 GB", "512 GB"],
+  s21plus: ["128 GB", "256 GB"],
+  s21: ["128 GB", "256 GB"],
+  s20u: ["128 GB", "512 GB"],
+  s20plus: ["128 GB", "512 GB"],
+  s20: ["128 GB"],
+  s20fe: ["128 GB", "256 GB"],
+  n20u: ["128 GB", "256 GB", "512 GB"],
+  n20: ["128 GB"],
+  zf6: ["256 GB", "512 GB", "1 TB"],
+  zf5: ["256 GB", "512 GB", "1 TB"],
+  zf4: ["256 GB", "512 GB", "1 TB"],
+  zf3: ["256 GB", "512 GB"],
+  zfl6: ["256 GB", "512 GB", "1 TB"],
+  zfl5: ["256 GB", "512 GB"],
+  zfl4: ["128 GB", "256 GB", "512 GB"],
+  zfl3: ["128 GB", "256 GB"],
+};
+
+const SAMSUNG_TABLET_STORAGE: Record<string, Storage[]> = {
+  tabs10u: ["256 GB", "512 GB", "1 TB"],
+  tabs10plus: ["256 GB", "512 GB"],
+  tabs9u: ["256 GB", "512 GB", "1 TB"],
+  tabs9plus: ["256 GB", "512 GB"],
+  tabs9: ["128 GB", "256 GB"],
+  tabs9fe: ["128 GB", "256 GB"],
+  tabs8u: ["128 GB", "256 GB", "512 GB", "1 TB"],
+  tabs8plus: ["128 GB", "256 GB", "512 GB"],
+  tabs8: ["128 GB", "256 GB"],
+  tabs7plus: ["128 GB", "256 GB", "512 GB"],
+  tabs7: ["128 GB", "256 GB", "512 GB"],
+  tabs7fe: ["64 GB", "128 GB"],
+  tabs6lite: ["64 GB", "128 GB"],
+  taba9plus: ["64 GB", "128 GB"],
+  taba9: ["64 GB", "128 GB"],
+  taba8: ["32 GB", "64 GB", "128 GB"],
+  taba7lite: ["32 GB", "64 GB"],
+  taba7: ["32 GB", "64 GB"],
+  tabact5: ["128 GB", "256 GB"],
+  tabact4pro: ["64 GB", "128 GB", "256 GB"],
+  tabact3: ["64 GB", "128 GB"],
+};
+
+const PIXEL_STORAGE: Record<string, Storage[]> = {
+  p9pf: ["256 GB", "512 GB", "1 TB"],
+  p9pxl: ["128 GB", "256 GB", "512 GB", "1 TB"],
+  p9p: ["128 GB", "256 GB", "512 GB", "1 TB"],
+  p9: ["128 GB", "256 GB"],
+  p8pf: ["256 GB", "512 GB", "1 TB"],
+  p8p: ["128 GB", "256 GB", "512 GB", "1 TB"],
+  p8: ["128 GB", "256 GB"],
+  p8a: ["128 GB", "256 GB"],
+  p7p: ["128 GB", "256 GB", "512 GB"],
+  p7: ["128 GB", "256 GB"],
+  p7a: ["128 GB"],
+  p6p: ["128 GB", "256 GB", "512 GB"],
+  p6: ["128 GB", "256 GB"],
+  p6a: ["128 GB"],
+  p5: ["128 GB"],
+  p5a: ["128 GB"],
+  pixtab: ["128 GB", "256 GB"],
+};
+
+const SURFACE_TABLET_STORAGE: Record<string, Storage[]> = {
+  spro11: ["256 GB", "512 GB", "1 TB"],
+  spro10: ["256 GB", "512 GB", "1 TB"],
+  spro9: ["128 GB", "256 GB", "512 GB", "1 TB"],
+  spro8: ["128 GB", "256 GB", "512 GB", "1 TB"],
+};
+
+const LAPTOP_DEFAULT: Storage[] = ["256 GB", "512 GB", "1 TB", "2 TB"];
+const LAPTOP_HIGH_END: Storage[] = ["512 GB", "1 TB", "2 TB", "4 TB"];
+const LAPTOP_BUDGET: Storage[]  = ["128 GB", "256 GB", "512 GB", "1 TB"];
+
+const LAPTOP_STORAGE: Record<string, Storage[]> = {
+  // MacBooks (Apple's actual configurable tiers)
+  mbp16m4: ["512 GB", "1 TB", "2 TB", "4 TB", "8 TB"],
+  mbp14m4: ["512 GB", "1 TB", "2 TB", "4 TB", "8 TB"],
+  mbp16m3: ["512 GB", "1 TB", "2 TB", "4 TB", "8 TB"],
+  mbp14m3: ["512 GB", "1 TB", "2 TB", "4 TB", "8 TB"],
+  mbp16m2: ["512 GB", "1 TB", "2 TB", "4 TB", "8 TB"],
+  mbp14m2: ["512 GB", "1 TB", "2 TB", "4 TB", "8 TB"],
+  mbp16m1: ["512 GB", "1 TB", "2 TB", "4 TB", "8 TB"],
+  mbp14m1: ["512 GB", "1 TB", "2 TB", "4 TB", "8 TB"],
+  mbp13m2: ["256 GB", "512 GB", "1 TB", "2 TB"],
+  mbp13m1: ["256 GB", "512 GB", "1 TB", "2 TB"],
+  mba15m3: ["256 GB", "512 GB", "1 TB", "2 TB"],
+  mba13m3: ["256 GB", "512 GB", "1 TB", "2 TB"],
+  mba15m2: ["256 GB", "512 GB", "1 TB", "2 TB"],
+  mba13m2: ["256 GB", "512 GB", "1 TB", "2 TB"],
+  mba13m1: ["256 GB", "512 GB", "1 TB", "2 TB"],
+  // Budget consumer
+  hppav15: LAPTOP_BUDGET, hppav14: LAPTOP_BUDGET,
+  dinspiron15: LAPTOP_BUDGET, dinspiron16: LAPTOP_BUDGET,
+  aspire5: LAPTOP_BUDGET, aspire7: LAPTOP_BUDGET, asw3: LAPTOP_BUDGET,
+  lideapad5: LAPTOP_BUDGET, lideapadflex: LAPTOP_BUDGET, lloq: LAPTOP_BUDGET,
+  avivo16: LAPTOP_BUDGET,
+  // High-end
+  mtitan18: LAPTOP_HIGH_END, mraider18: LAPTOP_HIGH_END,
+  arogstrix: LAPTOP_HIGH_END, rb18: LAPTOP_HIGH_END, rb16: LAPTOP_HIGH_END,
+  dalien18: LAPTOP_HIGH_END, dalien16: LAPTOP_HIGH_END, dalienx16: LAPTOP_HIGH_END,
+  dprec5690: LAPTOP_HIGH_END, llegion9: LAPTOP_HIGH_END,
+  apredh18: LAPTOP_HIGH_END, apredh16: LAPTOP_HIGH_END,
+  ltpp16: LAPTOP_HIGH_END, apbst16: LAPTOP_HIGH_END, hpzbook: LAPTOP_HIGH_END,
+};
+
+export function getStorageOptions(device: Device): Storage[] {
+  const id = device.id;
+  if (device.type === "Phone") {
+    if (device.brand === "Apple")   return IPHONE_STORAGE[id]        ?? ["128 GB", "256 GB"];
+    if (device.brand === "Samsung") return SAMSUNG_PHONE_STORAGE[id] ?? ["128 GB", "256 GB"];
+    if (device.brand === "Google")  return PIXEL_STORAGE[id]         ?? ["128 GB", "256 GB"];
+  }
+  if (device.type === "Tablet") {
+    if (device.brand === "Apple")     return IPAD_STORAGE[id]           ?? ["64 GB", "256 GB"];
+    if (device.brand === "Samsung")   return SAMSUNG_TABLET_STORAGE[id] ?? ["64 GB", "128 GB", "256 GB"];
+    if (device.brand === "Google")    return PIXEL_STORAGE[id]          ?? ["128 GB", "256 GB"];
+    if (device.brand === "Microsoft") return SURFACE_TABLET_STORAGE[id] ?? ["128 GB", "256 GB", "512 GB", "1 TB"];
+  }
+  return LAPTOP_STORAGE[id] ?? LAPTOP_DEFAULT;
+}
+
+// Wi-Fi-only tablets (no cellular variant exists)
+const TABLET_NO_CELLULAR = new Set<string>([
+  "taba7lite", "taba7", "taba8",
+  "pixtab",
+]);
+
+export function tabletSupportsCellular(device: Device): boolean {
+  if (device.type !== "Tablet") return true;
+  return !TABLET_NO_CELLULAR.has(device.id);
+}
 
 export type Condition = {
   id: "flawless" | "good" | "fair" | "broken";

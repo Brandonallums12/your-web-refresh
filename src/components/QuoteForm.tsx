@@ -3,8 +3,9 @@ import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search, Tablet, L
 import {
   DEVICES,
   CONDITIONS,
-  STORAGE_OPTIONS,
   CARRIER_OPTIONS,
+  getStorageOptions,
+  tabletSupportsCellular,
   type Device,
   type Condition,
   type Storage,
@@ -138,12 +139,14 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   };
   const pickDevice = (d: Device) => {
     setDevice(d);
-    // Sensible defaults so tablets/laptops can breeze through
+    const opts = getStorageOptions(d);
+    // Sensible defaults: smallest available for tablets, mid-tier for laptops
     if (d.type === "Tablet") {
-      setStorage("128 GB");
-      setCarrier("Other"); // "Wi-Fi only" label
+      setStorage(opts[0] ?? null);
+      setCarrier("Other"); // "Wi-Fi only"
     } else if (d.type === "Laptop") {
-      setStorage("256 GB");
+      // pick 256/512 if present, else first
+      setStorage(opts.find((o) => o === "256 GB") ?? opts.find((o) => o === "512 GB") ?? opts[0] ?? null);
       setCarrier("Unlocked");
     } else {
       setStorage(null);
@@ -320,7 +323,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                   </p>
                 )}
                 <div className="flex flex-wrap gap-2">
-                  {STORAGE_OPTIONS.map((s) => (
+                  {getStorageOptions(device).map((s) => (
                     <Chip key={s} active={storage === s} onClick={() => pickStorage(s)}>
                       {s}
                     </Chip>
@@ -329,21 +332,25 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </BoxRow>
             )}
 
-            {/* Carrier — skipped for laptops */}
-            {storage && device?.type !== "Laptop" && (
-              <BoxRow label={device?.type === "Tablet" ? "Connectivity" : "Carrier"}>
-                {device?.type === "Tablet" && (
+            {/* Carrier / Connectivity — laptops skip; Wi-Fi-only tablets skip */}
+            {storage && device && device.type !== "Laptop" && !(device.type === "Tablet" && !tabletSupportsCellular(device)) && (
+              <BoxRow label={device.type === "Tablet" ? "Connectivity" : "Carrier"}>
+                {device.type === "Tablet" && (
                   <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
                     // Default: Wi-Fi only — change only if needed
                   </p>
                 )}
                 <div className="flex flex-wrap gap-2">
-                  {(device?.type === "Tablet"
+                  {(device.type === "Tablet"
                     ? (["Unlocked", "Other"] as Carrier[])
                     : (CARRIER_OPTIONS as readonly Carrier[])
                   ).map((c) => (
                     <Chip key={c} active={carrier === c} onClick={() => pickCarrier(c)}>
-                      {device?.type === "Tablet" && c === "Unlocked" ? "Wi-Fi + Cellular" : c === "Other" && device?.type === "Tablet" ? "Wi-Fi only" : c}
+                      {device.type === "Tablet" && c === "Unlocked"
+                        ? "Wi-Fi + Cellular"
+                        : c === "Other" && device.type === "Tablet"
+                        ? "Wi-Fi only"
+                        : c}
                     </Chip>
                   ))}
                 </div>
