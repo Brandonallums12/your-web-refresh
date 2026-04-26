@@ -113,21 +113,22 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   };
 
   // Auto-advance helpers
-  const pickBrand = (b: Brand) => {
-    setBrand(b);
-    setDeviceType(b === "Apple" ? null : "Phone");
+  const pickCategory = (c: DeviceType) => {
+    setCategory(c);
+    setBrand(null);
     setSeries(null);
     setDevice(null);
     setStorage(null);
     setCarrier(null);
     setSearch("");
   };
-  const pickType = (t: DeviceType) => {
-    setDeviceType(t);
+  const pickBrand = (b: Brand) => {
+    setBrand(b);
     setSeries(null);
     setDevice(null);
     setStorage(null);
     setCarrier(null);
+    setSearch("");
   };
   const pickSeries = (name: string) => {
     setSeries(name || null);
@@ -140,10 +141,16 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
     setStorage(null);
     setCarrier(null);
   };
-  const pickStorage = (s: Storage) => setStorage(s);
+  const pickStorage = (s: Storage) => {
+    setStorage(s);
+    // Laptops skip carrier — auto-advance straight to condition
+    if (category === "Laptop") {
+      setCarrier("Unlocked");
+      setTimeout(() => setStep(1), 180);
+    }
+  };
   const pickCarrier = (c: Carrier) => {
     setCarrier(c);
-    // auto-advance to condition
     setTimeout(() => setStep(1), 180);
   };
   const pickCondition = (c: Condition) => {
