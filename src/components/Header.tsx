@@ -9,9 +9,6 @@ export const Header = ({ onCTA }: HeaderProps) => {
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border">
       <div className="mx-auto max-w-7xl px-5 md:px-8 h-16 flex items-center justify-between">
         <a href="#" className="flex items-center gap-2.5 group">
-          <div className="size-8 bg-grad-red shadow-red flex items-center justify-center rotate-3 group-hover:rotate-0 transition-transform">
-            <span className="font-display text-white text-sm">T</span>
-          </div>
           <div className="font-display text-xl tracking-tighter uppercase">
             Tech<span className="text-primary">Buyer</span>
           </div>
