@@ -1,4 +1,4 @@
-export type Brand = "Apple" | "Samsung" | "Google" | "Microsoft" | "Dell" | "HP" | "Lenovo" | "ASUS";
+export type Brand = "Apple" | "Samsung" | "Google" | "Microsoft" | "Dell" | "HP" | "Lenovo" | "ASUS" | "Razer" | "MSI" | "Acer";
 export type DeviceType = "Phone" | "Tablet" | "Laptop";
 
 export type Device = {
