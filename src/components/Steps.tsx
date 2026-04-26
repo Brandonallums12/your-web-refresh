@@ -52,11 +52,7 @@ export const Steps = () => {
                 <div className="bg-background/60 h-full p-3 sm:p-6 md:p-8 flex flex-col">
                   <div className="flex items-start justify-between mb-4 md:mb-8">
                     <div
-                      className={`size-10 sm:size-14 md:size-16 border flex items-center justify-center font-mono text-sm sm:text-lg md:text-xl font-bold ${
-                        featured
-                          ? "bg-grad-red border-primary text-white shadow-red"
-                          : "bg-background border-silver-600/60 text-silver-200"
-                      }`}
+                      className="size-10 sm:size-14 md:size-16 border border-silver-600/60 bg-black text-silver-200 flex items-center justify-center font-mono text-sm sm:text-lg md:text-xl font-bold"
                     >
                       {s.n}
                     </div>
