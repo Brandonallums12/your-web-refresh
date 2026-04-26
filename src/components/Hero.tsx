@@ -1,6 +1,6 @@
 import { ArrowRight, ShieldCheck, Zap, MapPin } from "lucide-react";
 import { LiveBadge } from "./LiveBadge";
-import heroPhone from "@/assets/hero-phone.jpg";
+
 
 interface HeroProps {
   onPrimary: () => void;
