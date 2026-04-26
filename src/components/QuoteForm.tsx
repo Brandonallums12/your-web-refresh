@@ -83,8 +83,14 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key)!.push(d);
     }
-    return Array.from(groups.entries()).map(([name, devices]) => ({ name, devices }));
-  }, [allModels]);
+    const arr = Array.from(groups.entries()).map(([name, devices]) => ({ name, devices }));
+    // For tablets: sort variants within each series, and the series themselves, high-end → low-end
+    if (category === "Tablet") {
+      for (const g of arr) g.devices.sort(compareTablets);
+      arr.sort((a, b) => compareTablets(a.devices[0], b.devices[0]));
+    }
+    return arr;
+  }, [allModels, category]);
 
   const [series, setSeries] = useState<string | null>(null);
 
