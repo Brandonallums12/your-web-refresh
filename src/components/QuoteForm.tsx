@@ -585,6 +585,19 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                   {imeiError && (
                     <p className="text-primary text-xs mt-2 font-mono">{imeiError}</p>
                   )}
+                  {isApple && device.type !== "Laptop" && (
+                    <p className="text-silver-400 text-xs mt-3">
+                      Not sure where to find it?{" "}
+                      <a
+                        href="https://www.youtube.com/results?search_query=how+to+find+imei+on+iphone"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline underline-offset-2 hover:text-white transition-colors"
+                      >
+                        Watch this short video →
+                      </a>
+                    </p>
+                  )}
                   <p className="text-silver-500 text-xs mt-3 font-mono">
                     // We check this against blacklist & carrier records before any payout.
                   </p>
