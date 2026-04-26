@@ -452,6 +452,8 @@ const LAPTOP_BUDGET: Storage[]  = ["128 GB", "256 GB", "512 GB", "1 TB"];
 
 const LAPTOP_STORAGE: Record<string, Storage[]> = {
   // MacBooks (Apple's actual configurable tiers)
+  mbp16m5: ["512 GB", "1 TB", "2 TB", "4 TB", "8 TB"],
+  mbp14m5: ["512 GB", "1 TB", "2 TB", "4 TB", "8 TB"],
   mbp16m4: ["512 GB", "1 TB", "2 TB", "4 TB", "8 TB"],
   mbp14m4: ["512 GB", "1 TB", "2 TB", "4 TB", "8 TB"],
   mbp16m3: ["512 GB", "1 TB", "2 TB", "4 TB", "8 TB"],
@@ -462,6 +464,8 @@ const LAPTOP_STORAGE: Record<string, Storage[]> = {
   mbp14m1: ["512 GB", "1 TB", "2 TB", "4 TB", "8 TB"],
   mbp13m2: ["256 GB", "512 GB", "1 TB", "2 TB"],
   mbp13m1: ["256 GB", "512 GB", "1 TB", "2 TB"],
+  mba15m4: ["256 GB", "512 GB", "1 TB", "2 TB"],
+  mba13m4: ["256 GB", "512 GB", "1 TB", "2 TB"],
   mba15m3: ["256 GB", "512 GB", "1 TB", "2 TB"],
   mba13m3: ["256 GB", "512 GB", "1 TB", "2 TB"],
   mba15m2: ["256 GB", "512 GB", "1 TB", "2 TB"],
