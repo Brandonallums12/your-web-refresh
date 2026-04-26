@@ -11,9 +11,25 @@ export const Footer = ({ onCTA: _onCTA }: FooterProps) => {
       <div className="relative overflow-hidden border-b border-border">
         <div className="absolute inset-0 bg-grad-hero opacity-80" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-primary/20 blur-[120px] rounded-full" />
-        <div className="relative mx-auto max-w-7xl px-5 md:px-8 py-16 md:py-20">
+        <div className="relative mx-auto max-w-7xl px-5 md:px-8 py-16 md:py-20 grid md:grid-cols-2 gap-10 md:gap-0 md:divide-x md:divide-border">
+          {/* Brand */}
+          <div className="md:pr-10">
+            <div className="flex items-center gap-2.5 mb-5">
+              <div className="size-9 bg-grad-red shadow-red flex items-center justify-center">
+                <span className="font-display text-white text-base">T</span>
+              </div>
+              <div className="font-display text-2xl tracking-tighter uppercase">
+                Tech<span className="text-primary">Buyer</span>
+              </div>
+            </div>
+            <p className="text-silver-400 max-w-md text-pretty">
+              West Covina's go-to spot for fair, fast cash for used phones. Independently owned and
+              run by people who actually know hardware.
+            </p>
+          </div>
+
           {/* Visit us */}
-          <div>
+          <div className="md:pl-10">
             <div className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-5">
               // Visit us
             </div>
@@ -34,6 +50,21 @@ export const Footer = ({ onCTA: _onCTA }: FooterProps) => {
               </li>
             </ul>
           </div>
+        </div>
+      </div>
+
+      {/* Quick links */}
+      <div className="mx-auto max-w-7xl px-5 md:px-8 py-16">
+        <div className="md:max-w-sm">
+          <div className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-5">
+            // Quick links
+          </div>
+          <ul className="space-y-3 text-silver-200">
+            <li><a href="#how" className="hover:text-primary transition-colors">How it works</a></li>
+            <li><a href="#reviews" className="hover:text-primary transition-colors">Reviews</a></li>
+            <li><a href="#" className="hover:text-primary transition-colors">Data wipe policy</a></li>
+            <li><a href="#" className="hover:text-primary transition-colors">Privacy</a></li>
+          </ul>
         </div>
       </div>
 
