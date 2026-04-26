@@ -1,5 +1,3 @@
-import { MapPin, Phone, Clock } from "lucide-react";
-
 interface FooterProps {
   onCTA?: () => void;
 }
@@ -7,35 +5,7 @@ interface FooterProps {
 export const Footer = ({ onCTA: _onCTA }: FooterProps) => {
   return (
     <footer id="visit" className="relative bg-background border-t border-border">
-      {/* CTA strip + Visit us */}
-      <div className="relative overflow-hidden border-b border-border">
-        <div className="absolute inset-0 bg-grad-hero opacity-80" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-primary/20 blur-[120px] rounded-full" />
-        <div className="relative mx-auto max-w-7xl px-5 md:px-8 py-16 md:py-20">
-          {/* Visit us */}
-          <div>
-            <div className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-5">
-              // Visit us
-            </div>
-            <ul className="space-y-3 text-silver-200">
-              <li className="flex items-start gap-3">
-                <MapPin className="size-4 mt-1 text-silver-500 shrink-0" />
-                <span>1240 W Covina Pkwy<br />West Covina, CA 91790</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <Phone className="size-4 mt-1 text-silver-500 shrink-0" />
-                <a href="tel:6265550198" className="hover:text-primary transition-colors font-mono">
-                  (626) 555-0198
-                </a>
-              </li>
-              <li className="flex items-start gap-3">
-                <Clock className="size-4 mt-1 text-silver-500 shrink-0" />
-                <span>Mon–Sat 10am–7pm · Sun 11am–5pm</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+
 
       {/* Main footer */}
       <div className="mx-auto max-w-7xl px-5 md:px-8 py-16 grid md:grid-cols-12 gap-10 md:divide-x md:divide-border">
