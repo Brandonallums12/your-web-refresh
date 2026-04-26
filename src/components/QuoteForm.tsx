@@ -789,15 +789,13 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                 <div className="text-silver-300 text-sm mt-1">{storage} · {carrier}</div>
               )}
               <div className="text-silver-400 text-sm mt-1">Condition: {condition.label}</div>
-              {!isOther && (
-                <div className="text-silver-400 text-sm mb-5 inline-flex items-center gap-1.5 mt-1">
-                  {lockStatus === "clean" ? (
-                    <><ShieldCheck className="size-3.5 text-primary" /> Clean / Unlocked</>
-                  ) : (
-                    <><ShieldAlert className="size-3.5 text-primary" /> IMEI provided · pending check</>
-                  )}
-                </div>
-              )}
+              <div className="text-silver-400 text-sm mb-5 inline-flex items-center gap-1.5 mt-1">
+                {lockStatus === "clean" ? (
+                  <><ShieldCheck className="size-3.5 text-primary" /> Clean / Unlocked</>
+                ) : (
+                  <><ShieldAlert className="size-3.5 text-primary" /> {isOther ? "Account-locked · pending check" : "IMEI provided · pending check"}</>
+                )}
+              </div>
               <div className="border-t border-border pt-5">
                 <div className="text-xs uppercase tracking-widest text-silver-500 mb-2">Custom cash offer</div>
                 <div className="font-mono text-sm text-silver-200 leading-relaxed">
