@@ -347,7 +347,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             </BoxRow>
 
             {/* Brand — only brands that make this category */}
-            {category && (
+            {category && !isOther && (
               <BoxRow label="Brand">
                 <div className="flex flex-wrap gap-2">
                   {availableBrands.map((b) => (
@@ -360,7 +360,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             )}
 
             {/* Model — pick a series first, then a variant */}
-            {brand && category && !series && (
+            {brand && category && !isOther && !series && (
               <BoxRow label="Model line">
                 <div className="relative mb-4">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-silver-500" />
@@ -393,7 +393,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </BoxRow>
             )}
 
-            {brand && category && series && (
+            {brand && category && !isOther && series && (
               <BoxRow label={`${series} — pick variant`}>
                 <div className="flex flex-wrap gap-2 mb-1">
                   <button
@@ -431,7 +431,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             )}
 
             {/* Storage */}
-            {device && (
+            {device && !isOther && (
               <BoxRow label="Storage">
                 {(device.type === "Tablet" || device.type === "Laptop" || device.type === "Console" || device.type === "Camera" || device.type === "Drone") && (
                   <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
@@ -449,7 +449,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             )}
 
             {/* Carrier / Connectivity — laptops/consoles/cameras/drones skip; Wi-Fi-only tablets skip */}
-            {storage && device && device.type !== "Laptop" && device.type !== "Console" && device.type !== "Camera" && device.type !== "Drone" && !(device.type === "Tablet" && !tabletSupportsCellular(device)) && (
+            {storage && device && !isOther && device.type !== "Laptop" && device.type !== "Console" && device.type !== "Camera" && device.type !== "Drone" && !(device.type === "Tablet" && !tabletSupportsCellular(device)) && (
               <BoxRow label={device.type === "Tablet" ? "Connectivity" : "Carrier"}>
                 {device.type === "Tablet" && (
                   <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
@@ -473,12 +473,51 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </BoxRow>
             )}
 
+            {/* Other category — free-text description */}
+            {isOther && (
+              <BoxRow label="Tell us what you have">
+                <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
+                  // Brand, model, storage, color — anything you know
+                </p>
+                <textarea
+                  value={otherDescription}
+                  onChange={(e) => setOtherDescription(e.target.value.slice(0, 300))}
+                  placeholder="e.g. Apple Watch Series 9 45mm GPS, Sony WH-1000XM5 headphones, LG C3 65&quot; OLED TV..."
+                  rows={4}
+                  maxLength={300}
+                  className="w-full bg-background border border-border px-4 py-3 focus:outline-none focus:border-primary text-sm resize-none"
+                />
+                <div className="text-[10px] font-mono text-silver-500 mt-2 uppercase tracking-widest text-right">
+                  {otherDescription.length}/300
+                </div>
+              </BoxRow>
+            )}
+
             {/* Continue button — for categories with defaults already set */}
-            {device && (device.type === "Tablet" || device.type === "Laptop" || device.type === "Console" || device.type === "Camera" || device.type === "Drone") && storage && (
+            {device && !isOther && (device.type === "Tablet" || device.type === "Laptop" || device.type === "Console" || device.type === "Camera" || device.type === "Drone") && storage && (
               <div className="flex justify-end mt-6">
                 <button
                   onClick={() => setStep(1)}
                   className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest hover:shadow-red transition-all"
+                >
+                  Continue <ChevronRight className="size-4" />
+                </button>
+              </div>
+            )}
+
+            {/* Continue button — Other category */}
+            {isOther && (
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={() => {
+                    if (otherDescription.trim().length < 3) {
+                      toast.error("Please describe what you're selling.");
+                      return;
+                    }
+                    setStep(1);
+                  }}
+                  disabled={otherDescription.trim().length < 3}
+                  className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest hover:shadow-red transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none"
                 >
                   Continue <ChevronRight className="size-4" />
                 </button>
