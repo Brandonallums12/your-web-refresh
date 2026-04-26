@@ -1,10 +1,10 @@
-import { ArrowRight, MapPin, Phone, Clock } from "lucide-react";
+import { MapPin, Phone, Clock } from "lucide-react";
 
 interface FooterProps {
-  onCTA: () => void;
+  onCTA?: () => void;
 }
 
-export const Footer = ({ onCTA }: FooterProps) => {
+export const Footer = ({ onCTA: _onCTA }: FooterProps) => {
   return (
     <footer id="visit" className="relative bg-background border-t border-border">
       {/* CTA strip + Visit us */}
