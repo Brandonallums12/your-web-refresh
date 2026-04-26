@@ -121,7 +121,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
     setCarrier(null);
   };
   const pickSeries = (name: string) => {
-    setSeries(name);
+    setSeries(name || null);
     setDevice(null);
     setStorage(null);
     setCarrier(null);
