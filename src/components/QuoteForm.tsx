@@ -29,14 +29,18 @@ interface QuoteFormProps {
   onCancel: () => void;
 }
 
-const BRANDS: Brand[] = ["Apple", "Samsung", "Google"];
+const CATEGORIES: { id: DeviceType; label: string; icon: typeof Smartphone }[] = [
+  { id: "Phone",  label: "Phones",  icon: Smartphone },
+  { id: "Tablet", label: "Tablets", icon: Tablet },
+  { id: "Laptop", label: "Laptops", icon: Laptop },
+];
 
 export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   const [step, setStep] = useState(0); // 0 device, 1 condition, 2 contact
 
   // Device cascading
+  const [category, setCategory] = useState<DeviceType | null>(null);
   const [brand, setBrand] = useState<Brand | null>(null);
-  const [deviceType, setDeviceType] = useState<DeviceType | null>(null);
   const [device, setDevice] = useState<Device | null>(null);
   const [storage, setStorage] = useState<Storage | null>(null);
   const [carrier, setCarrier] = useState<Carrier | null>(null);
@@ -48,8 +52,13 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
-  const appleHasTablets = brand === "Apple";
-  const effectiveType: DeviceType | null = appleHasTablets ? deviceType : "Phone";
+  // Brands available for the chosen category (derived from data)
+  const availableBrands = useMemo<Brand[]>(() => {
+    if (!category) return [];
+    const set = new Set<Brand>();
+    DEVICES.forEach((d) => d.type === category && set.add(d.brand));
+    return Array.from(set);
+  }, [category]);
 
   const allModels = useMemo(() => {
     if (!brand || !effectiveType) return [];
