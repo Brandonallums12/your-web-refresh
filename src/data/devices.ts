@@ -1,5 +1,10 @@
-export type Brand = "Apple" | "Samsung" | "Google" | "Microsoft" | "Dell" | "HP" | "Lenovo" | "ASUS" | "Razer" | "MSI" | "Acer";
-export type DeviceType = "Phone" | "Tablet" | "Laptop";
+export type Brand =
+  | "Apple" | "Samsung" | "Google" | "Microsoft"
+  | "Dell" | "HP" | "Lenovo" | "ASUS" | "Razer" | "MSI" | "Acer"
+  | "Sony" | "Nintendo" | "Valve" | "Meta"
+  | "Canon" | "Nikon" | "Fujifilm" | "Panasonic" | "Leica" | "GoPro"
+  | "DJI" | "Autel" | "Skydio" | "Parrot";
+export type DeviceType = "Phone" | "Tablet" | "Laptop" | "Console" | "Camera" | "Drone";
 
 export type Device = {
   id: string;
