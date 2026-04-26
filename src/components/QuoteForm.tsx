@@ -207,7 +207,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
     if (d.type === "Tablet") {
       setStorage(opts[0] ?? null);
       setCarrier("Other"); // "Wi-Fi only"
-    } else if (d.type === "Laptop") {
+    } else if (d.type === "Laptop" || d.type === "Console" || d.type === "Camera" || d.type === "Drone") {
       // pick 256/512 if present, else first
       setStorage(opts.find((o) => o === "256 GB") ?? opts.find((o) => o === "512 GB") ?? opts[0] ?? null);
       setCarrier("Unlocked");
@@ -218,8 +218,8 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   };
   const pickStorage = (s: Storage) => {
     setStorage(s);
-    // Laptops skip carrier — auto-advance straight to condition
-    if (category === "Laptop") {
+    // Categories without a carrier step — auto-advance straight to condition
+    if (category === "Laptop" || category === "Console" || category === "Camera" || category === "Drone") {
       setCarrier("Unlocked");
       setTimeout(() => setStep(1), 180);
     }
@@ -295,7 +295,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
             {/* Category */}
             <BoxRow label="Category">
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                 {CATEGORIES.map(({ id, label, icon: Icon }) => {
                   const active = category === id;
                   return (
