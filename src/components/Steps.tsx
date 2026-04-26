@@ -37,9 +37,9 @@ export const Steps = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-5 md:gap-4 relative">
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-4 relative">
           {/* connecting line */}
-          <div className="hidden md:block absolute top-14 left-[16%] right-[16%] h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+          <div className="absolute top-8 md:top-14 left-[16%] right-[16%] h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
           {STEPS.map((s, i) => {
             const Icon = s.icon;
@@ -49,10 +49,10 @@ export const Steps = () => {
                 key={s.n}
                 className="relative bg-surface p-1 border border-border hover:border-primary/40 transition-colors group"
               >
-                <div className="bg-background/60 h-full p-7 md:p-8 flex flex-col">
-                  <div className="flex items-start justify-between mb-8">
+                <div className="bg-background/60 h-full p-3 sm:p-6 md:p-8 flex flex-col">
+                  <div className="flex items-start justify-between mb-4 md:mb-8">
                     <div
-                      className={`size-16 border flex items-center justify-center font-mono text-xl font-bold ${
+                      className={`size-10 sm:size-14 md:size-16 border flex items-center justify-center font-mono text-sm sm:text-lg md:text-xl font-bold ${
                         featured
                           ? "bg-grad-red border-primary text-white shadow-red"
                           : "bg-background border-silver-600/60 text-silver-200"
@@ -61,13 +61,13 @@ export const Steps = () => {
                       {s.n}
                     </div>
                     <Icon
-                      className={`size-7 ${featured ? "text-primary" : "text-silver-500"} group-hover:text-primary transition-colors`}
+                      className={`size-4 sm:size-6 md:size-7 ${featured ? "text-primary" : "text-silver-500"} group-hover:text-primary transition-colors`}
                       strokeWidth={1.5}
                     />
                   </div>
 
-                  <h3 className="font-display text-2xl uppercase tracking-tight mb-3">{s.title}</h3>
-                  <p className="text-silver-400 leading-relaxed text-pretty">{s.body}</p>
+                  <h3 className="font-display text-sm sm:text-xl md:text-2xl uppercase tracking-tight mb-2 md:mb-3">{s.title}</h3>
+                  <p className="text-silver-400 leading-relaxed text-pretty text-xs sm:text-sm md:text-base">{s.body}</p>
                 </div>
               </div>
             );
