@@ -210,7 +210,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
         setDevice(other);
         setStorage(null);
         setCarrier("Unlocked");
-        setLockStatus("clean");
+        setLockStatus(null);
       }
     } else {
       setOtherDescription("");
@@ -568,14 +568,19 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               })}
             </div>
 
-            {/* --- Ownership / account-lock verification (skipped for "Other") --- */}
-            {!isOther && (() => {
+            {/* --- Ownership / account-lock verification --- */}
+            {(() => {
               const isApple = device.brand === "Apple";
+              const isOtherCat = device.type === "Other";
               const isAccountDevice = device.type === "Phone" || device.type === "Tablet" || device.type === "Laptop";
-              const lockName = !isAccountDevice
+              const lockName = isOtherCat
+                ? "iCloud / Google"
+                : !isAccountDevice
                 ? "account / activation"
                 : isApple ? "iCloud" : "Google FRP";
-              const lockTitle = !isAccountDevice
+              const lockTitle = isOtherCat
+                ? "ICLOUD / GOOGLE LOCKED"
+                : !isAccountDevice
                 ? "ACCOUNT LOCKED"
                 : isApple ? "ICLOUD LOCKED" : "GOOGLE FRP LOCKED";
               return (
@@ -591,7 +596,9 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                 <span className="text-white font-semibold">We do not buy devices reported lost or stolen.</span>
               </p>
               <p className="text-silver-500 text-sm font-mono mb-6">
-                {!isAccountDevice
+                {isOtherCat
+                  ? `// iCloud, Google, Samsung, manufacturer account, or any activation lock`
+                  : !isAccountDevice
                   ? `// ${device.type === "Console" ? "PSN / Xbox / Nintendo / Steam account, MDM, or activation lock" : device.type === "Camera" ? "Owner account / cloud lock or registration" : "DJI / Autel / Skydio account binding or activation lock"}`
                   : isApple
                   ? `// ${device.type === "Phone" ? "iCloud / Find My iPhone" : device.type === "Tablet" ? "iCloud / Find My iPad" : "Find My Mac / Activation Lock"}`
@@ -782,15 +789,13 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                 <div className="text-silver-300 text-sm mt-1">{storage} · {carrier}</div>
               )}
               <div className="text-silver-400 text-sm mt-1">Condition: {condition.label}</div>
-              {!isOther && (
-                <div className="text-silver-400 text-sm mb-5 inline-flex items-center gap-1.5 mt-1">
-                  {lockStatus === "clean" ? (
-                    <><ShieldCheck className="size-3.5 text-primary" /> Clean / Unlocked</>
-                  ) : (
-                    <><ShieldAlert className="size-3.5 text-primary" /> IMEI provided · pending check</>
-                  )}
-                </div>
-              )}
+              <div className="text-silver-400 text-sm mb-5 inline-flex items-center gap-1.5 mt-1">
+                {lockStatus === "clean" ? (
+                  <><ShieldCheck className="size-3.5 text-primary" /> Clean / Unlocked</>
+                ) : (
+                  <><ShieldAlert className="size-3.5 text-primary" /> {isOther ? "Account-locked · pending check" : "IMEI provided · pending check"}</>
+                )}
+              </div>
               <div className="border-t border-border pt-5">
                 <div className="text-xs uppercase tracking-widest text-silver-500 mb-2">Custom cash offer</div>
                 <div className="font-mono text-sm text-silver-200 leading-relaxed">
