@@ -61,6 +61,9 @@ export const DEVICES: Device[] = [
   { id: "ipadprom1_11",  brand: "Apple", type: "Tablet", model: "iPad Pro 11\" (M1)" },
 
   // ===== Samsung Galaxy phones (last ~5 years) =====
+  { id: "s26u",     brand: "Samsung", type: "Phone", model: "Galaxy S26 Ultra" },
+  { id: "s26plus",  brand: "Samsung", type: "Phone", model: "Galaxy S26+" },
+  { id: "s26",      brand: "Samsung", type: "Phone", model: "Galaxy S26" },
   { id: "s25u",     brand: "Samsung", type: "Phone", model: "Galaxy S25 Ultra" },
   { id: "s25plus",  brand: "Samsung", type: "Phone", model: "Galaxy S25+" },
   { id: "s25",      brand: "Samsung", type: "Phone", model: "Galaxy S25" },
@@ -84,6 +87,7 @@ export const DEVICES: Device[] = [
   { id: "s20fe",    brand: "Samsung", type: "Phone", model: "Galaxy S20 FE" },
   { id: "n20u",     brand: "Samsung", type: "Phone", model: "Galaxy Note 20 Ultra" },
   { id: "n20",      brand: "Samsung", type: "Phone", model: "Galaxy Note 20" },
+  { id: "zf7",      brand: "Samsung", type: "Phone", model: "Galaxy Z Fold 7" },
   { id: "zf6",      brand: "Samsung", type: "Phone", model: "Galaxy Z Fold 6" },
   { id: "zf5",      brand: "Samsung", type: "Phone", model: "Galaxy Z Fold 5" },
   { id: "zf4",      brand: "Samsung", type: "Phone", model: "Galaxy Z Fold 4" },
