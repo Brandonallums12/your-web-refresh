@@ -495,6 +495,43 @@ export function tabletSupportsCellular(device: Device): boolean {
   return !TABLET_NO_CELLULAR.has(device.id);
 }
 
+// ---------- Tier ranking for sorting (high-end → low-end) ----------
+// Higher number = higher tier. Sort uses (tier desc, generation desc, id).
+
+const TABLET_TIER: Record<string, number> = {
+  // Apple iPads — Pro > Air > base > mini, newer first via gen number
+  ipadprom4_13: 100, ipadprom4_11: 99,
+  ipadprom2_129: 90, ipadprom2_11: 89,
+  ipadprom1_129: 80, ipadprom1_11: 79,
+  ipadair13m3: 70, ipadair11m3: 69,
+  ipadair13m2: 65, ipadair11m2: 64,
+  ipadair5: 55, ipadair4: 50,
+  ipadm7: 40, ipadm6: 35,
+  ipad11: 30, ipad10: 25, ipad9: 20,
+
+  // Samsung — Ultra > + > base > FE > Lite > A series > Active(rugged budget)
+  tabs10u: 100, tabs10plus: 95,
+  tabs9u: 90, tabs9plus: 85, tabs9: 80, tabs9fe: 70,
+  tabs8u: 75, tabs8plus: 65, tabs8: 60,
+  tabs7plus: 55, tabs7: 50, tabs7fe: 40,
+  tabs6lite: 30,
+  taba9plus: 25, taba9: 22, taba8: 18, taba7: 15, taba7lite: 12,
+  tabact5: 20, tabact4pro: 17, tabact3: 13,
+
+  // Microsoft Surface Pro
+  spro11: 100, spro10: 90, spro9: 80, spro8: 70,
+
+  // Google
+  pixtab: 50,
+};
+
+export function compareTablets(a: Device, b: Device): number {
+  const ta = TABLET_TIER[a.id] ?? 0;
+  const tb = TABLET_TIER[b.id] ?? 0;
+  if (tb !== ta) return tb - ta; // descending
+  return a.id.localeCompare(b.id);
+}
+
 export type Condition = {
   id: "flawless" | "good" | "fair" | "broken";
   label: string;
