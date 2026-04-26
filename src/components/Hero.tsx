@@ -33,13 +33,6 @@ export const Hero = ({ onPrimary }: HeroProps) => {
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-            <button
-              onClick={onPrimary}
-              className="group inline-flex items-center justify-center gap-3 bg-grad-red text-white px-9 py-5 uppercase font-bold tracking-widest text-base hover:shadow-red transition-all"
-            >
-              Get Instant Quote
-              <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform" />
-            </button>
             <a
               href="#how"
               className="inline-flex items-center justify-center gap-2 border border-silver-600/60 bg-surface/60 backdrop-blur px-9 py-5 uppercase font-bold tracking-widest text-base text-silver-100 hover:border-primary/60 hover:text-white transition-colors"
