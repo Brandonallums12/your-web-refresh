@@ -22,11 +22,11 @@ export const Header = ({ onCTA }: HeaderProps) => {
 
         <div className="flex items-center gap-3">
           <a
-            href="tel:6265550198"
+            href="tel:2138454275"
             className="hidden sm:flex items-center gap-2 text-silver-300 hover:text-white transition-colors text-sm font-mono"
           >
             <Phone className="size-4" />
-            (626) 555-0198
+            (213) 845-4275
           </a>
           <button
             onClick={onCTA}
