@@ -1,5 +1,5 @@
-export type Brand = "Apple" | "Samsung" | "Google";
-export type DeviceType = "Phone" | "Tablet";
+export type Brand = "Apple" | "Samsung" | "Google" | "Microsoft" | "Dell" | "HP" | "Lenovo" | "ASUS";
+export type DeviceType = "Phone" | "Tablet" | "Laptop";
 
 export type Device = {
   id: string;
@@ -110,6 +110,76 @@ export const DEVICES: Device[] = [
   { id: "p6a",    brand: "Google", type: "Phone", model: "Pixel 6a" },
   { id: "p5",     brand: "Google", type: "Phone", model: "Pixel 5" },
   { id: "p5a",    brand: "Google", type: "Phone", model: "Pixel 5a" },
+
+  // ===== Samsung Tablets =====
+  { id: "tabs10u",    brand: "Samsung", type: "Tablet", model: "Galaxy Tab S10 Ultra" },
+  { id: "tabs10plus", brand: "Samsung", type: "Tablet", model: "Galaxy Tab S10+" },
+  { id: "tabs9u",     brand: "Samsung", type: "Tablet", model: "Galaxy Tab S9 Ultra" },
+  { id: "tabs9plus",  brand: "Samsung", type: "Tablet", model: "Galaxy Tab S9+" },
+  { id: "tabs9",      brand: "Samsung", type: "Tablet", model: "Galaxy Tab S9" },
+  { id: "tabs9fe",    brand: "Samsung", type: "Tablet", model: "Galaxy Tab S9 FE" },
+  { id: "tabs8u",     brand: "Samsung", type: "Tablet", model: "Galaxy Tab S8 Ultra" },
+  { id: "tabs8plus",  brand: "Samsung", type: "Tablet", model: "Galaxy Tab S8+" },
+  { id: "tabs8",      brand: "Samsung", type: "Tablet", model: "Galaxy Tab S8" },
+  { id: "tabs7plus",  brand: "Samsung", type: "Tablet", model: "Galaxy Tab S7+" },
+  { id: "tabs7",      brand: "Samsung", type: "Tablet", model: "Galaxy Tab S7" },
+
+  // ===== Google Tablets =====
+  { id: "pixtab",     brand: "Google",  type: "Tablet", model: "Pixel Tablet" },
+
+  // ===== Apple Laptops (MacBooks, last ~5 years) =====
+  { id: "mbp16m4",   brand: "Apple", type: "Laptop", model: "MacBook Pro 16\" (M4)" },
+  { id: "mbp14m4",   brand: "Apple", type: "Laptop", model: "MacBook Pro 14\" (M4)" },
+  { id: "mbp16m3",   brand: "Apple", type: "Laptop", model: "MacBook Pro 16\" (M3)" },
+  { id: "mbp14m3",   brand: "Apple", type: "Laptop", model: "MacBook Pro 14\" (M3)" },
+  { id: "mbp16m2",   brand: "Apple", type: "Laptop", model: "MacBook Pro 16\" (M2)" },
+  { id: "mbp14m2",   brand: "Apple", type: "Laptop", model: "MacBook Pro 14\" (M2)" },
+  { id: "mbp16m1",   brand: "Apple", type: "Laptop", model: "MacBook Pro 16\" (M1)" },
+  { id: "mbp14m1",   brand: "Apple", type: "Laptop", model: "MacBook Pro 14\" (M1)" },
+  { id: "mbp13m2",   brand: "Apple", type: "Laptop", model: "MacBook Pro 13\" (M2)" },
+  { id: "mbp13m1",   brand: "Apple", type: "Laptop", model: "MacBook Pro 13\" (M1)" },
+  { id: "mba15m3",   brand: "Apple", type: "Laptop", model: "MacBook Air 15\" (M3)" },
+  { id: "mba13m3",   brand: "Apple", type: "Laptop", model: "MacBook Air 13\" (M3)" },
+  { id: "mba15m2",   brand: "Apple", type: "Laptop", model: "MacBook Air 15\" (M2)" },
+  { id: "mba13m2",   brand: "Apple", type: "Laptop", model: "MacBook Air 13\" (M2)" },
+  { id: "mba13m1",   brand: "Apple", type: "Laptop", model: "MacBook Air 13\" (M1)" },
+
+  // ===== Microsoft Laptops & Tablets =====
+  { id: "sl7",       brand: "Microsoft", type: "Laptop", model: "Surface Laptop 7" },
+  { id: "sl6",       brand: "Microsoft", type: "Laptop", model: "Surface Laptop 6" },
+  { id: "sl5",       brand: "Microsoft", type: "Laptop", model: "Surface Laptop 5" },
+  { id: "spro11",    brand: "Microsoft", type: "Tablet", model: "Surface Pro 11" },
+  { id: "spro10",    brand: "Microsoft", type: "Tablet", model: "Surface Pro 10" },
+  { id: "spro9",     brand: "Microsoft", type: "Tablet", model: "Surface Pro 9" },
+  { id: "spro8",     brand: "Microsoft", type: "Tablet", model: "Surface Pro 8" },
+
+  // ===== Dell Laptops =====
+  { id: "dxps15",    brand: "Dell", type: "Laptop", model: "XPS 15" },
+  { id: "dxps14",    brand: "Dell", type: "Laptop", model: "XPS 14" },
+  { id: "dxps13",    brand: "Dell", type: "Laptop", model: "XPS 13" },
+  { id: "dlat",      brand: "Dell", type: "Laptop", model: "Latitude 7000" },
+  { id: "dinspiron", brand: "Dell", type: "Laptop", model: "Inspiron 15" },
+
+  // ===== HP Laptops =====
+  { id: "hpsx360",   brand: "HP", type: "Laptop", model: "Spectre x360" },
+  { id: "hpenv",     brand: "HP", type: "Laptop", model: "Envy 16" },
+  { id: "hppav",     brand: "HP", type: "Laptop", model: "Pavilion 15" },
+  { id: "hpomen",    brand: "HP", type: "Laptop", model: "Omen 16" },
+  { id: "hpeb",      brand: "HP", type: "Laptop", model: "EliteBook 840" },
+
+  // ===== Lenovo Laptops =====
+  { id: "ltpx1c",    brand: "Lenovo", type: "Laptop", model: "ThinkPad X1 Carbon" },
+  { id: "ltpt14",    brand: "Lenovo", type: "Laptop", model: "ThinkPad T14" },
+  { id: "lyoga9",    brand: "Lenovo", type: "Laptop", model: "Yoga 9i" },
+  { id: "lyoga7",    brand: "Lenovo", type: "Laptop", model: "Yoga 7i" },
+  { id: "llegion",   brand: "Lenovo", type: "Laptop", model: "Legion 5 Pro" },
+
+  // ===== ASUS Laptops =====
+  { id: "azb14",     brand: "ASUS", type: "Laptop", model: "Zenbook 14" },
+  { id: "azb15",     brand: "ASUS", type: "Laptop", model: "Zenbook 15" },
+  { id: "arog",      brand: "ASUS", type: "Laptop", model: "ROG Zephyrus G14" },
+  { id: "atufa15",   brand: "ASUS", type: "Laptop", model: "TUF Gaming A15" },
+  { id: "avivo",     brand: "ASUS", type: "Laptop", model: "Vivobook 16" },
 ];
 
 export const STORAGE_OPTIONS = ["64 GB", "128 GB", "256 GB", "512 GB", "1 TB", "2 TB"] as const;

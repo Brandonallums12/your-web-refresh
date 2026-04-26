@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search, Tablet, Laptop } from "lucide-react";
 import {
   DEVICES,
   CONDITIONS,
@@ -29,14 +29,18 @@ interface QuoteFormProps {
   onCancel: () => void;
 }
 
-const BRANDS: Brand[] = ["Apple", "Samsung", "Google"];
+const CATEGORIES: { id: DeviceType; label: string; icon: typeof Smartphone }[] = [
+  { id: "Phone",  label: "Phones",  icon: Smartphone },
+  { id: "Tablet", label: "Tablets", icon: Tablet },
+  { id: "Laptop", label: "Laptops", icon: Laptop },
+];
 
 export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   const [step, setStep] = useState(0); // 0 device, 1 condition, 2 contact
 
   // Device cascading
+  const [category, setCategory] = useState<DeviceType | null>(null);
   const [brand, setBrand] = useState<Brand | null>(null);
-  const [deviceType, setDeviceType] = useState<DeviceType | null>(null);
   const [device, setDevice] = useState<Device | null>(null);
   const [storage, setStorage] = useState<Storage | null>(null);
   const [carrier, setCarrier] = useState<Carrier | null>(null);
@@ -48,13 +52,18 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
-  const appleHasTablets = brand === "Apple";
-  const effectiveType: DeviceType | null = appleHasTablets ? deviceType : "Phone";
+  // Brands available for the chosen category (derived from data)
+  const availableBrands = useMemo<Brand[]>(() => {
+    if (!category) return [];
+    const set = new Set<Brand>();
+    DEVICES.forEach((d) => d.type === category && set.add(d.brand));
+    return Array.from(set);
+  }, [category]);
 
   const allModels = useMemo(() => {
-    if (!brand || !effectiveType) return [];
-    return DEVICES.filter((d) => d.brand === brand && d.type === effectiveType);
-  }, [brand, effectiveType]);
+    if (!brand || !category) return [];
+    return DEVICES.filter((d) => d.brand === brand && d.type === category);
+  }, [brand, category]);
 
   // Group models into a "series" (e.g. "iPhone 15", "Galaxy S24", "Pixel 8", "iPad Pro 11")
   const seriesKey = (model: string): string => {
@@ -104,21 +113,22 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   };
 
   // Auto-advance helpers
-  const pickBrand = (b: Brand) => {
-    setBrand(b);
-    setDeviceType(b === "Apple" ? null : "Phone");
+  const pickCategory = (c: DeviceType) => {
+    setCategory(c);
+    setBrand(null);
     setSeries(null);
     setDevice(null);
     setStorage(null);
     setCarrier(null);
     setSearch("");
   };
-  const pickType = (t: DeviceType) => {
-    setDeviceType(t);
+  const pickBrand = (b: Brand) => {
+    setBrand(b);
     setSeries(null);
     setDevice(null);
     setStorage(null);
     setCarrier(null);
+    setSearch("");
   };
   const pickSeries = (name: string) => {
     setSeries(name || null);
@@ -131,10 +141,16 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
     setStorage(null);
     setCarrier(null);
   };
-  const pickStorage = (s: Storage) => setStorage(s);
+  const pickStorage = (s: Storage) => {
+    setStorage(s);
+    // Laptops skip carrier — auto-advance straight to condition
+    if (category === "Laptop") {
+      setCarrier("Unlocked");
+      setTimeout(() => setStep(1), 180);
+    }
+  };
   const pickCarrier = (c: Carrier) => {
     setCarrier(c);
-    // auto-advance to condition
     setTimeout(() => setStep(1), 180);
   };
   const pickCondition = (c: Condition) => {
@@ -179,24 +195,36 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             </div>
             <p className="text-silver-400 mb-8">One tap leads to the next — we'll fly through this.</p>
 
-            {/* Brand */}
-            <BoxRow label="Brand">
-              <div className="flex flex-wrap gap-2">
-                {BRANDS.map((b) => (
-                  <Chip key={b} active={brand === b} onClick={() => pickBrand(b)}>
-                    {b}
-                  </Chip>
-                ))}
+            {/* Category */}
+            <BoxRow label="Category">
+              <div className="grid grid-cols-3 gap-2">
+                {CATEGORIES.map(({ id, label, icon: Icon }) => {
+                  const active = category === id;
+                  return (
+                    <button
+                      key={id}
+                      onClick={() => pickCategory(id)}
+                      className={`flex flex-col items-center justify-center gap-2 px-3 py-5 border transition-all ${
+                        active
+                          ? "border-primary bg-primary/10 shadow-red text-white"
+                          : "border-border bg-background/40 text-silver-300 hover:border-silver-500 hover:text-white"
+                      }`}
+                    >
+                      <Icon className={`size-6 ${active ? "text-primary" : "text-silver-400"}`} />
+                      <span className="font-display text-xs md:text-sm uppercase tracking-widest">{label}</span>
+                    </button>
+                  );
+                })}
               </div>
             </BoxRow>
 
-            {/* Type (Apple only) */}
-            {brand === "Apple" && (
-              <BoxRow label="Type">
+            {/* Brand — only brands that make this category */}
+            {category && (
+              <BoxRow label="Brand">
                 <div className="flex flex-wrap gap-2">
-                  {(["Phone", "Tablet"] as DeviceType[]).map((t) => (
-                    <Chip key={t} active={deviceType === t} onClick={() => pickType(t)}>
-                      {t === "Phone" ? "iPhone" : "iPad"}
+                  {availableBrands.map((b) => (
+                    <Chip key={b} active={brand === b} onClick={() => pickBrand(b)}>
+                      {b}
                     </Chip>
                   ))}
                 </div>
@@ -204,14 +232,14 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             )}
 
             {/* Model — pick a series first, then a variant */}
-            {brand && effectiveType && !series && (
+            {brand && category && !series && (
               <BoxRow label="Model line">
                 <div className="relative mb-4">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-silver-500" />
                   <input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder={`Search ${effectiveType === "Tablet" ? "iPad" : brand} models...`}
+                    placeholder={`Search ${brand} ${category.toLowerCase()}s...`}
                     className="w-full bg-background border border-border pl-10 pr-4 py-3 focus:outline-none focus:border-primary text-sm"
                   />
                 </div>
@@ -237,7 +265,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </BoxRow>
             )}
 
-            {brand && effectiveType && series && (
+            {brand && category && series && (
               <BoxRow label={`${series} — pick variant`}>
                 <div className="flex flex-wrap gap-2 mb-1">
                   <button
@@ -287,8 +315,8 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </BoxRow>
             )}
 
-            {/* Carrier */}
-            {storage && (
+            {/* Carrier — skipped for laptops */}
+            {storage && device?.type !== "Laptop" && (
               <BoxRow label={device?.type === "Tablet" ? "Connectivity" : "Carrier"}>
                 <div className="flex flex-wrap gap-2">
                   {(device?.type === "Tablet"
