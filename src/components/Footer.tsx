@@ -1,41 +1,19 @@
-import { ArrowRight, MapPin, Phone, Clock } from "lucide-react";
+import { MapPin, Phone, Clock } from "lucide-react";
 
 interface FooterProps {
-  onCTA: () => void;
+  onCTA?: () => void;
 }
 
-export const Footer = ({ onCTA }: FooterProps) => {
+export const Footer = ({ onCTA: _onCTA }: FooterProps) => {
   return (
     <footer id="visit" className="relative bg-background border-t border-border">
       {/* CTA strip + Visit us */}
       <div className="relative overflow-hidden border-b border-border">
         <div className="absolute inset-0 bg-grad-hero opacity-80" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-primary/20 blur-[120px] rounded-full" />
-        <div className="relative mx-auto max-w-7xl px-5 md:px-8 py-16 md:py-20 grid md:grid-cols-2 gap-10 md:gap-0 items-center">
-          {/* Left: CTA */}
-          <div className="md:pr-12 flex flex-col items-center md:items-start text-center md:text-left gap-8">
-            <div>
-              <div className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-3">
-                // Ready when you are
-              </div>
-              <h3 className="font-display text-3xl md:text-5xl uppercase tracking-tighter text-balance">
-                Stop letting that phone collect dust.
-              </h3>
-            </div>
-            <button
-              onClick={onCTA}
-              className="group inline-flex items-center gap-3 bg-grad-red text-white px-8 py-5 uppercase font-bold tracking-widest hover:shadow-red transition-all"
-            >
-              Start Appraisal
-              <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
-
-          {/* Divider */}
-          <div className="hidden md:block absolute left-1/2 top-16 bottom-16 w-px bg-gradient-to-b from-transparent via-silver-600/40 to-transparent" />
-
-          {/* Right: Visit us */}
-          <div className="md:pl-12">
+        <div className="relative mx-auto max-w-7xl px-5 md:px-8 py-16 md:py-20">
+          {/* Visit us */}
+          <div>
             <div className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-5">
               // Visit us
             </div>
