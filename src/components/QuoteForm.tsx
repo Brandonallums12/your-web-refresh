@@ -138,8 +138,17 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   };
   const pickDevice = (d: Device) => {
     setDevice(d);
-    setStorage(null);
-    setCarrier(null);
+    // Sensible defaults so tablets/laptops can breeze through
+    if (d.type === "Tablet") {
+      setStorage("128 GB");
+      setCarrier("Other"); // "Wi-Fi only" label
+    } else if (d.type === "Laptop") {
+      setStorage("256 GB");
+      setCarrier("Unlocked");
+    } else {
+      setStorage(null);
+      setCarrier(null);
+    }
   };
   const pickStorage = (s: Storage) => {
     setStorage(s);
