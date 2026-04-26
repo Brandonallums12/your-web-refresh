@@ -648,7 +648,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
               <div className="flex justify-between mt-7">
                 <button
-                  onClick={() => setStep(2)}
+                  onClick={() => setStep(1)}
                   className="inline-flex items-center gap-2 border border-silver-600/60 px-6 py-4 uppercase font-bold tracking-widest text-silver-200 hover:border-primary hover:text-white transition-colors"
                 >
                   <ArrowLeft className="size-4" /> Back
