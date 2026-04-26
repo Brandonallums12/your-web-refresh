@@ -573,7 +573,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                         setImei(cleaned);
                         if (imeiError) setImeiError(null);
                       }}
-                      placeholder={device.type === "Laptop" ? "C02XXXXXXXX" : "Dial *#06# on the device"}
+                      placeholder={device.type === "Laptop" ? "C02XXXXXXXX" : isApple ? "Find IMEI in Settings › General › About" : "Dial *#06# on the device"}
                       inputMode={device.type === "Laptop" ? "text" : "numeric"}
                       autoComplete="off"
                       maxLength={20}
