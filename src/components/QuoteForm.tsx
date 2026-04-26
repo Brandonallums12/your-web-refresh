@@ -1,12 +1,22 @@
-import { useMemo, useState } from "react";
-import { ArrowRight, ArrowLeft, Search, Check, ChevronRight } from "lucide-react";
-import { DEVICES, CONDITIONS, calcQuote, type Device, type Condition } from "@/data/devices";
+import { useState } from "react";
+import { ArrowRight, ArrowLeft, Check, ChevronRight, Smartphone, Sparkles } from "lucide-react";
+import {
+  DEVICES,
+  CONDITIONS,
+  STORAGE_OPTIONS,
+  CARRIER_OPTIONS,
+  type Device,
+  type Condition,
+  type Storage,
+  type Carrier,
+} from "@/data/devices";
 import { toast } from "sonner";
 
 export type QuoteSubmission = {
   device: Device;
+  storage: Storage;
+  carrier: Carrier;
   condition: Condition;
-  quote: number;
   name: string;
   phone: string;
   email: string;
@@ -17,32 +27,38 @@ interface QuoteFormProps {
   onCancel: () => void;
 }
 
+type Brand = Device["brand"];
+const BRANDS: Brand[] = ["Apple", "Samsung", "Google"];
+
 export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   const [step, setStep] = useState(0); // 0 device, 1 condition, 2 contact
+
+  // Device box state (cascading)
+  const [brand, setBrand] = useState<Brand | null>(null);
   const [device, setDevice] = useState<Device | null>(null);
+  const [storage, setStorage] = useState<Storage | null>(null);
+  const [carrier, setCarrier] = useState<Carrier | null>(null);
+
+  // Condition box
   const [condition, setCondition] = useState<Condition | null>(null);
-  const [search, setSearch] = useState("");
-  const [brand, setBrand] = useState<"All" | Device["brand"]>("All");
+
+  // Contact
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
-  const filtered = useMemo(() => {
-    return DEVICES.filter((d) => brand === "All" || d.brand === brand).filter((d) =>
-      `${d.brand} ${d.model}`.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [search, brand]);
-
-  const quote = device && condition ? calcQuote(device, condition) : 0;
+  const deviceComplete = !!(brand && device && storage && carrier);
 
   const handleSubmit = () => {
-    if (!device || !condition) return;
+    if (!device || !condition || !storage || !carrier) return;
     if (!name.trim() || !phone.trim()) {
       toast.error("Please add your name and phone so we can confirm.");
       return;
     }
-    onSubmit({ device, condition, quote, name, phone, email });
+    onSubmit({ device, storage, carrier, condition, name, phone, email });
   };
+
+  const models = brand ? DEVICES.filter((d) => d.brand === brand) : [];
 
   return (
     <section className="relative min-h-[calc(100vh-4rem)] bg-grad-hero py-16 md:py-24 px-5 md:px-8 overflow-hidden">
@@ -66,200 +82,252 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
           ))}
         </div>
 
-        <div className="bg-surface/60 backdrop-blur-md border border-border p-6 md:p-10">
-          {step === 0 && (
-            <div className="animate-fade-up">
-              <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tighter mb-2">
-                Pick your <span className="text-primary">device</span>.
+        {/* STEP 0 — Device box */}
+        {step === 0 && (
+          <div className="bg-surface/60 backdrop-blur-md border border-border p-6 md:p-10 animate-fade-up">
+            <div className="flex items-center gap-3 mb-2">
+              <Smartphone className="size-6 text-primary" />
+              <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tighter">
+                Your <span className="text-primary">device</span>.
               </h2>
-              <p className="text-silver-400 mb-7">Search 140+ models we currently buy.</p>
+            </div>
+            <p className="text-silver-400 mb-8">Tell us what you're selling.</p>
 
-              <div className="flex flex-col sm:flex-row gap-3 mb-6">
-                <div className="relative flex-1">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-silver-500" />
-                  <input
-                    autoFocus
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Search iPhone 14, Galaxy S23..."
-                    className="w-full bg-background border border-border pl-11 pr-4 py-3.5 text-white placeholder:text-silver-500 focus:outline-none focus:border-primary transition-colors"
-                  />
-                </div>
-                <div className="flex gap-1.5 bg-background border border-border p-1">
-                  {(["All", "Apple", "Samsung", "Google"] as const).map((b) => (
-                    <button
-                      key={b}
-                      onClick={() => setBrand(b)}
-                      className={`px-4 py-2 text-xs font-bold uppercase tracking-widest transition-colors ${
-                        brand === b ? "bg-grad-red text-white" : "text-silver-400 hover:text-white"
-                      }`}
-                    >
-                      {b}
-                    </button>
-                  ))}
-                </div>
+            {/* Brand */}
+            <BoxRow label="Brand">
+              <div className="flex flex-wrap gap-2">
+                {BRANDS.map((b) => (
+                  <Chip
+                    key={b}
+                    active={brand === b}
+                    onClick={() => {
+                      setBrand(b);
+                      setDevice(null);
+                    }}
+                  >
+                    {b}
+                  </Chip>
+                ))}
               </div>
+            </BoxRow>
 
-              <div className="grid sm:grid-cols-2 gap-2 max-h-[420px] overflow-y-auto pr-1">
-                {filtered.length === 0 && (
-                  <p className="col-span-2 text-center py-8 text-silver-500 font-mono text-sm">
-                    No matches. Try another search.
-                  </p>
-                )}
-                {filtered.map((d) => {
-                  const active = device?.id === d.id;
-                  return (
+            {/* Model */}
+            {brand && (
+              <BoxRow label="Model">
+                <div className="grid sm:grid-cols-2 gap-2">
+                  {models.map((d) => (
                     <button
                       key={d.id}
                       onClick={() => setDevice(d)}
-                      className={`text-left p-4 border transition-all ${
-                        active
+                      className={`text-left px-4 py-3 border transition-all ${
+                        device?.id === d.id
                           ? "border-primary bg-primary/10 shadow-red"
                           : "border-border bg-background/40 hover:border-silver-600"
                       }`}
                     >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="text-[10px] font-bold uppercase tracking-widest text-silver-500 mb-0.5">
-                            {d.brand}
-                          </div>
-                          <div className="font-display text-base uppercase tracking-tight">{d.model}</div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-[10px] uppercase tracking-widest text-silver-500">Up to</div>
-                          <div className="font-mono text-lg font-bold text-primary">${d.basePrice}</div>
-                        </div>
-                      </div>
+                      <div className="font-display text-base uppercase tracking-tight">{d.model}</div>
                     </button>
-                  );
-                })}
-              </div>
+                  ))}
+                </div>
+              </BoxRow>
+            )}
 
-              <div className="flex justify-end mt-7">
-                <button
-                  disabled={!device}
-                  onClick={() => setStep(1)}
-                  className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest disabled:opacity-30 disabled:cursor-not-allowed hover:shadow-red transition-all"
-                >
-                  Continue <ArrowRight className="size-4" />
-                </button>
-              </div>
+            {/* Storage */}
+            {device && (
+              <BoxRow label="Storage">
+                <div className="flex flex-wrap gap-2">
+                  {STORAGE_OPTIONS.map((s) => (
+                    <Chip key={s} active={storage === s} onClick={() => setStorage(s)}>
+                      {s}
+                    </Chip>
+                  ))}
+                </div>
+              </BoxRow>
+            )}
+
+            {/* Carrier */}
+            {storage && (
+              <BoxRow label="Carrier">
+                <div className="flex flex-wrap gap-2">
+                  {CARRIER_OPTIONS.map((c) => (
+                    <Chip key={c} active={carrier === c} onClick={() => setCarrier(c)}>
+                      {c}
+                    </Chip>
+                  ))}
+                </div>
+              </BoxRow>
+            )}
+
+            <div className="flex justify-end mt-8">
+              <button
+                disabled={!deviceComplete}
+                onClick={() => setStep(1)}
+                className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest disabled:opacity-30 disabled:cursor-not-allowed hover:shadow-red transition-all"
+              >
+                Continue <ArrowRight className="size-4" />
+              </button>
             </div>
-          )}
+          </div>
+        )}
 
-          {step === 1 && device && (
-            <div className="animate-fade-up">
-              <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tighter mb-2">
-                What's the <span className="text-primary">condition</span>?
+        {/* STEP 1 — Condition box */}
+        {step === 1 && device && (
+          <div className="bg-surface/60 backdrop-blur-md border border-border p-6 md:p-10 animate-fade-up">
+            <div className="flex items-center gap-3 mb-2">
+              <Sparkles className="size-6 text-primary" />
+              <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tighter">
+                <span className="text-primary">Condition</span>.
               </h2>
-              <p className="text-silver-400 mb-7">
-                Be honest — we verify in person. Selling: <span className="text-white font-semibold">{device.brand} {device.model}</span>
-              </p>
+            </div>
+            <p className="text-silver-400 mb-8">
+              Be honest — we verify in person. Selling:{" "}
+              <span className="text-white font-semibold">
+                {device.brand} {device.model}
+              </span>{" "}
+              · {storage} · {carrier}
+            </p>
 
-              <div className="grid sm:grid-cols-2 gap-3">
-                {CONDITIONS.map((c) => {
-                  const active = condition?.id === c.id;
-                  const est = calcQuote(device, c);
-                  return (
-                    <button
-                      key={c.id}
-                      onClick={() => setCondition(c)}
-                      className={`text-left p-5 border transition-all ${
-                        active
-                          ? "border-primary bg-primary/10 shadow-red"
-                          : "border-border bg-background/40 hover:border-silver-600"
-                      }`}
-                    >
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="font-display text-xl uppercase tracking-tight">{c.label}</div>
-                        {active && <Check className="size-5 text-primary" />}
-                      </div>
-                      <p className="text-sm text-silver-400 mb-4 leading-relaxed">{c.blurb}</p>
-                      <div className="flex items-baseline gap-2 pt-3 border-t border-border">
-                        <span className="text-[10px] uppercase tracking-widest text-silver-500">Estimate</span>
-                        <span className="font-mono text-2xl font-bold text-primary">${est}</span>
-                      </div>
-                    </button>
-                  );
-                })}
+            <div className="grid sm:grid-cols-2 gap-3">
+              {CONDITIONS.map((c) => {
+                const active = condition?.id === c.id;
+                return (
+                  <button
+                    key={c.id}
+                    onClick={() => setCondition(c)}
+                    className={`text-left p-5 border transition-all ${
+                      active
+                        ? "border-primary bg-primary/10 shadow-red"
+                        : "border-border bg-background/40 hover:border-silver-600"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="font-display text-xl uppercase tracking-tight">{c.label}</div>
+                      {active && <Check className="size-5 text-primary" />}
+                    </div>
+                    <p className="text-sm text-silver-400 leading-relaxed">{c.blurb}</p>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="flex justify-between mt-8">
+              <button
+                onClick={() => setStep(0)}
+                className="inline-flex items-center gap-2 border border-silver-600/60 px-6 py-4 uppercase font-bold tracking-widest text-silver-200 hover:border-primary hover:text-white transition-colors"
+              >
+                <ArrowLeft className="size-4" /> Back
+              </button>
+              <button
+                disabled={!condition}
+                onClick={() => setStep(2)}
+                className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest disabled:opacity-30 disabled:cursor-not-allowed hover:shadow-red transition-all"
+              >
+                Continue <ArrowRight className="size-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* STEP 2 — Contact */}
+        {step === 2 && device && condition && (
+          <div className="bg-surface/60 backdrop-blur-md border border-border p-6 md:p-10 animate-fade-up grid md:grid-cols-5 gap-8">
+            <div className="md:col-span-3">
+              <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tighter mb-2">Lock it in.</h2>
+              <p className="text-silver-400 mb-7">We'll text you with your custom quote within minutes.</p>
+
+              <div className="space-y-4">
+                <Field label="Your name">
+                  <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Jane Doe"
+                    className="w-full bg-background border border-border px-4 py-3.5 focus:outline-none focus:border-primary"
+                  />
+                </Field>
+                <Field label="Phone">
+                  <input
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="(626) 555-0123"
+                    inputMode="tel"
+                    className="w-full bg-background border border-border px-4 py-3.5 focus:outline-none focus:border-primary"
+                  />
+                </Field>
+                <Field label="Email (optional)">
+                  <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@email.com"
+                    type="email"
+                    className="w-full bg-background border border-border px-4 py-3.5 focus:outline-none focus:border-primary"
+                  />
+                </Field>
               </div>
 
               <div className="flex justify-between mt-7">
                 <button
-                  onClick={() => setStep(0)}
+                  onClick={() => setStep(1)}
                   className="inline-flex items-center gap-2 border border-silver-600/60 px-6 py-4 uppercase font-bold tracking-widest text-silver-200 hover:border-primary hover:text-white transition-colors"
                 >
                   <ArrowLeft className="size-4" /> Back
                 </button>
                 <button
-                  disabled={!condition}
-                  onClick={() => setStep(2)}
-                  className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest disabled:opacity-30 disabled:cursor-not-allowed hover:shadow-red transition-all"
+                  onClick={handleSubmit}
+                  className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest hover:shadow-red transition-all"
                 >
-                  Continue <ArrowRight className="size-4" />
+                  Send my quote <ArrowRight className="size-4" />
                 </button>
               </div>
             </div>
-          )}
 
-          {step === 2 && device && condition && (
-            <div className="animate-fade-up grid md:grid-cols-5 gap-8">
-              <div className="md:col-span-3">
-                <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tighter mb-2">
-                  Lock it in.
-                </h2>
-                <p className="text-silver-400 mb-7">We'll text you a confirmation and hold the price for 48 hours.</p>
-
-                <div className="space-y-4">
-                  <Field label="Your name">
-                    <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Jane Doe"
-                      className="w-full bg-background border border-border px-4 py-3.5 focus:outline-none focus:border-primary" />
-                  </Field>
-                  <Field label="Phone">
-                    <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(626) 555-0123" inputMode="tel"
-                      className="w-full bg-background border border-border px-4 py-3.5 focus:outline-none focus:border-primary" />
-                  </Field>
-                  <Field label="Email (optional)">
-                    <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" type="email"
-                      className="w-full bg-background border border-border px-4 py-3.5 focus:outline-none focus:border-primary" />
-                  </Field>
-                </div>
-
-                <div className="flex justify-between mt-7">
-                  <button
-                    onClick={() => setStep(1)}
-                    className="inline-flex items-center gap-2 border border-silver-600/60 px-6 py-4 uppercase font-bold tracking-widest text-silver-200 hover:border-primary hover:text-white transition-colors"
-                  >
-                    <ArrowLeft className="size-4" /> Back
-                  </button>
-                  <button
-                    onClick={handleSubmit}
-                    className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest hover:shadow-red transition-all"
-                  >
-                    Lock my quote <ArrowRight className="size-4" />
-                  </button>
+            <aside className="md:col-span-2 bg-background/60 border border-primary/30 p-6 h-fit">
+              <div className="text-[10px] font-bold uppercase tracking-widest text-silver-500 mb-3">// Your submission</div>
+              <div className="font-display text-lg uppercase tracking-tight">
+                {device.brand} {device.model}
+              </div>
+              <div className="text-silver-300 text-sm mt-1">{storage} · {carrier}</div>
+              <div className="text-silver-400 text-sm mb-5">Condition: {condition.label}</div>
+              <div className="border-t border-border pt-5">
+                <div className="text-xs uppercase tracking-widest text-silver-500 mb-2">Custom cash offer</div>
+                <div className="font-mono text-sm text-silver-200 leading-relaxed">
+                  Sent to your phone after submission.
                 </div>
               </div>
-
-              <aside className="md:col-span-2 bg-background/60 border border-primary/30 p-6 h-fit">
-                <div className="text-[10px] font-bold uppercase tracking-widest text-silver-500 mb-3">// Your offer</div>
-                <div className="font-display text-lg uppercase tracking-tight">{device.brand} {device.model}</div>
-                <div className="text-silver-400 text-sm mb-5">Condition: {condition.label}</div>
-                <div className="border-t border-border pt-5">
-                  <div className="text-xs uppercase tracking-widest text-silver-500 mb-1">Cash payout</div>
-                  <div className="font-mono text-5xl font-bold text-primary">${quote}</div>
-                  <div className="text-xs text-silver-500 mt-2 font-mono uppercase tracking-widest">
-                    Locked for 48 hrs
-                  </div>
-                </div>
-              </aside>
-            </div>
-          )}
-        </div>
+            </aside>
+          </div>
+        )}
       </div>
     </section>
   );
 };
+
+const BoxRow = ({ label, children }: { label: string; children: React.ReactNode }) => (
+  <div className="mb-6 pb-6 border-b border-border last:border-0 last:mb-0 last:pb-0">
+    <div className="text-[10px] font-bold uppercase tracking-widest text-silver-500 mb-3">{label}</div>
+    {children}
+  </div>
+);
+
+const Chip = ({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) => (
+  <button
+    onClick={onClick}
+    className={`px-4 py-2.5 text-xs font-bold uppercase tracking-widest border transition-all ${
+      active
+        ? "border-primary bg-primary/15 text-white shadow-red"
+        : "border-border bg-background/40 text-silver-300 hover:border-silver-500 hover:text-white"
+    }`}
+  >
+    {children}
+  </button>
+);
 
 const Field = ({ label, children }: { label: string; children: React.ReactNode }) => (
   <label className="block">
