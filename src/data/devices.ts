@@ -350,8 +350,6 @@ const IPAD_STORAGE: Record<string, Storage[]> = {
   ipadair11m2:   ["128 GB", "256 GB", "512 GB", "1 TB"],
   ipadair5:      ["64 GB", "256 GB"],
   ipadair4:      ["64 GB", "256 GB"],
-  ipadprom4_13:  ["256 GB", "512 GB", "1 TB", "2 TB"],
-  ipadprom4_11:  ["256 GB", "512 GB", "1 TB", "2 TB"],
   ipadprom5_13:  ["256 GB", "512 GB", "1 TB", "2 TB"],
   ipadprom5_11:  ["256 GB", "512 GB", "1 TB", "2 TB"],
   ipadprom4_13:  ["256 GB", "512 GB", "1 TB", "2 TB"],
