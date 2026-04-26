@@ -23,17 +23,20 @@ export const Confirmation = ({ data, onBack }: ConfirmationProps) => {
             You're <span className="text-primary">locked in</span>, {data.name.split(" ")[0]}.
           </h1>
           <p className="text-silver-300 text-lg max-w-xl">
-            We'll text <span className="font-mono text-white">{data.phone}</span> shortly to confirm.
-            Bring your <span className="text-white font-semibold">{data.device.brand} {data.device.model}</span> to
-            our shop and walk out with cash.
+            We'll text <span className="font-mono text-white">{data.phone}</span> shortly with your
+            custom cash offer for your{" "}
+            <span className="text-white font-semibold">{data.device.brand} {data.device.model}</span>{" "}
+            ({data.storage} · {data.carrier}).
           </p>
 
           <div className="mt-10 grid sm:grid-cols-2 gap-4">
             <div className="bg-background border border-border p-6">
-              <div className="text-[10px] uppercase tracking-widest text-silver-500 mb-1">Cash payout</div>
-              <div className="font-mono text-5xl font-bold text-primary">${data.quote}</div>
-              <div className="text-xs text-silver-500 mt-2 font-mono uppercase tracking-widest">
-                {data.condition.label} condition · 48 hr lock
+              <div className="text-[10px] uppercase tracking-widest text-silver-500 mb-1">Submission</div>
+              <div className="font-display text-2xl uppercase tracking-tight text-white">
+                {data.device.model}
+              </div>
+              <div className="text-xs text-silver-400 mt-2 font-mono uppercase tracking-widest">
+                {data.condition.label} · {data.storage} · {data.carrier}
               </div>
             </div>
             <div className="bg-background border border-border p-6 space-y-3 text-sm">
