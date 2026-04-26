@@ -1,5 +1,5 @@
-export type Brand = "Apple" | "Samsung" | "Google";
-export type DeviceType = "Phone" | "Tablet";
+export type Brand = "Apple" | "Samsung" | "Google" | "Microsoft" | "Dell" | "HP" | "Lenovo" | "ASUS";
+export type DeviceType = "Phone" | "Tablet" | "Laptop";
 
 export type Device = {
   id: string;
