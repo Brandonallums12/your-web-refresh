@@ -265,7 +265,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             <ArrowLeft className="size-3.5" /> Back
           </button>
           <span className="text-silver-600">/</span>
-          {["Device", "Condition", "Verify", "Contact"].map((label, i) => (
+          {["Device", "Condition", "Contact"].map((label, i) => (
             <span key={label} className="flex items-center gap-3">
               <button
                 onClick={() => i < step && setStep(i)}
@@ -274,7 +274,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               >
                 0{i + 1} {label}
               </button>
-              {i < 3 && <ChevronRight className="size-3 text-silver-600" />}
+              {i < 2 && <ChevronRight className="size-3 text-silver-600" />}
             </span>
           ))}
         </div>
