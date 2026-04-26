@@ -1,96 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&family=Inter+Tight:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Techbuyer design system — Red / Black / Silver "Neon Hype Market" energy.
+   All colors HSL. Tokens consumed in tailwind.config.ts. */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Surfaces */
+    --background: 240 6% 4%;          /* #0A0A0B near-black */
+    --foreground: 0 0% 100%;
+    --surface: 225 7% 10%;            /* #18191C */
+    --surface-2: 225 7% 14%;          /* #21232A */
+    --surface-3: 225 6% 18%;
+    --ink: 225 8% 8%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 225 7% 10%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 225 7% 10%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Brand red */
+    --primary: 354 78% 46%;           /* #D11A2B */
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 354 86% 58%;
+    --primary-deep: 354 88% 20%;      /* #5E0510 */
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Silver / muted */
+    --secondary: 225 7% 14%;
+    --secondary-foreground: 220 9% 86%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 225 6% 16%;
+    --muted-foreground: 220 6% 64%;   /* silver-400 */
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 354 78% 46%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --silver-50: 220 14% 97%;
+    --silver-100: 220 14% 93%;
+    --silver-200: 220 11% 88%;
+    --silver-300: 218 9% 79%;
+    --silver-400: 220 7% 64%;
+    --silver-500: 220 6% 47%;
+    --silver-600: 220 7% 34%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --destructive: 0 75% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 225 6% 18%;
+    --input: 225 6% 18%;
+    --ring: 354 78% 46%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* Gradients & shadows */
+    --grad-hero: radial-gradient(ellipse at 50% 0%, hsl(354 78% 46% / 0.35) 0%, transparent 60%),
+                 linear-gradient(135deg, hsl(240 6% 4%) 0%, hsl(225 7% 10%) 55%, hsl(354 88% 12%) 100%);
+    --grad-red: linear-gradient(135deg, hsl(354 78% 46%) 0%, hsl(354 86% 58%) 100%);
+    --grad-silver: linear-gradient(135deg, hsl(220 14% 97%) 0%, hsl(220 7% 64%) 100%);
+    --shadow-red: 0 20px 60px -15px hsl(354 78% 46% / 0.45);
+    --shadow-elev: 0 10px 40px -10px hsl(0 0% 0% / 0.6);
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --font-display: 'Archivo Black', 'Space Grotesk', sans-serif;
+    --font-sans: 'Space Grotesk', 'Inter Tight', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
   }
 }
 
@@ -98,8 +74,64 @@ All colors MUST be HSL.
   * {
     @apply border-border;
   }
-
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    background-color: hsl(var(--background));
   }
+  ::selection {
+    background: hsl(var(--primary));
+    color: white;
+  }
+}
+
+@layer utilities {
+  .font-display { font-family: var(--font-display); letter-spacing: -0.02em; }
+  .font-mono { font-family: var(--font-mono); }
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+
+  .bg-grad-hero { background: var(--grad-hero); }
+  .bg-grad-red { background: var(--grad-red); }
+  .text-grad-red {
+    background: var(--grad-red);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-stroke {
+    -webkit-text-stroke: 2px hsl(0 0% 100%);
+    color: transparent;
+  }
+  .text-stroke-red {
+    -webkit-text-stroke: 2px hsl(var(--primary));
+    color: transparent;
+  }
+
+  .shadow-red { box-shadow: var(--shadow-red); }
+  .shadow-elev { box-shadow: var(--shadow-elev); }
+
+  .grid-noise {
+    background-image:
+      linear-gradient(hsl(0 0% 100% / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(0 0% 100% / 0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0.5); }
+  50% { box-shadow: 0 0 0 12px hsl(var(--primary) / 0); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
 }
