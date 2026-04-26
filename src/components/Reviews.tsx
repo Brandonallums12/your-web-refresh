@@ -79,7 +79,7 @@ export const Reviews = () => {
             <div className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-4">
             </div>
             <h2 className="font-display text-4xl md:text-6xl uppercase tracking-tighter text-balance max-w-2xl">
-              Locals don't <span className="text-primary">B.S.</span>
+              Real sellers, <span className="text-primary">real cash.</span>
             </h2>
           </div>
           <div className="flex items-center gap-2 font-mono text-sm text-silver-300">
