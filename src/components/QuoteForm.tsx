@@ -227,17 +227,17 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   };
   const pickCondition = (c: Condition) => {
     setCondition(c);
-    setTimeout(() => setStep(2), 180);
   };
   const pickLock = (s: LockStatus) => {
     setLockStatus(s);
     setImeiError(null);
-    if (s === "clean") {
-      setImei("");
-      setTimeout(() => setStep(3), 180);
-    }
+    if (s === "clean") setImei("");
   };
-  const submitLockStep = () => {
+  const submitConditionStep = () => {
+    if (!condition) {
+      toast.error("Please select the device's condition.");
+      return;
+    }
     if (!lockStatus) {
       toast.error("Please confirm the device's account-lock status.");
       return;
@@ -250,7 +250,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
       }
     }
     setImeiError(null);
-    setStep(3);
+    setStep(2);
   };
 
   return (
