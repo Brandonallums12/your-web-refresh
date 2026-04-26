@@ -60,7 +60,7 @@ const CATEGORIES: { id: DeviceType; label: string; icon: typeof Smartphone }[] =
 ];
 
 export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
-  const [step, setStep] = useState(0); // 0 device, 1 condition, 2 verification, 3 contact
+  const [step, setStep] = useState(0); // 0 device, 1 condition (+ lock/IMEI), 2 contact
 
   // Device cascading
   const [category, setCategory] = useState<DeviceType | null>(null);
