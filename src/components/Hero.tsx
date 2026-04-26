@@ -48,12 +48,6 @@ export const Hero = ({ onPrimary }: HeroProps) => {
             </a>
           </div>
 
-          {/* trust strip */}
-          <div className="mt-12 flex flex-wrap gap-x-7 gap-y-3 justify-center lg:justify-start text-sm text-silver-400">
-            <span className="inline-flex items-center gap-2"><Zap className="size-4 text-primary" />Pay in 10 min</span>
-            <span className="inline-flex items-center gap-2"><ShieldCheck className="size-4 text-primary" />Certified data wipe</span>
-            <span className="inline-flex items-center gap-2"><MapPin className="size-4 text-primary" />Local West Covina shop</span>
-          </div>
         </div>
 
       </div>
