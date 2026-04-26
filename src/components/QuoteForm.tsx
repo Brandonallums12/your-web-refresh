@@ -589,7 +589,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                     <p className="text-silver-400 text-xs mt-3">
                       Not sure where to find it?{" "}
                       <a
-                        href="https://www.youtube.com/results?search_query=how+to+get+iphone+serial+number+when+locked"
+                        href="https://www.youtube.com/watch?v=zkdyuZh2uwQ"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-primary underline underline-offset-2 hover:text-white transition-colors"
