@@ -14,18 +14,6 @@ import {
   type Brand,
   type DeviceType,
 } from "@/data/devices";
-  DEVICES,
-  CONDITIONS,
-  CARRIER_OPTIONS,
-  getStorageOptions,
-  tabletSupportsCellular,
-  type Device,
-  type Condition,
-  type Storage,
-  type Carrier,
-  type Brand,
-  type DeviceType,
-} from "@/data/devices";
 import { toast } from "sonner";
 
 export type QuoteSubmission = {
