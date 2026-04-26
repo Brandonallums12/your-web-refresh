@@ -61,9 +61,9 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   }, [category]);
 
   const allModels = useMemo(() => {
-    if (!brand || !effectiveType) return [];
-    return DEVICES.filter((d) => d.brand === brand && d.type === effectiveType);
-  }, [brand, effectiveType]);
+    if (!brand || !category) return [];
+    return DEVICES.filter((d) => d.brand === brand && d.type === category);
+  }, [brand, category]);
 
   // Group models into a "series" (e.g. "iPhone 15", "Galaxy S24", "Pixel 8", "iPad Pro 11")
   const seriesKey = (model: string): string => {
