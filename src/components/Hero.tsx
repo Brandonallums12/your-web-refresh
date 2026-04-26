@@ -40,12 +40,6 @@ export const Hero = ({ onPrimary }: HeroProps) => {
               Get Instant Quote
               <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform" />
             </button>
-            <a
-              href="#how"
-              className="inline-flex items-center justify-center gap-2 border border-silver-600/60 bg-surface/60 backdrop-blur px-9 py-5 uppercase font-bold tracking-widest text-base text-silver-100 hover:border-primary/60 hover:text-white transition-colors"
-            >
-              How it works
-            </a>
           </div>
 
         </div>
