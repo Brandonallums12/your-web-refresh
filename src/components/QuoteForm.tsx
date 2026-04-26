@@ -51,13 +51,48 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   const appleHasTablets = brand === "Apple";
   const effectiveType: DeviceType | null = appleHasTablets ? deviceType : "Phone";
 
-  const models = useMemo(() => {
+  const allModels = useMemo(() => {
     if (!brand || !effectiveType) return [];
-    const list = DEVICES.filter((d) => d.brand === brand && d.type === effectiveType);
-    if (!search.trim()) return list;
+    return DEVICES.filter((d) => d.brand === brand && d.type === effectiveType);
+  }, [brand, effectiveType]);
+
+  // Group models into a "series" (e.g. "iPhone 15", "Galaxy S24", "Pixel 8", "iPad Pro 11")
+  const seriesKey = (model: string): string => {
+    // Strip trailing variants: Pro Max, Pro, Plus, Ultra, mini, FE, gen markers, etc.
+    return model
+      .replace(/\s*\((\d+(st|nd|rd|th)\s*gen|M\d+)\)\s*$/i, "")
+      .replace(/\s+(Pro Max|Pro XL|Pro Fold|Pro|Plus|Ultra|mini|Mini|Air|FE|XL|Fold|\+|e|a)\s*$/i, "")
+      .replace(/\s+\d+(st|nd|rd|th)\s*gen\s*$/i, "")
+      .trim();
+  };
+
+  const seriesGroups = useMemo(() => {
+    const groups = new Map<string, Device[]>();
+    for (const d of allModels) {
+      const key = seriesKey(d.model);
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key)!.push(d);
+    }
+    return Array.from(groups.entries()).map(([name, devices]) => ({ name, devices }));
+  }, [allModels]);
+
+  const [series, setSeries] = useState<string | null>(null);
+
+  const filteredSeries = useMemo(() => {
+    if (!search.trim()) return seriesGroups;
     const q = search.toLowerCase();
-    return list.filter((d) => d.model.toLowerCase().includes(q));
-  }, [brand, effectiveType, search]);
+    return seriesGroups
+      .map((g) => ({
+        ...g,
+        devices: g.devices.filter((d) => d.model.toLowerCase().includes(q)),
+      }))
+      .filter((g) => g.devices.length > 0 || g.name.toLowerCase().includes(q));
+  }, [seriesGroups, search]);
+
+  const variantsOfSeries = useMemo(
+    () => (series ? seriesGroups.find((g) => g.name === series)?.devices ?? [] : []),
+    [series, seriesGroups]
+  );
 
   const handleSubmit = () => {
     if (!device || !condition || !storage || !carrier) return;
