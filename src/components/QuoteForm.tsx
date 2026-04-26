@@ -498,13 +498,13 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             {(() => {
               const isApple = device.brand === "Apple";
               const lockName = isApple ? "iCloud" : "Google FRP";
-              const lockTitle = isApple ? "iCloud locked" : "Google FRP locked";
+              const lockTitle = isApple ? "ICLOUD LOCKED" : "GOOGLE FRP LOCKED";
               return (
             <div className="mt-10 pt-8 border-t border-border">
               <div className="flex items-center gap-3 mb-2">
                 <ShieldCheck className="size-6 text-primary" />
                 <h3 className="font-display text-2xl md:text-3xl uppercase tracking-tighter">
-                  Is it <span className="text-primary">{lockTitle}</span>?
+                  IS IT <span className="text-primary">{lockTitle}</span>?
                 </h3>
               </div>
               <p className="text-silver-400 mb-2">
