@@ -151,7 +151,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
     if (!device || !condition || !storage || !carrier || !lockStatus) return;
     // Validate IMEI if locked
     if (lockStatus === "locked") {
-      const r = imeiSchema.safeParse(imei);
+      const r = (device.type === "Phone" ? imeiSchema : serialSchema).safeParse(imei);
       if (!r.success) {
         setImeiError(r.error.issues[0]?.message ?? "Invalid IMEI.");
         setStep(1);
@@ -251,7 +251,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
       return;
     }
     if (lockStatus === "locked") {
-      const r = imeiSchema.safeParse(imei);
+      const r = (device.type === "Phone" ? imeiSchema : serialSchema).safeParse(imei);
       if (!r.success) {
         setImeiError(r.error.issues[0]?.message ?? "Invalid IMEI.");
         return;
