@@ -203,10 +203,10 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </BoxRow>
             )}
 
-            {/* Model */}
-            {brand && effectiveType && (
-              <BoxRow label="Model">
-                <div className="relative mb-3">
+            {/* Model — pick a series first, then a variant */}
+            {brand && effectiveType && !series && (
+              <BoxRow label="Model line">
+                <div className="relative mb-4">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-silver-500" />
                   <input
                     value={search}
@@ -215,23 +215,61 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                     className="w-full bg-background border border-border pl-10 pr-4 py-3 focus:outline-none focus:border-primary text-sm"
                   />
                 </div>
-                <div className="grid sm:grid-cols-2 gap-2 max-h-80 overflow-y-auto pr-1">
-                  {models.map((d) => (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {filteredSeries.map((g) => (
                     <button
-                      key={d.id}
-                      onClick={() => pickDevice(d)}
-                      className={`text-left px-4 py-3 border transition-all ${
-                        device?.id === d.id
-                          ? "border-primary bg-primary/10 shadow-red"
-                          : "border-border bg-background/40 hover:border-silver-600"
-                      }`}
+                      key={g.name}
+                      onClick={() => pickSeries(g.name)}
+                      className="group relative text-left px-4 py-4 border border-border bg-background/40 hover:border-primary hover:bg-primary/5 transition-all"
                     >
-                      <div className="font-display text-base uppercase tracking-tight">{d.model}</div>
+                      <div className="font-display text-sm md:text-base uppercase tracking-tight leading-tight">
+                        {g.name}
+                      </div>
+                      <div className="text-[10px] font-mono text-silver-500 mt-1 uppercase tracking-widest">
+                        {g.devices.length} {g.devices.length === 1 ? "model" : "models"}
+                      </div>
                     </button>
                   ))}
-                  {models.length === 0 && (
-                    <div className="text-silver-500 text-sm col-span-2 py-3">No matches.</div>
+                  {filteredSeries.length === 0 && (
+                    <div className="text-silver-500 text-sm col-span-full py-3">No matches.</div>
                   )}
+                </div>
+              </BoxRow>
+            )}
+
+            {brand && effectiveType && series && (
+              <BoxRow label={`${series} — pick variant`}>
+                <div className="flex flex-wrap gap-2 mb-1">
+                  <button
+                    onClick={() => pickSeries("")}
+                    className="text-[10px] font-mono uppercase tracking-widest text-silver-400 hover:text-primary inline-flex items-center gap-1"
+                  >
+                    <ArrowLeft className="size-3" /> change line
+                  </button>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-2 mt-3">
+                  {variantsOfSeries.map((d) => {
+                    const variantLabel = d.model.replace(series, "").trim() || "Standard";
+                    const active = device?.id === d.id;
+                    return (
+                      <button
+                        key={d.id}
+                        onClick={() => pickDevice(d)}
+                        className={`text-left px-4 py-3 border transition-all ${
+                          active
+                            ? "border-primary bg-primary/10 shadow-red"
+                            : "border-border bg-background/40 hover:border-silver-600"
+                        }`}
+                      >
+                        <div className="font-display text-base uppercase tracking-tight">
+                          {variantLabel}
+                        </div>
+                        <div className="text-[10px] font-mono text-silver-500 uppercase tracking-widest mt-0.5">
+                          {d.model}
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </BoxRow>
             )}
