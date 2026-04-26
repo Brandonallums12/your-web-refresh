@@ -210,7 +210,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
         setDevice(other);
         setStorage(null);
         setCarrier("Unlocked");
-        setLockStatus("clean");
+        setLockStatus(null);
       }
     } else {
       setOtherDescription("");
