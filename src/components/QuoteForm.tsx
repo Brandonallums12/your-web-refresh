@@ -521,14 +521,14 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                       : "border-border bg-background/40 hover:border-silver-600"
                   }`}
                 >
-                  <div className="flex items-start justify-between mb-2">
+              <div className="flex items-start justify-between mb-2">
                     <div className="font-display text-xl uppercase tracking-tight inline-flex items-center gap-2">
-                      <ShieldCheck className="size-5 text-primary" /> Clean / Unlocked
+                      <ShieldCheck className="size-5 text-primary" /> Able to Remove iCloud
                     </div>
                     {lockStatus === "clean" && <Check className="size-5 text-primary" />}
                   </div>
                   <p className="text-sm text-silver-400 leading-relaxed">
-                    Signed out of all accounts. No activation lock, MDM, or carrier hold.
+                    I can sign out of iCloud and remove the device from my account. No activation lock.
                   </p>
                 </button>
 
