@@ -33,7 +33,7 @@ export const Steps = () => {
             Three steps. <span className="text-stroke-red">No catch.</span>
           </h2>
           <p className="mt-5 text-silver-400 text-lg text-pretty">
-            We made selling your phone faster than ordering a coffee.
+            Simple, safe, and fair — every time.
           </p>
         </div>
 
