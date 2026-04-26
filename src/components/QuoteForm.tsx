@@ -323,7 +323,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                   </p>
                 )}
                 <div className="flex flex-wrap gap-2">
-                  {STORAGE_OPTIONS.map((s) => (
+                  {getStorageOptions(device).map((s) => (
                     <Chip key={s} active={storage === s} onClick={() => pickStorage(s)}>
                       {s}
                     </Chip>
@@ -332,21 +332,25 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </BoxRow>
             )}
 
-            {/* Carrier — skipped for laptops */}
-            {storage && device?.type !== "Laptop" && (
-              <BoxRow label={device?.type === "Tablet" ? "Connectivity" : "Carrier"}>
-                {device?.type === "Tablet" && (
+            {/* Carrier / Connectivity — laptops skip; Wi-Fi-only tablets skip */}
+            {storage && device && device.type !== "Laptop" && !(device.type === "Tablet" && !tabletSupportsCellular(device)) && (
+              <BoxRow label={device.type === "Tablet" ? "Connectivity" : "Carrier"}>
+                {device.type === "Tablet" && (
                   <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
                     // Default: Wi-Fi only — change only if needed
                   </p>
                 )}
                 <div className="flex flex-wrap gap-2">
-                  {(device?.type === "Tablet"
+                  {(device.type === "Tablet"
                     ? (["Unlocked", "Other"] as Carrier[])
                     : (CARRIER_OPTIONS as readonly Carrier[])
                   ).map((c) => (
                     <Chip key={c} active={carrier === c} onClick={() => pickCarrier(c)}>
-                      {device?.type === "Tablet" && c === "Unlocked" ? "Wi-Fi + Cellular" : c === "Other" && device?.type === "Tablet" ? "Wi-Fi only" : c}
+                      {device.type === "Tablet" && c === "Unlocked"
+                        ? "Wi-Fi + Cellular"
+                        : c === "Other" && device.type === "Tablet"
+                        ? "Wi-Fi only"
+                        : c}
                     </Chip>
                   ))}
                 </div>
