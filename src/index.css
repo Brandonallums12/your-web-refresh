@@ -57,8 +57,8 @@
     --radius: 0.5rem;
 
     /* Gradients & shadows */
-    --grad-hero: radial-gradient(ellipse at 50% 0%, hsl(354 78% 46% / 0.35) 0%, transparent 60%),
-                 linear-gradient(135deg, hsl(240 6% 4%) 0%, hsl(225 7% 10%) 55%, hsl(354 88% 12%) 100%);
+    --grad-hero: radial-gradient(ellipse at 50% 0%, hsl(354 78% 46% / 0.25) 0%, transparent 50%),
+                 linear-gradient(135deg, hsl(240 6% 2%) 0%, hsl(225 7% 6%) 40%, hsl(354 88% 8%) 100%);
     --grad-red: linear-gradient(135deg, hsl(354 78% 46%) 0%, hsl(354 86% 58%) 100%);
     --grad-silver: linear-gradient(135deg, hsl(220 14% 97%) 0%, hsl(220 7% 64%) 100%);
     --shadow-red: 0 20px 60px -15px hsl(354 78% 46% / 0.45);
