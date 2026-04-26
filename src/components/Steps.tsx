@@ -5,19 +5,19 @@ const STEPS = [
     n: "01",
     icon: ClipboardCheck,
     title: "Lock Your Quote",
-    body: "Tell us your model and condition online. You'll get an instant cash offer, locked in for 48 hours.",
+    body: "Tell us your model and condition online and we'll beat kiosk prices with an instant cash offer — locked in for 48 hours.",
   },
   {
     n: "02",
     icon: Store,
-    title: "Drop By The Shop",
-    body: "Visit our West Covina location. We'll inspect your device together — checking condition, functionality, and details. Takes about 3 minutes.",
+    title: "Meet Up Locally",
+    body: "We'll arrange a safe local meetup in the West Covina area. Quick inspection together to confirm condition and functionality — usually wraps up in about 3 minutes.",
   },
   {
     n: "03",
     icon: Banknote,
-    title: "Walk Out With Cash",
-    body: "Get paid on the spot — cash, Zelle, or Venmo. Your data is securely wiped before you leave.",
+    title: "Get Paid On The Spot",
+    body: "Walk away with payment your way — cash, Zelle, and other options available. Your data is securely wiped before we part ways.",
   },
 ];
 
