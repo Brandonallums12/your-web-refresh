@@ -60,7 +60,7 @@ const CATEGORIES: { id: DeviceType; label: string; icon: typeof Smartphone }[] =
 ];
 
 export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
-  const [step, setStep] = useState(0); // 0 device, 1 condition, 2 contact
+  const [step, setStep] = useState(0); // 0 device, 1 condition, 2 verification, 3 contact
 
   // Device cascading
   const [category, setCategory] = useState<DeviceType | null>(null);
@@ -72,9 +72,15 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
   const [condition, setCondition] = useState<Condition | null>(null);
 
+  // Verification (anti-stolen)
+  const [lockStatus, setLockStatus] = useState<LockStatus | null>(null);
+  const [imei, setImei] = useState("");
+  const [imeiError, setImeiError] = useState<string | null>(null);
+
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [contactErrors, setContactErrors] = useState<{ name?: string; phone?: string; email?: string }>({});
 
   // Brands available for the chosen category (derived from data)
   const availableBrands = useMemo<Brand[]>(() => {
