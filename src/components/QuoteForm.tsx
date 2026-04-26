@@ -460,15 +460,17 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             <div className="flex items-center gap-3 mb-2">
               <Sparkles className="size-6 text-primary" />
               <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tighter">
-                <span className="text-primary">Condition</span>.
+                <span className="text-primary">CONDITION</span>
               </h2>
             </div>
             <p className="text-silver-400 mb-8">
-              Be honest — we verify in person. Selling:{" "}
+              Be honest — we verify in person.<br />
+              Selling:{" "}
               <span className="text-white font-semibold">
                 {device.brand} {device.model}
               </span>{" "}
               · {storage} · {carrier}
+              <br /><br />
             </p>
 
             <div className="grid sm:grid-cols-2 gap-3">
