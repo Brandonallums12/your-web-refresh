@@ -30,7 +30,7 @@ export const Hero = ({ onPrimary }: HeroProps) => {
 
       <div className="relative mx-auto max-w-7xl px-5 md:px-8 pt-20 pb-24 md:pt-28 md:pb-32 grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
         {/* Copy */}
-        <div className="lg:col-span-7 text-center lg:text-left animate-fade-up">
+        <div className="lg:col-span-7 text-center animate-fade-up">
           <LiveBadge className="mb-7">Paying top dollar in West Covina</LiveBadge>
 
           <h1 className="font-display text-5xl sm:text-7xl lg:text-[110px] leading-[0.88] uppercase tracking-tighter text-balance">
@@ -47,7 +47,7 @@ export const Hero = ({ onPrimary }: HeroProps) => {
             <span className="text-primary font-semibold">Instant Cash</span>.
           </p>
 
-<div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+<div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={onPrimary}
               className="group inline-flex items-center justify-center gap-3 bg-grad-red text-white px-9 py-5 uppercase font-bold tracking-widest text-base hover:shadow-red transition-all animate-float"
@@ -64,7 +64,7 @@ export const Hero = ({ onPrimary }: HeroProps) => {
           </div>
 
           {/* Social Icons */}
-          <div className="mt-8 flex items-center gap-4 justify-center lg:justify-start">
+          <div className="mt-8 flex items-center gap-4 justify-center">
             <a
             href="https://www.instagram.com/techbuyer/"
               target="_blank"
