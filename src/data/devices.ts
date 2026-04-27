@@ -754,14 +754,15 @@ export function compareTablets(a: Device, b: Device): number {
 }
 
 export type Condition = {
-  id: "flawless" | "good" | "fair" | "broken";
+  id: "sealed" | "flawless" | "good" | "fair" | "broken";
   label: string;
   blurb: string;
 };
 
 export const CONDITIONS: Condition[] = [
-  { id: "flawless", label: "Flawless",         blurb: "Like new. No scratches, fully functional." },
-  { id: "good",     label: "Good",             blurb: "Minor wear, screen perfect, all features work." },
-  { id: "fair",     label: "Fair",             blurb: "Visible wear or small chips, but works fine." },
-  { id: "broken",   label: "Cracked / Broken", blurb: "Cracked screen, dents, or partial function." },
+  { id: "sealed",   label: "Brand New / Sealed", blurb: "Unopened in original sealed box." },
+  { id: "flawless", label: "Flawless",           blurb: "Like new. No scratches, fully functional." },
+  { id: "good",     label: "Good",               blurb: "Minor wear, screen perfect, all features work." },
+  { id: "fair",     label: "Fair",               blurb: "Visible wear or small chips, but works fine." },
+  { id: "broken",   label: "Cracked / Broken",   blurb: "Cracked screen, dents, or partial function." },
 ];
