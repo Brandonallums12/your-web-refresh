@@ -18,7 +18,7 @@ export const Header = ({ onCTA, onLogoClick }: HeaderProps) => {
         <nav className="hidden md:flex items-center gap-9 text-[13px] font-semibold uppercase tracking-widest text-silver-300">
           <a href="#how" className="hover:text-primary transition-colors">How it works</a>
           <a href="#reviews" className="hover:text-primary transition-colors">Reviews</a>
-          <a href="#visit" className="hover:text-primary transition-colors">Visit us</a>
+          <a href="#visit" className="hover:text-primary transition-colors">{"\n"}</a>
         </nav>
 
         <div className="flex items-center gap-3">
