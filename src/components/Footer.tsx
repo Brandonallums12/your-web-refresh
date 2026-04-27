@@ -51,7 +51,7 @@ export const Footer = ({ onCTA: _onCTA }: FooterProps) => {
       <div className="border-t border-border">
         <div className="mx-auto max-w-7xl px-5 md:px-8 py-6 flex flex-col md:flex-row justify-between items-center gap-3 text-xs font-mono uppercase tracking-widest text-silver-500">
           <span>© {new Date().getFullYear()} Techbuyer · West Covina, CA</span>
-          <span>Certified data destruction included</span>
+          <span></span>
         </div>
       </div>
     </footer>
