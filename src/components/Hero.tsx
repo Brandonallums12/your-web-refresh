@@ -1,5 +1,6 @@
 import { ArrowRight, ShieldCheck, Zap, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { LiveBadge } from "./LiveBadge";
 
 
@@ -8,11 +9,24 @@ interface HeroProps {
 }
 
 export const Hero = ({ onPrimary }: HeroProps) => {
+  const [scrollY, setScrollY] = useState(0);
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <section className="relative overflow-hidden bg-grad-hero">
       {/* grid noise + glow */}
       <div className="absolute inset-0 grid-noise opacity-40 pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-primary/20 blur-[140px] rounded-full pointer-events-none" />
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-primary/20 blur-[140px] rounded-full pointer-events-none motion-reduce:!transform-none"
+        style={{
+          transform: `translate(-50%, calc(-50% + ${scrollY * 0.25}px)) scale(${1 + Math.min(scrollY, 600) * 0.0004})`,
+          transition: "transform 120ms linear",
+        }}
+      />
 
       <div className="relative mx-auto max-w-7xl px-5 md:px-8 pt-20 pb-24 md:pt-28 md:pb-32 grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
         {/* Copy */}
