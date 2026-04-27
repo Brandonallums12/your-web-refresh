@@ -25,6 +25,12 @@ export const Footer = ({ onCTA: _onCTA }: FooterProps) => {
             West Covina's go-to spot for fair, fast cash for used phones. Independently owned and
             run by people who actually know hardware.
           </p>
+          <a 
+            href="mailto:techbuyer@webuyphoneswestcovina.com" 
+            className="mt-4 inline-block text-silver-300 hover:text-primary transition-colors font-mono text-sm"
+          >
+            techbuyer@webuyphoneswestcovina.com
+          </a>
         </Reveal>
 
         <Reveal direction="right" delay={120} className="md:col-span-4 md:pl-10">
