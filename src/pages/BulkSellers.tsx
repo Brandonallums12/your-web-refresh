@@ -76,7 +76,7 @@ const BulkSellers = () => {
     setSubmitting(true);
     try {
       const response = await fetch(
-        "https://services.leadconnectorhq.com/hooks/UKwiVc7EIubETPjXjzKc/webhook-trigger/aa9d73c2-bf27-45d1-9880-efc2197db64c",
+        "https://mcp.zapier.com/api/v1/connect?token=NTNhOGMzNmYtN2FjNC00OWRkLThjY2EtNmI1YWJmMDA0MGFmOmVFTk5CSTkxWHd6emZXZUlMaUt0dThVdUZKZmlaTEN2cGl5blJKYUh5QnM9",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
