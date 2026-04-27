@@ -6,6 +6,7 @@ import { Reviews } from "@/components/Reviews";
 import { Footer } from "@/components/Footer";
 import { QuoteForm, type QuoteSubmission } from "@/components/QuoteForm";
 import { Confirmation } from "@/components/Confirmation";
+import { ScrollProgress } from "@/components/ScrollProgress";
 
 type Route = "home" | "quote" | "done";
 
@@ -27,6 +28,7 @@ const Index = () => {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
+      <ScrollProgress />
       <Header onCTA={goQuote} onLogoClick={goHome} />
       {route === "home" && (
         <>
