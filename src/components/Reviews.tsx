@@ -41,7 +41,7 @@ const REVIEWS = [
   {
     name: "Sofia G.",
     city: "Pasadena, CA",
-    body: "They beat ecoATM by almost $200 on my Pixel 8 Pro. Friendly staff, no haggling games. I'll be back.",
+    body: "They beat the kiosk by almost $200 on my Pixel 8 Pro. Friendly staff, no haggling games. I'll be back.",
     rating: 5,
     avatar: "SG",
   },
