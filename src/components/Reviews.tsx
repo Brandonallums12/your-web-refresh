@@ -81,7 +81,7 @@ export const Reviews = () => {
               <div className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-4">
               </div>
               <h2 className="font-display text-4xl md:text-6xl uppercase tracking-tighter text-balance max-w-2xl">
-                Real sellers, <span className="text-primary">real cash.</span>
+                Real sellers, <span className="text-primary text-4xl">REAL TRANSACTIONS.</span>
               </h2>
             </div>
           </Reveal>
