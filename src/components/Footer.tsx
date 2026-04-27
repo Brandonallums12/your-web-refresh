@@ -1,3 +1,5 @@
+import { Reveal } from "./Reveal";
+
 interface FooterProps {
   onCTA?: () => void;
 }
@@ -9,7 +11,7 @@ export const Footer = ({ onCTA: _onCTA }: FooterProps) => {
 
       {/* Main footer */}
       <div className="mx-auto max-w-7xl px-5 md:px-8 py-16 grid md:grid-cols-12 gap-10 md:divide-x md:divide-border">
-        <div className="md:col-span-8 md:pr-10">
+        <Reveal direction="left" className="md:col-span-8 md:pr-10">
           <div className="flex items-center gap-2.5 mb-5">
             <div className="size-9 bg-grad-red shadow-red flex items-center justify-center">
               <span className="font-display text-white text-base">T</span>
@@ -22,9 +24,9 @@ export const Footer = ({ onCTA: _onCTA }: FooterProps) => {
             West Covina's go-to spot for fair, fast cash for used phones. Independently owned and
             run by people who actually know hardware.
           </p>
-        </div>
+        </Reveal>
 
-        <div className="md:col-span-4 md:pl-10">
+        <Reveal direction="right" delay={120} className="md:col-span-4 md:pl-10">
           <div className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-5">
             // Quick links
           </div>
@@ -34,7 +36,7 @@ export const Footer = ({ onCTA: _onCTA }: FooterProps) => {
             
             <li><a href="#" className="hover:text-primary transition-colors">Privacy</a></li>
           </ul>
-        </div>
+        </Reveal>
       </div>
 
 
