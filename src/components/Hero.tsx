@@ -32,13 +32,18 @@ export const Hero = ({ onPrimary }: HeroProps) => {
             <span className="text-primary font-semibold">instant cash</span>.
           </p>
 
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+<div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
             <button
               onClick={onPrimary}
               className="group inline-flex items-center justify-center gap-3 bg-grad-red text-white px-9 py-5 uppercase font-bold tracking-widest text-base hover:shadow-red transition-all"
             >
               Get Instant Quote
               <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+            <button
+              className="group inline-flex items-center justify-center gap-3 border-2 border-silver-700 text-white px-9 py-5 uppercase font-bold tracking-widest text-base hover:border-primary hover:text-primary transition-all"
+            >
+              Bulk Sellers
             </button>
           </div>
 
