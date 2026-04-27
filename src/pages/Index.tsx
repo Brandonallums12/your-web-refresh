@@ -24,7 +24,28 @@ const Index = () => {
 
   const goQuote = () => { setRoute("quote"); window.scrollTo({ top: 0, behavior: "smooth" }); };
   const goHome = () => { setRoute("home"); setConfirmed(null); window.scrollTo({ top: 0, behavior: "smooth" }); };
-  const onSubmit = (d: QuoteSubmission) => { setConfirmed(d); setRoute("done"); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const onSubmit = async (d: QuoteSubmission) => {
+    // Send to Zapier webhook
+    try {
+      await fetch(
+        "https://mcp.zapier.com/api/v1/connect?token=NTNhOGMzNmYtN2FjNC00OWRkLThjY2EtNmI1YWJmMDA0MGFmOmVFTk5CSTkxWHd6emZXZUlMaUt0dThVdUZKZmlaTEN2cGl5blJKYUh5QnM9",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...d,
+            source: "quote-form",
+            submittedAt: new Date().toISOString(),
+          }),
+        }
+      );
+    } catch (err) {
+      console.error("Quote submission webhook failed:", err);
+    }
+    setConfirmed(d);
+    setRoute("done");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <main className="min-h-screen bg-background text-foreground">
