@@ -1,4 +1,5 @@
 import { ClipboardCheck, Store, Banknote } from "lucide-react";
+import { Reveal } from "./Reveal";
 
 const STEPS = [
   {
@@ -26,15 +27,16 @@ export const Steps = () => {
     <section id="how" className="relative py-24 md:py-32 px-5 md:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="inline-block font-mono text-xs uppercase tracking-[0.3em] text-primary mb-4">
-            // The Process
-          </div>
-          <h2 className="font-display text-4xl md:text-6xl uppercase tracking-tighter text-balance">
-            Three steps. <span className="text-stroke-red">No catch.</span>
-          </h2>
-          <p className="mt-5 text-silver-400 text-lg text-pretty">
-            {"\n"}
-          </p>
+          <Reveal direction="left">
+            <div className="inline-block font-mono text-xs uppercase tracking-[0.3em] text-primary mb-4">
+              // The Process
+            </div>
+          </Reveal>
+          <Reveal direction="right" delay={80}>
+            <h2 className="font-display text-4xl md:text-6xl uppercase tracking-tighter text-balance">
+              Three steps. <span className="text-stroke-red">No catch.</span>
+            </h2>
+          </Reveal>
         </div>
 
         <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-4 relative">
@@ -45,27 +47,26 @@ export const Steps = () => {
             const Icon = s.icon;
             const featured = i === 2;
             return (
-              <div
-                key={s.n}
-                className="relative bg-surface p-1 border border-border hover:border-primary/40 transition-colors group"
-              >
-                <div className="bg-background/60 h-full p-3 sm:p-6 md:p-8 flex flex-col">
-                  <div className="flex items-start justify-between mb-4 md:mb-8">
-                    <div
-                      className="size-10 sm:size-14 md:size-16 border border-silver-600/60 bg-black text-silver-200 flex items-center justify-center font-mono text-sm sm:text-lg md:text-xl font-bold"
-                    >
-                      {s.n}
+              <Reveal key={s.n} delay={i * 140} className="relative">
+                <div className="relative bg-surface p-1 border border-border hover:border-primary/40 transition-colors group h-full">
+                  <div className="bg-background/60 h-full p-3 sm:p-6 md:p-8 flex flex-col">
+                    <div className="flex items-start justify-between mb-4 md:mb-8">
+                      <Reveal direction="scale" delay={i * 140 + 200} duration={500}>
+                        <div className="size-10 sm:size-14 md:size-16 border border-silver-600/60 bg-black text-silver-200 flex items-center justify-center font-mono text-sm sm:text-lg md:text-xl font-bold">
+                          {s.n}
+                        </div>
+                      </Reveal>
+                      <Icon
+                        className={`size-4 sm:size-6 md:size-7 ${featured ? "text-primary" : "text-silver-500"} group-hover:text-primary transition-colors`}
+                        strokeWidth={1.5}
+                      />
                     </div>
-                    <Icon
-                      className={`size-4 sm:size-6 md:size-7 ${featured ? "text-primary" : "text-silver-500"} group-hover:text-primary transition-colors`}
-                      strokeWidth={1.5}
-                    />
-                  </div>
 
-                  <h3 className="font-display text-sm sm:text-xl md:text-2xl uppercase tracking-tight mb-2 md:mb-3">{s.title}</h3>
-                  <p className="text-silver-400 leading-relaxed text-pretty text-xs sm:text-sm md:text-base">{s.body}</p>
+                    <h3 className="font-display text-sm sm:text-xl md:text-2xl uppercase tracking-tight mb-2 md:mb-3">{s.title}</h3>
+                    <p className="text-silver-400 leading-relaxed text-pretty text-xs sm:text-sm md:text-base">{s.body}</p>
+                  </div>
                 </div>
-              </div>
+              </Reveal>
             );
           })}
         </div>
@@ -73,3 +74,4 @@ export const Steps = () => {
     </section>
   );
 };
+
