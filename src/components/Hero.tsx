@@ -1,4 +1,5 @@
 import { ArrowRight, ShieldCheck, Zap, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
 import { LiveBadge } from "./LiveBadge";
 
 
@@ -40,11 +41,12 @@ export const Hero = ({ onPrimary }: HeroProps) => {
               Get Instant Quote
               <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform" />
             </button>
-            <button
+            <Link
+              to="/bulk-sellers"
               className="group inline-flex items-center justify-center gap-3 border-2 border-silver-700 text-white px-9 py-5 uppercase font-bold tracking-widest text-base hover:border-primary hover:text-primary transition-all"
             >
               Bulk Sellers
-            </button>
+            </Link>
           </div>
 
           {/* Social Icons */}
