@@ -44,7 +44,7 @@ export const Hero = ({ onPrimary }: HeroProps) => {
             We buy <span className="text-white font-semibold">iPhones</span>,{" "}
             <span className="text-white font-semibold">Samsungs</span>, and{" "}
             <span className="text-white font-semibold">more</span> for{" "}
-            <span className="text-primary font-semibold">instant cash</span>.
+            <span className="text-primary font-semibold">Instant Cash</span>.
           </p>
 
 <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
