@@ -106,7 +106,7 @@ const BulkSellers = () => {
             Selling <span className="text-white font-semibold">5+ devices</span> at a time?
             We offer <span className="text-primary font-semibold">Special Pricing</span> beyond
             our standard quotes. We'd love to buy your lot and build a long-term relationship
-            with you.
+            with you — and yes, we <span className="text-white font-semibold">accept shipped lots</span> too.
           </p>
         </div>
 
