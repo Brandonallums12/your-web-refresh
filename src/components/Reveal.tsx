@@ -10,8 +10,6 @@ interface RevealProps {
   delay?: number;
   /** Animation duration in ms. */
   duration?: number;
-  /** Element tag (default div). */
-  as?: "div" | "section" | "article" | "header" | "footer" | "h1" | "h2" | "h3" | "p" | "span" | "li";
   className?: string;
   style?: CSSProperties;
 }
@@ -30,7 +28,6 @@ export const Reveal = ({
   direction = "up",
   delay = 0,
   duration = 700,
-  as: Tag = "div",
   className = "",
   style,
 }: RevealProps) => {
@@ -46,8 +43,7 @@ export const Reveal = ({
   };
 
   return (
-    // @ts-expect-error - dynamic tag
-    <Tag
+    <div
       ref={ref}
       style={merged}
       className={`motion-reduce:transition-none motion-reduce:transform-none motion-reduce:opacity-100 ${
@@ -55,6 +51,6 @@ export const Reveal = ({
       } ${className}`}
     >
       {children}
-    </Tag>
+    </div>
   );
 };
