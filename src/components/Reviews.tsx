@@ -141,6 +141,8 @@ export const Reviews = () => {
           })}
         </div>
         </Reveal>
+
+        {/* Pagination dots */}
         <div className="flex justify-center gap-2 mt-8">
           {Array.from({ length: pageCount }).map((_, p) => (
             <button
