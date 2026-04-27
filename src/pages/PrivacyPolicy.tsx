@@ -16,7 +16,7 @@ const PrivacyPolicy = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const updated = "April 2026";
+  const updated = "April 26, 2026";
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -43,148 +43,101 @@ const PrivacyPolicy = () => {
 
       <article className="mx-auto max-w-3xl px-5 md:px-8 py-16 md:py-20 space-y-10 text-silver-200 leading-relaxed">
         <section>
-          <p className="text-lg text-pretty">
-            Techbuyer ("we", "us", "our") is an independently owned device buyback business based in
-            West Covina, California. We respect your privacy and are committed to protecting any
-            information you share with us when you request a quote, sell us a device, or visit our
-            site.
+          <h2 className="font-display text-2xl md:text-3xl uppercase tracking-tight mb-4 text-white">
+            1. Introduction
+          </h2>
+          <p>
+            Welcome to Techbuyer. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services. We respect your privacy and are committed to protecting your personal information.
           </p>
         </section>
 
         <section>
           <h2 className="font-display text-2xl md:text-3xl uppercase tracking-tight mb-4 text-white">
-            1. Information we collect
+            2. Information Collection
           </h2>
+          <p className="mb-4">
+            We collect information that you provide to us directly, such as when you create an account, make a purchase, or communicate with us. This information may include your name, email address, phone number, shipping address, and payment information.
+          </p>
+          <p>
+            We also automatically collect certain information when you visit our website, such as your IP address, browser type, operating system, referring URLs, and information about your interactions with our website.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-display text-2xl md:text-3xl uppercase tracking-tight mb-4 text-white">
+            3. Use of Information
+          </h2>
+          <p className="mb-4">The information we collect is used for various purposes, including to:</p>
           <ul className="list-disc pl-6 space-y-2">
-            <li>
-              <span className="text-white">Contact details</span> you submit through our quote form
-              — name, phone number, and (optionally) email.
-            </li>
-            <li>
-              <span className="text-white">Device details</span> — make, model, storage, carrier,
-              condition, and IMEI/serial when applicable.
-            </li>
-            <li>
-              <span className="text-white">Transaction details</span> — payout amount, payment
-              method, and any signed receipts or data-wipe certificates.
-            </li>
-            <li>
-              <span className="text-white">Basic site analytics</span> — anonymous usage data such as
-              pages visited and device type, used only to improve the site.
-            </li>
+            <li>Provide, operate, and maintain our website and services</li>
+            <li>Improve, personalize, and expand our website and services</li>
+            <li>Understand and analyze how you use our website and services</li>
+            <li>Develop new products, services, features, and functionality</li>
+            <li>Communicate with you, either directly or through one of our partners, for customer service, to provide you with updates and other information relating to the website, and for marketing and promotional purposes</li>
+            <li>Process your transactions and send you related information, including confirmations and invoices</li>
+            <li>Find and prevent fraud</li>
           </ul>
         </section>
 
         <section>
           <h2 className="font-display text-2xl md:text-3xl uppercase tracking-tight mb-4 text-white">
-            2. How we use your information
+            4. Sharing of Information
           </h2>
-          <ul className="list-disc pl-6 space-y-2">
-            <li>To prepare and send you a personalized cash quote.</li>
-            <li>To coordinate a local meetup or shipping for your device.</li>
-            <li>To verify device ownership and confirm devices are not reported lost or stolen.</li>
-            <li>To complete payment and keep transaction records as required by law.</li>
-            <li>To respond to your questions and follow up on your offer.</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2 className="font-display text-2xl md:text-3xl uppercase tracking-tight mb-4 text-white">
-            3. Device data &amp; certified wipes
-          </h2>
+          <p className="mb-4">
+            We may share your information with third-party service providers that perform services for us or on our behalf, including payment processing, data analysis, email delivery, hosting services, customer service, and marketing assistance.
+          </p>
           <p>
-            Every device we purchase is securely wiped before resale. We do not access, copy, or
-            retain any personal data stored on your device. For phones and tablets, we recommend
-            signing out of all accounts (iCloud, Google, Samsung) and performing a factory reset
-            before handoff. We can assist with this on the spot.
+            We may also share your information if required to do so by law or in response to valid requests by public authorities (e.g., a court or a government agency).
           </p>
         </section>
 
         <section>
           <h2 className="font-display text-2xl md:text-3xl uppercase tracking-tight mb-4 text-white">
-            4. How we share your information
+            5. Third-Party Websites
           </h2>
           <p>
-            We do <span className="text-white">not</span> sell or rent your personal information.
-            We only share information when:
-          </p>
-          <ul className="list-disc pl-6 space-y-2 mt-3">
-            <li>Required by law (e.g., law enforcement requests, tax records).</li>
-            <li>
-              Needed to verify a device's status with carrier or manufacturer databases (such as
-              IMEI checks).
-            </li>
-            <li>
-              Working with payment processors (Zelle, etc.) to complete your payout — only the
-              minimum information required.
-            </li>
-          </ul>
-        </section>
-
-        <section>
-          <h2 className="font-display text-2xl md:text-3xl uppercase tracking-tight mb-4 text-white">
-            5. Data retention
-          </h2>
-          <p>
-            Quote requests that don't lead to a sale are typically deleted within 90 days.
-            Transaction records (receipts, IMEIs, payout details) are retained as long as required
-            by California state and federal recordkeeping laws.
+            Our website may contain links to third-party websites that are not operated by us. If you click on a third-party link, you will be directed to that third party's site. We strongly advise you to review the Privacy Policy of every site you visit.
           </p>
         </section>
 
         <section>
           <h2 className="font-display text-2xl md:text-3xl uppercase tracking-tight mb-4 text-white">
-            6. Your rights
+            6. Security of Your Information
           </h2>
           <p>
-            California residents have rights under the CCPA, including the right to know what
-            personal information we hold, request deletion, and opt out of any sale of personal
-            information (we do not sell personal information). To exercise these rights, contact us
-            using the information below.
+            We use administrative, technical, and physical security measures to help protect your personal information. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that despite our efforts, no security measures are perfect or impenetrable, and no method of data transmission can be guaranteed against any interception or other type of misuse.
           </p>
         </section>
 
         <section>
           <h2 className="font-display text-2xl md:text-3xl uppercase tracking-tight mb-4 text-white">
-            7. Security
+            7. Children's Privacy
           </h2>
           <p>
-            We use reasonable physical, administrative, and technical safeguards to protect your
-            information. However, no system is 100% secure. If we ever become aware of a breach
-            affecting your data, we will notify you as required by law.
+            Our website is not intended for children under the age of 13. We do not knowingly collect personally identifiable information from children under 13. If we become aware that we have collected personal information from children under 13, we take steps to remove that information from our servers.
           </p>
         </section>
 
         <section>
           <h2 className="font-display text-2xl md:text-3xl uppercase tracking-tight mb-4 text-white">
-            8. Children's privacy
+            8. Changes to This Privacy Policy
           </h2>
           <p>
-            Our services are not directed to anyone under 18. We do not knowingly collect
-            information from minors. Sellers must be 18 or older with valid ID.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="font-display text-2xl md:text-3xl uppercase tracking-tight mb-4 text-white">
-            9. Changes to this policy
-          </h2>
-          <p>
-            We may update this policy from time to time. Material changes will be reflected by an
-            updated "Last updated" date at the top of this page.
+            We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. We will let you know via email and/or a prominent notice on our website.
           </p>
         </section>
 
         <section className="border-t border-border pt-8">
           <h2 className="font-display text-2xl md:text-3xl uppercase tracking-tight mb-4 text-white">
-            10. Contact us
+            9. Contact Us
           </h2>
           <p>
-            Questions about this policy or a request about your information? Reach out and we'll
-            respond promptly.
+            If you have any questions about this Privacy Policy, please contact us at:
           </p>
           <div className="mt-4 font-mono text-sm text-silver-300">
-            Techbuyer · West Covina, CA
+            <a href="mailto:techbuyer@webuyphoneswestcovina.com" className="text-primary hover:underline">
+              techbuyer@webuyphoneswestcovina.com
+            </a>
           </div>
         </section>
 
