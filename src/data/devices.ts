@@ -107,6 +107,10 @@ export const DEVICES: Device[] = [
   { id: "zfl3",     brand: "Samsung", type: "Phone", model: "Galaxy Z Flip 3" },
 
   // ===== Google Pixel phones (last ~5 years) =====
+  { id: "p10pf",  brand: "Google", type: "Phone", model: "Pixel 10 Pro Fold" },
+  { id: "p10pxl", brand: "Google", type: "Phone", model: "Pixel 10 Pro XL" },
+  { id: "p10p",   brand: "Google", type: "Phone", model: "Pixel 10 Pro" },
+  { id: "p10",    brand: "Google", type: "Phone", model: "Pixel 10" },
   { id: "p9pf",   brand: "Google", type: "Phone", model: "Pixel 9 Pro Fold" },
   { id: "p9pxl",  brand: "Google", type: "Phone", model: "Pixel 9 Pro XL" },
   { id: "p9p",    brand: "Google", type: "Phone", model: "Pixel 9 Pro" },
