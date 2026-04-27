@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Reveal } from "./Reveal";
 
 interface FooterProps {
@@ -34,7 +35,7 @@ export const Footer = ({ onCTA: _onCTA }: FooterProps) => {
             <li><a href="#how" className="hover:text-primary transition-colors">How it works</a></li>
             <li><a href="#reviews" className="hover:text-primary transition-colors">Reviews</a></li>
             
-            <li><a href="#" className="hover:text-primary transition-colors">Privacy</a></li>
+            <li><Link to="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
           </ul>
         </Reveal>
       </div>
