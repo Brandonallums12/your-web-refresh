@@ -74,12 +74,3 @@ export const Hero = ({ onPrimary }: HeroProps) => {
 
     </section>
   );
-};
-
-        </div>
-
-      </div>
-
-    </section>
-  );
-};
