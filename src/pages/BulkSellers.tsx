@@ -103,8 +103,10 @@ const BulkSellers = () => {
             Bulk <span className="text-primary">Sellers</span>
           </h1>
           <p className="mt-5 text-lg text-silver-200 max-w-xl mx-auto text-pretty">
-            Selling 10+ devices? Drop your info and our buyer will contact you with a
-            custom offer for your lot.
+            Selling <span className="text-white font-semibold">5+ devices</span> at a time?
+            We offer <span className="text-primary font-semibold">special pricing</span> beyond
+            our standard quotes. We'd love to buy your lot and build a long-term relationship
+            with you.
           </p>
         </div>
 
