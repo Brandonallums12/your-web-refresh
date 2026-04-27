@@ -31,7 +31,7 @@ export const Footer = ({ onCTA: _onCTA }: FooterProps) => {
           <ul className="space-y-3 text-silver-200">
             <li><a href="#how" className="hover:text-primary transition-colors">How it works</a></li>
             <li><a href="#reviews" className="hover:text-primary transition-colors">Reviews</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors">Data wipe policy</a></li>
+            
             <li><a href="#" className="hover:text-primary transition-colors">Privacy</a></li>
           </ul>
         </div>
