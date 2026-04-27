@@ -47,11 +47,11 @@ export const Steps = () => {
             const Icon = s.icon;
             const featured = i === 2;
             return (
-              <Reveal key={s.n} delay={i * 140} className="relative">
+              <Reveal key={s.n} delay={i * 220} className="relative">
                 <div className="relative bg-surface p-1 border border-border hover:border-primary/40 transition-colors group h-full">
                   <div className="bg-background/60 h-full p-3 sm:p-6 md:p-8 flex flex-col">
                     <div className="flex items-start justify-between mb-4 md:mb-8">
-                      <Reveal direction="scale" delay={i * 140 + 200} duration={500}>
+                      <Reveal direction="scale" delay={i * 220 + 350} duration={800}>
                         <div className="size-10 sm:size-14 md:size-16 border border-silver-600/60 bg-black text-silver-200 flex items-center justify-center font-mono text-sm sm:text-lg md:text-xl font-bold">
                           {s.n}
                         </div>

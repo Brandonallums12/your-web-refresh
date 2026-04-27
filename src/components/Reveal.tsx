@@ -27,7 +27,7 @@ export const Reveal = ({
   children,
   direction = "up",
   delay = 0,
-  duration = 700,
+  duration = 1100,
   className = "",
   style,
 }: RevealProps) => {
