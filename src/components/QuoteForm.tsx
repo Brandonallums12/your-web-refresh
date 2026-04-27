@@ -29,6 +29,7 @@ export type QuoteSubmission = {
   name: string;
   phone: string;
   email: string;
+  wantsShipping?: boolean;
 };
 
 // ---------- Zod schemas ----------
@@ -90,6 +91,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [otherDescription, setOtherDescription] = useState("");
+  const [wantsShipping, setWantsShipping] = useState(false);
   const [contactErrors, setContactErrors] = useState<{ name?: string; phone?: string; email?: string }>({});
 
   // Brands available for the chosen category (derived from data)
@@ -190,6 +192,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
       name: name.trim(),
       phone: phone.trim(),
       email: email.trim(),
+      wantsShipping,
     });
   };
 
@@ -761,6 +764,21 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                   {contactErrors.email && <p className="text-primary text-xs mt-1 font-mono">{contactErrors.email}</p>}
                 </Field>
               </div>
+
+              <label className="mt-5 flex items-start gap-3 cursor-pointer p-4 border border-border bg-background/40 hover:border-primary/50 transition-colors">
+                <input
+                  type="checkbox"
+                  checked={wantsShipping}
+                  onChange={(e) => setWantsShipping(e.target.checked)}
+                  className="mt-0.5 size-5 accent-primary cursor-pointer"
+                />
+                <span className="text-sm text-silver-200">
+                  <span className="block font-mono text-[10px] uppercase tracking-widest text-primary mb-1">
+                    // Shipping option
+                  </span>
+                  I'd like to ship my device instead of dropping it off in West Covina.
+                </span>
+              </label>
 
               <div className="flex justify-between mt-7">
                 <button
