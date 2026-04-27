@@ -48,6 +48,7 @@ const BulkSellers = () => {
     company: "",
     quantity: "",
     details: "",
+    shipping: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -79,7 +80,7 @@ const BulkSellers = () => {
         title: "Request received",
         description: "We'll reach out within 24 hours about your bulk lot.",
       });
-      setForm({ name: "", email: "", phone: "", company: "", quantity: "", details: "" });
+      setForm({ name: "", email: "", phone: "", company: "", quantity: "", details: "", shipping: false });
     }, 600);
   };
 
@@ -184,6 +185,22 @@ const BulkSellers = () => {
               <p className="mt-1.5 text-xs text-primary">{errors.details}</p>
             )}
           </div>
+
+          <label className="flex items-start gap-3 cursor-pointer group p-4 border border-silver-700 hover:border-primary/50 transition-colors bg-background/40">
+            <input
+              type="checkbox"
+              name="shipping"
+              checked={form.shipping}
+              onChange={(e) => setForm((f) => ({ ...f, shipping: e.target.checked }))}
+              className="mt-0.5 size-5 accent-primary cursor-pointer"
+            />
+            <span className="text-sm text-silver-200">
+              <span className="block font-mono text-xs uppercase tracking-widest text-primary mb-1">
+                // Shipping
+              </span>
+              I'd like to ship my devices instead of dropping them off in West Covina.
+            </span>
+          </label>
 
           <button
             type="submit"
