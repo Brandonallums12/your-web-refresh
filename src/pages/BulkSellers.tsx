@@ -74,14 +74,36 @@ const BulkSellers = () => {
     }
     setErrors({});
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
+    try {
+      const response = await fetch(
+        "https://services.leadconnectorhq.com/hooks/UKwiVc7EIubETPjXjzKc/webhook-trigger/aa9d73c2-bf27-45d1-9880-efc2197db64c",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...result.data,
+            shipping: form.shipping,
+            source: "bulk-sellers-form",
+            submittedAt: new Date().toISOString(),
+          }),
+        }
+      );
+      if (!response.ok) throw new Error(`Request failed: ${response.status}`);
       toast({
         title: "Request received",
         description: "We'll reach out within 24 hours about your bulk lot.",
       });
       setForm({ name: "", email: "", phone: "", company: "", quantity: "", details: "", shipping: false });
-    }, 600);
+    } catch (err) {
+      console.error("Bulk seller submission failed:", err);
+      toast({
+        title: "Submission failed",
+        description: "Please try again or contact us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
