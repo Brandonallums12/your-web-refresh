@@ -73,9 +73,9 @@ export const Reviews = () => {
   }, [pageCount]);
 
   return (
-    <section id="reviews" className="relative py-24 md:py-32 px-5 md:px-8 bg-surface/40 border-y border-border">
+    <section id="reviews" className="relative py-12 md:py-16 px-5 md:px-8 bg-surface/40 border-y border-border">
       <div className="mx-auto max-w-7xl">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8">
           <Reveal direction="left">
             <div>
               <div className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-4">
