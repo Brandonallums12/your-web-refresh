@@ -20,6 +20,8 @@ export const Hero = ({ onPrimary }: HeroProps) => {
     <section className="relative overflow-hidden bg-grad-hero">
       {/* grid noise + glow */}
       <div className="absolute inset-0 grid-noise opacity-40 pointer-events-none" />
+      <div className="absolute inset-0 grid-animated opacity-60 pointer-events-none" />
+      <div className="absolute inset-0 grid-scan overflow-hidden pointer-events-none" />
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-primary/20 blur-[140px] rounded-full pointer-events-none motion-reduce:!transform-none"
         style={{
