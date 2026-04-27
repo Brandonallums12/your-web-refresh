@@ -56,7 +56,7 @@ export const Hero = ({ onPrimary }: HeroProps) => {
               </svg>
             </a>
             <a
-              href="https://tiktok.com"
+              href="https://www.tiktok.com/@techbuyerr_"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center justify-center size-12 rounded-xl bg-silver-800/50 border border-silver-700/50 text-silver-300 hover:text-white hover:bg-primary/20 hover:border-primary/50 hover:scale-105 transition-all duration-300"
