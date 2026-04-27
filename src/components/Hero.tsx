@@ -50,14 +50,14 @@ export const Hero = ({ onPrimary }: HeroProps) => {
 <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
             <button
               onClick={onPrimary}
-              className="group inline-flex items-center justify-center gap-3 bg-grad-red text-white px-9 py-5 uppercase font-bold tracking-widest text-base hover:shadow-red transition-all"
+              className="group inline-flex items-center justify-center gap-3 bg-grad-red text-white px-9 py-5 uppercase font-bold tracking-widest text-base hover:shadow-red transition-all animate-float"
             >
               Get Instant Quote
               <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform" />
             </button>
             <Link
               to="/bulk-sellers"
-              className="group inline-flex items-center justify-center gap-3 border-2 border-silver-700 text-white px-9 py-5 uppercase font-bold tracking-widest text-base hover:border-primary hover:text-primary transition-all"
+              className="group inline-flex items-center justify-center gap-3 border-2 border-silver-700 text-white px-9 py-5 uppercase font-bold tracking-widest text-base hover:border-primary hover:text-primary transition-all animate-float-delayed"
             >
               Bulk Sellers
             </Link>
@@ -69,7 +69,7 @@ export const Hero = ({ onPrimary }: HeroProps) => {
             href="https://www.instagram.com/techbuyer/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center justify-center size-12 rounded-xl bg-silver-800/50 border border-silver-700/50 text-silver-300 hover:text-white hover:bg-primary/20 hover:border-primary/50 hover:scale-105 transition-all duration-300"
+              className="group flex items-center justify-center size-12 rounded-xl bg-silver-800/50 border border-silver-700/50 text-silver-300 hover:text-white hover:bg-primary/20 hover:border-primary/50 hover:scale-105 transition-all duration-300 animate-float"
               aria-label="Instagram"
             >
               <svg viewBox="0 0 24 24" className="size-5 fill-current">
@@ -80,7 +80,7 @@ export const Hero = ({ onPrimary }: HeroProps) => {
               href="https://www.tiktok.com/@techbuyerr_"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center justify-center size-12 rounded-xl bg-silver-800/50 border border-silver-700/50 text-silver-300 hover:text-white hover:bg-primary/20 hover:border-primary/50 hover:scale-105 transition-all duration-300"
+              className="group flex items-center justify-center size-12 rounded-xl bg-silver-800/50 border border-silver-700/50 text-silver-300 hover:text-white hover:bg-primary/20 hover:border-primary/50 hover:scale-105 transition-all duration-300 animate-float-delayed"
               aria-label="TikTok"
             >
               <svg viewBox="0 0 24 24" className="size-5 fill-current">
