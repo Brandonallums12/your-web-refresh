@@ -75,10 +75,11 @@ const BulkSellers = () => {
     setErrors({});
     setSubmitting(true);
     try {
-      const response = await fetch(
+      await fetch(
         "https://mcp.zapier.com/api/v1/connect?token=NTNhOGMzNmYtN2FjNC00OWRkLThjY2EtNmI1YWJmMDA0MGFmOmVFTk5CSTkxWHd6emZXZUlMaUt0dThVdUZKZmlaTEN2cGl5blJKYUh5QnM9",
         {
           method: "POST",
+          mode: "no-cors",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             ...result.data,
@@ -88,7 +89,6 @@ const BulkSellers = () => {
           }),
         }
       );
-      if (!response.ok) throw new Error(`Request failed: ${response.status}`);
       toast({
         title: "Request received",
         description: "We'll reach out within 24 hours about your bulk lot.",
