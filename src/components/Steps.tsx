@@ -24,9 +24,9 @@ const STEPS = [
 
 export const Steps = () => {
   return (
-    <section id="how" className="relative py-24 md:py-32 px-5 md:px-8">
+    <section id="how" className="relative py-12 md:py-16 px-5 md:px-8">
       <div className="mx-auto max-w-7xl">
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-10">
           <Reveal direction="left">
             <div className="inline-block font-mono text-xs uppercase tracking-[0.3em] text-primary mb-4">
               // The Process
