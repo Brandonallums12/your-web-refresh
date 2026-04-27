@@ -1,5 +1,6 @@
 import { Star, Quote } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Reveal } from "./Reveal";
 
 const REVIEWS = [
   {
@@ -75,21 +76,26 @@ export const Reviews = () => {
     <section id="reviews" className="relative py-24 md:py-32 px-5 md:px-8 bg-surface/40 border-y border-border">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
-          <div>
-            <div className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-4">
+          <Reveal direction="left">
+            <div>
+              <div className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-4">
+              </div>
+              <h2 className="font-display text-4xl md:text-6xl uppercase tracking-tighter text-balance max-w-2xl">
+                Real sellers, <span className="text-primary">real cash.</span>
+              </h2>
             </div>
-            <h2 className="font-display text-4xl md:text-6xl uppercase tracking-tighter text-balance max-w-2xl">
-              Real sellers, <span className="text-primary">real cash.</span>
-            </h2>
-          </div>
-          <div className="flex items-center gap-2 font-mono text-sm text-silver-300">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star key={i} className="size-5 text-primary fill-primary" />
-            ))}
-            <span className="ml-2">Verified Google reviews</span>
-          </div>
+          </Reveal>
+          <Reveal direction="right" delay={120}>
+            <div className="flex items-center gap-2 font-mono text-sm text-silver-300">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="size-5 text-primary fill-primary" />
+              ))}
+              <span className="ml-2">Verified Google reviews</span>
+            </div>
+          </Reveal>
         </div>
 
+        <Reveal delay={150}>
         {/* Fade carousel — 2 reviews per page */}
         <div className="relative min-h-[280px] md:min-h-[260px]">
           {Array.from({ length: pageCount }).map((_, p) => {
