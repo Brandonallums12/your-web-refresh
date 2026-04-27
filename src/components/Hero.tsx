@@ -74,3 +74,4 @@ export const Hero = ({ onPrimary }: HeroProps) => {
 
     </section>
   );
+};
