@@ -121,6 +121,14 @@
       linear-gradient(90deg, hsl(0 0% 100% / 0.03) 1px, transparent 1px);
     background-size: 48px 48px;
   }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+  .animate-float-delayed {
+    animation: float-delayed 5s ease-in-out infinite;
+    animation-delay: 1s;
+  }
 }
 
 @keyframes pulse-glow {
