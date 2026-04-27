@@ -30,7 +30,7 @@ export const Hero = ({ onPrimary }: HeroProps) => {
 
       <div className="relative mx-auto max-w-7xl px-5 md:px-8 pt-20 pb-24 md:pt-28 md:pb-32 grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
         {/* Copy */}
-        <div className="lg:col-span-7 text-center animate-fade-up">
+        <div className="lg:col-span-12 flex flex-col items-center text-center animate-fade-up">
           <LiveBadge className="mb-7">Paying top dollar in West Covina</LiveBadge>
 
           <h1 className="font-display text-5xl sm:text-7xl lg:text-[110px] leading-[0.88] uppercase tracking-tighter text-balance">
@@ -40,7 +40,7 @@ export const Hero = ({ onPrimary }: HeroProps) => {
             <span className="text-primary">.</span>
           </h1>
 
-          <p className="mt-7 text-xl md:text-2xl leading-relaxed text-silver-200 max-w-[56ch] mx-auto lg:mx-0 text-pretty font-light">
+          <p className="mt-7 text-xl md:text-2xl leading-relaxed text-silver-200 max-w-[56ch] mx-auto text-pretty font-light">
             We buy <span className="text-white font-semibold">iPhones</span>,{" "}
             <span className="text-white font-semibold">Samsungs</span>, and{" "}
             <span className="text-white font-semibold">more</span> for{" "}
