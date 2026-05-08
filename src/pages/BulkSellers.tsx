@@ -26,6 +26,10 @@ const BulkSellers = () => {
   const formRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (!formRef.current) return;
     formRef.current.innerHTML = FORM_HTML;
     const scripts = formRef.current.querySelectorAll("script");
