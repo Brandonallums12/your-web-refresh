@@ -1,21 +1,40 @@
-import { useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { LiveBadge } from "@/components/LiveBadge";
 
+const FORM_HTML = `<iframe
+  src="https://api.leadconnectorhq.com/widget/form/FSTNp5L5U1IKJRtxTSpo"
+  style="width:100%;height:557px;border:none;border-radius:3px"
+  id="inline-FSTNp5L5U1IKJRtxTSpo"
+  data-layout="{'id':'INLINE'}"
+  data-trigger-type="alwaysShow"
+  data-trigger-value=""
+  data-activation-type="alwaysActivated"
+  data-activation-value=""
+  data-deactivation-type="neverDeactivate"
+  data-deactivation-value=""
+  data-form-name="PhoneFlipping"
+  data-height="557"
+  data-layout-iframe-id="inline-FSTNp5L5U1IKJRtxTSpo"
+  data-form-id="FSTNp5L5U1IKJRtxTSpo"
+  title="PhoneFlipping"
+></iframe>
+<script src="https://link.msgsndr.com/js/form_embed.js"></script>`;
 
 const BulkSellers = () => {
+  const formRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const existing = document.getElementById("msgsndr-form-embed");
-    if (existing) return;
-    const script = document.createElement("script");
-    script.id = "msgsndr-form-embed";
-    script.src = "https://link.msgsndr.com/js/form_embed.js";
-    script.async = true;
-    document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
+    if (!formRef.current) return;
+    formRef.current.innerHTML = FORM_HTML;
+    const scripts = formRef.current.querySelectorAll("script");
+    scripts.forEach((oldScript) => {
+      const newScript = document.createElement("script");
+      newScript.src = oldScript.src;
+      newScript.async = true;
+      oldScript.replaceWith(newScript);
+    });
   }, []);
 
   return (
@@ -45,23 +64,7 @@ const BulkSellers = () => {
           </p>
         </div>
 
-        <iframe
-          src="https://api.leadconnectorhq.com/widget/form/FSTNp5L5U1IKJRtxTSpo"
-          style={{ width: "100%", height: "557px", border: "none", borderRadius: "3px" }}
-          id="inline-FSTNp5L5U1IKJRtxTSpo"
-          data-layout="{'id':'INLINE'}"
-          data-trigger-type="alwaysShow"
-          data-trigger-value=""
-          data-activation-type="alwaysActivated"
-          data-activation-value=""
-          data-deactivation-type="neverDeactivate"
-          data-deactivation-value=""
-          data-form-name="PhoneFlipping"
-          data-height="557"
-          data-layout-iframe-id="inline-FSTNp5L5U1IKJRtxTSpo"
-          data-form-id="FSTNp5L5U1IKJRtxTSpo"
-          title="PhoneFlipping"
-        />
+        <div ref={formRef} />
       </div>
     </main>
   );
