@@ -16,6 +16,7 @@ import {
   type DeviceType,
 } from "@/data/devices";
 import { toast } from "sonner";
+import { GHLFormEmbed } from "@/components/GHLFormEmbed";
 
 export type LockStatus = "clean" | "locked";
 
@@ -693,14 +694,28 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
           </div>
         )}
 
-        {/* STEP 2 — Contact (aesthetic only — custom form to be added) */}
+        {/* STEP 2 — Contact */}
         {step === 2 && device && condition && lockStatus && (
           <div className="bg-surface/60 backdrop-blur-md border border-border p-6 md:p-10 animate-fade-up grid md:grid-cols-5 gap-8">
             <div className="md:col-span-3">
-              <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tighter mb-2">Lock it in.</h2>
-              <p className="text-silver-400 mb-7">Drop your contact details below and we'll text you with your custom quote within minutes.</p>
+              <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-primary mb-3">
+                // Final step
+              </div>
+              <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tighter mb-3">
+                Lock it <span className="text-primary">in</span>.
+              </h2>
+              <p className="text-silver-400 mb-7 leading-relaxed">
+                Drop your contact details and we'll text your custom cash offer within minutes.
+              </p>
 
-              {/* CUSTOM FORM GOES HERE */}
+              <div className="bg-background/40 border border-border p-2 md:p-3">
+                <GHLFormEmbed
+                  formId="UJLDXEbOKHd3lKn7wenk"
+                  formName="PhoneFlipping Individual"
+                  height={539}
+                  onSubmitted={handleSubmit}
+                />
+              </div>
 
               <div className="mt-7">
                 <button
@@ -712,7 +727,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               </div>
             </div>
 
-            <aside className="md:col-span-2 bg-background/60 border border-primary/30 p-6 h-fit">
+            <aside className="md:col-span-2 bg-background/60 border border-primary/30 p-6 h-fit sticky top-6">
               <div className="text-[10px] font-bold uppercase tracking-widest text-silver-500 mb-3">// Your submission</div>
               <div className="font-display text-lg uppercase tracking-tight">
                 {isOther ? "Other device" : `${device.brand} ${device.model}`}
