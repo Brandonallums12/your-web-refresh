@@ -536,6 +536,9 @@ const IPAD_STORAGE: Record<string, Storage[]> = {
 };
 
 const SAMSUNG_PHONE_STORAGE: Record<string, Storage[]> = {
+  s26u: ["256 GB", "512 GB", "1 TB", "2 TB"],
+  s26plus: ["256 GB", "512 GB", "1 TB"],
+  s26: ["128 GB", "256 GB", "512 GB"],
   s25u: ["256 GB", "512 GB", "1 TB"],
   s25plus: ["256 GB", "512 GB"],
   s25: ["128 GB", "256 GB", "512 GB"],
