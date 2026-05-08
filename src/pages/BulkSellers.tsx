@@ -64,7 +64,7 @@ const BulkSellers = () => {
           </p>
         </div>
 
-        <div ref={formRef} />
+        <div ref={formRef} className="min-h-[636px]" />
       </div>
     </main>
   );
