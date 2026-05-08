@@ -376,7 +376,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             )}
 
             {brand && category && !isOther && series && (
-              <BoxRow label={`${series} — pick variant`}>
+              <BoxRow label={`${series} — pick variant`} autoScroll>
                 <div className="flex flex-wrap gap-2 mb-1">
                   <button
                     onClick={() => pickSeries("")}
