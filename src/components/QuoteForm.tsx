@@ -765,7 +765,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 };
 
 const BoxRow = ({ label, children, autoScroll }: { label: string; children: React.ReactNode; autoScroll?: boolean }) => {
-  const ref = React.useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (autoScroll && ref.current) {
       ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
