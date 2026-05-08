@@ -687,13 +687,11 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                 disabled={!condition || !lockStatus}
                 className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest hover:shadow-red transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none"
               >
-                Continue <ChevronRight className="size-4" />
+                Send my quote
               </button>
             </div>
           </div>
         )}
-
-        {/* STEP 2 — Contact */}
       </div>
     </section>
   );
