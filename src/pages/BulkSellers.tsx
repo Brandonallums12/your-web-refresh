@@ -5,6 +5,18 @@ import { LiveBadge } from "@/components/LiveBadge";
 
 
 const BulkSellers = () => {
+  useEffect(() => {
+    const existing = document.getElementById("msgsndr-form-embed");
+    if (existing) return;
+    const script = document.createElement("script");
+    script.id = "msgsndr-form-embed";
+    script.src = "https://link.msgsndr.com/js/form_embed.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   return (
     <main className="min-h-screen bg-grad-hero relative overflow-hidden">
