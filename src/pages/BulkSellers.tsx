@@ -32,7 +32,24 @@ const BulkSellers = () => {
           </p>
         </div>
 
-        <div className="min-h-[60vh]" />
+        <iframe
+          src="https://api.leadconnectorhq.com/widget/form/FSTNp5L5U1IKJRtxTSpo"
+          style={{ width: "100%", height: "557px", border: "none", borderRadius: "3px" }}
+          id="inline-FSTNp5L5U1IKJRtxTSpo"
+          data-layout="{'id':'INLINE'}"
+          data-trigger-type="alwaysShow"
+          data-trigger-value=""
+          data-activation-type="alwaysActivated"
+          data-activation-value=""
+          data-deactivation-type="neverDeactivate"
+          data-deactivation-value=""
+          data-form-name="PhoneFlipping"
+          data-height="557"
+          data-layout-iframe-id="inline-FSTNp5L5U1IKJRtxTSpo"
+          data-form-id="FSTNp5L5U1IKJRtxTSpo"
+          title="PhoneFlipping"
+        />
+        <script src="https://link.msgsndr.com/js/form_embed.js" />
       </div>
     </main>
   );
