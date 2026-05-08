@@ -259,7 +259,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
       }
     }
     setImeiError(null);
-    handleSubmit();
+    setStep(2);
   };
 
   return (
