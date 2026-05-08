@@ -694,49 +694,6 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
         )}
 
         {/* STEP 2 — Contact */}
-        {step === 2 && device && condition && lockStatus && (
-          <div className="bg-surface/60 backdrop-blur-md border border-border p-6 md:p-10 animate-fade-up grid md:grid-cols-5 gap-8">
-            <div className="md:col-span-3">
-              <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tighter mb-2">Lock it in.</h2>
-              <p className="text-silver-400 mb-7">We'll text you with your custom quote within minutes.</p>
-
-              <div className="mt-7">
-                <button
-                  onClick={handleSubmit}
-                  className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest hover:shadow-red transition-all"
-                >
-                  Send my quote
-                </button>
-              </div>
-            </div>
-
-            <aside className="md:col-span-2 bg-background/60 border border-primary/30 p-6 h-fit">
-              <div className="text-[10px] font-bold uppercase tracking-widest text-silver-500 mb-3">// Your submission</div>
-              <div className="font-display text-lg uppercase tracking-tight">
-                {isOther ? "Other device" : `${device.brand} ${device.model}`}
-              </div>
-              {isOther ? (
-                <div className="text-silver-300 text-sm mt-1 leading-relaxed">{otherDescription.trim() || "—"}</div>
-              ) : (
-                <div className="text-silver-300 text-sm mt-1">{storage} · {carrier}</div>
-              )}
-              <div className="text-silver-400 text-sm mt-1">Condition: {condition.label}</div>
-              <div className="text-silver-400 text-sm mb-5 inline-flex items-center gap-1.5 mt-1">
-                {lockStatus === "clean" ? (
-                  <><ShieldCheck className="size-3.5 text-primary" /> Clean / Unlocked</>
-                ) : (
-                  <><ShieldAlert className="size-3.5 text-primary" /> {isOther ? "Account-locked · pending check" : "IMEI provided · pending check"}</>
-                )}
-              </div>
-              <div className="border-t border-border pt-5">
-                <div className="text-xs uppercase tracking-widest text-silver-500 mb-2">Custom cash offer</div>
-                <div className="font-mono text-sm text-silver-200 leading-relaxed">
-                  Sent to your phone after submission.
-                </div>
-              </div>
-            </aside>
-          </div>
-        )}
       </div>
     </section>
   );
