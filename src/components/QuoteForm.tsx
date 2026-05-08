@@ -764,12 +764,20 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   );
 };
 
-const BoxRow = ({ label, children }: { label: string; children: React.ReactNode }) => (
-  <div className="mb-6 pb-6 border-b border-border last:border-0 last:mb-0 last:pb-0">
-    <div className="text-[10px] font-bold uppercase tracking-widest text-silver-500 mb-3">{label}</div>
-    {children}
-  </div>
-);
+const BoxRow = ({ label, children, autoScroll }: { label: string; children: React.ReactNode; autoScroll?: boolean }) => {
+  const ref = React.useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (autoScroll && ref.current) {
+      ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [autoScroll]);
+  return (
+    <div ref={ref} className="mb-6 pb-6 border-b border-border last:border-0 last:mb-0 last:pb-0 scroll-mt-24">
+      <div className="text-[10px] font-bold uppercase tracking-widest text-silver-500 mb-3">{label}</div>
+      {children}
+    </div>
+  );
+};
 
 const Chip = ({
   active,
