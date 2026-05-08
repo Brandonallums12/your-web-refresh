@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search, Tablet, Laptop, Gamepad2, Camera, Plane, HelpCircle, ShieldCheck, ShieldAlert } from "lucide-react";
 import { z } from "zod";
 import {
@@ -330,7 +330,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
             {/* Brand — only brands that make this category */}
             {category && !isOther && (
-              <BoxRow label="Brand">
+              <BoxRow label="Brand" autoScroll>
                 <div className="flex flex-wrap gap-2">
                   {availableBrands.map((b) => (
                     <Chip key={b} active={brand === b} onClick={() => pickBrand(b)}>
@@ -343,7 +343,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
             {/* Model — pick a series first, then a variant */}
             {brand && category && !isOther && !series && (
-              <BoxRow label="Model line">
+              <BoxRow label="Model line" autoScroll>
                 <div className="relative mb-4">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-silver-500" />
                   <input
@@ -376,7 +376,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             )}
 
             {brand && category && !isOther && series && (
-              <BoxRow label={`${series} — pick variant`}>
+              <BoxRow label={`${series} — pick variant`} autoScroll>
                 <div className="flex flex-wrap gap-2 mb-1">
                   <button
                     onClick={() => pickSeries("")}
@@ -414,7 +414,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
             {/* Storage */}
             {device && !isOther && (
-              <BoxRow label="Storage">
+              <BoxRow label="Storage" autoScroll>
                 {(device.type === "Tablet" || device.type === "Laptop" || device.type === "Console" || device.type === "Camera" || device.type === "Drone") && (
                   <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
                     // Default selected — change only if needed
@@ -432,7 +432,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
             {/* Carrier / Connectivity — laptops/consoles/cameras/drones skip; Wi-Fi-only tablets skip */}
             {storage && device && !isOther && device.type !== "Laptop" && device.type !== "Console" && device.type !== "Camera" && device.type !== "Drone" && !(device.type === "Tablet" && !tabletSupportsCellular(device)) && (
-              <BoxRow label={device.type === "Tablet" ? "Connectivity" : "Carrier"}>
+              <BoxRow label={device.type === "Tablet" ? "Connectivity" : "Carrier"} autoScroll>
                 {device.type === "Tablet" && (
                   <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
                     // Default: Wi-Fi only — change only if needed
@@ -764,12 +764,20 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   );
 };
 
-const BoxRow = ({ label, children }: { label: string; children: React.ReactNode }) => (
-  <div className="mb-6 pb-6 border-b border-border last:border-0 last:mb-0 last:pb-0">
-    <div className="text-[10px] font-bold uppercase tracking-widest text-silver-500 mb-3">{label}</div>
-    {children}
-  </div>
-);
+const BoxRow = ({ label, children, autoScroll }: { label: string; children: React.ReactNode; autoScroll?: boolean }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (autoScroll && ref.current) {
+      ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [autoScroll]);
+  return (
+    <div ref={ref} className="mb-6 pb-6 border-b border-border last:border-0 last:mb-0 last:pb-0 scroll-mt-24">
+      <div className="text-[10px] font-bold uppercase tracking-widest text-silver-500 mb-3">{label}</div>
+      {children}
+    </div>
+  );
+};
 
 const Chip = ({
   active,
