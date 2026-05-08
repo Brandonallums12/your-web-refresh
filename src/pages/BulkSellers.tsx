@@ -62,7 +62,6 @@ const BulkSellers = () => {
           data-form-id="FSTNp5L5U1IKJRtxTSpo"
           title="PhoneFlipping"
         />
-        </div>
       </div>
     </main>
   );
