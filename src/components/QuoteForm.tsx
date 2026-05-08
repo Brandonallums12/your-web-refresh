@@ -343,7 +343,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
             {/* Model — pick a series first, then a variant */}
             {brand && category && !isOther && !series && (
-              <BoxRow label="Model line">
+              <BoxRow label="Model line" autoScroll>
                 <div className="relative mb-4">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-silver-500" />
                   <input
