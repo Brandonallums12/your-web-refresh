@@ -432,7 +432,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
             {/* Carrier / Connectivity — laptops/consoles/cameras/drones skip; Wi-Fi-only tablets skip */}
             {storage && device && !isOther && device.type !== "Laptop" && device.type !== "Console" && device.type !== "Camera" && device.type !== "Drone" && !(device.type === "Tablet" && !tabletSupportsCellular(device)) && (
-              <BoxRow label={device.type === "Tablet" ? "Connectivity" : "Carrier"}>
+              <BoxRow label={device.type === "Tablet" ? "Connectivity" : "Carrier"} autoScroll>
                 {device.type === "Tablet" && (
                   <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
                     // Default: Wi-Fi only — change only if needed
