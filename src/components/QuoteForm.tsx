@@ -80,6 +80,11 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
   const [otherDescription, setOtherDescription] = useState("");
 
+  // Scroll to top on mount and whenever step changes so the user always starts at the top
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [step]);
+
   // Brands available for the chosen category (derived from data)
   const availableBrands = useMemo<Brand[]>(() => {
     if (!category) return [];
