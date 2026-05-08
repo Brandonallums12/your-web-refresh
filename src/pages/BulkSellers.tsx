@@ -1,110 +1,9 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Send, Package } from "lucide-react";
-import { z } from "zod";
-import { toast } from "@/hooks/use-toast";
+import { ArrowLeft } from "lucide-react";
 import { LiveBadge } from "@/components/LiveBadge";
 
-const bulkSellerSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .nonempty({ message: "Name is required" })
-    .max(100, { message: "Name must be less than 100 characters" }),
-  email: z
-    .string()
-    .trim()
-    .email({ message: "Invalid email address" })
-    .max(255, { message: "Email must be less than 255 characters" }),
-  phone: z
-    .string()
-    .trim()
-    .nonempty({ message: "Phone is required" })
-    .max(20, { message: "Phone must be less than 20 characters" }),
-  company: z
-    .string()
-    .trim()
-    .max(100, { message: "Company must be less than 100 characters" })
-    .optional()
-    .or(z.literal("")),
-  quantity: z
-    .string()
-    .trim()
-    .nonempty({ message: "Estimated quantity is required" })
-    .max(50, { message: "Quantity must be less than 50 characters" }),
-  details: z
-    .string()
-    .trim()
-    .max(1000, { message: "Details must be less than 1000 characters" })
-    .optional()
-    .or(z.literal("")),
-});
 
 const BulkSellers = () => {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    company: "",
-    quantity: "",
-    details: "",
-    shipping: false,
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [submitting, setSubmitting] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const result = bulkSellerSchema.safeParse(form);
-    if (!result.success) {
-      const fieldErrors: Record<string, string> = {};
-      result.error.issues.forEach((issue) => {
-        if (issue.path[0]) fieldErrors[String(issue.path[0])] = issue.message;
-      });
-      setErrors(fieldErrors);
-      toast({
-        title: "Please fix the errors below",
-        variant: "destructive",
-      });
-      return;
-    }
-    setErrors({});
-    setSubmitting(true);
-    try {
-      await fetch(
-        "https://mcp.zapier.com/api/v1/connect?token=NTNhOGMzNmYtN2FjNC00OWRkLThjY2EtNmI1YWJmMDA0MGFmOmVFTk5CSTkxWHd6emZXZUlMaUt0dThVdUZKZmlaTEN2cGl5blJKYUh5QnM9",
-        {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...result.data,
-            shipping: form.shipping,
-            source: "bulk-sellers-form",
-            submittedAt: new Date().toISOString(),
-          }),
-        }
-      );
-      toast({
-        title: "Request received",
-        description: "We'll reach out within 24 hours about your bulk lot.",
-      });
-      setForm({ name: "", email: "", phone: "", company: "", quantity: "", details: "", shipping: false });
-    } catch (err) {
-      console.error("Bulk seller submission failed:", err);
-      toast({
-        title: "Submission failed",
-        description: "Please try again or contact us directly.",
-        variant: "destructive",
-      });
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   return (
     <main className="min-h-screen bg-grad-hero relative overflow-hidden">
@@ -137,35 +36,4 @@ const BulkSellers = () => {
       </div>
     </main>
   );
-};
-
-interface FieldProps {
-  label: string;
-  name: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  error?: string;
-  type?: string;
-  placeholder?: string;
-  maxLength?: number;
-}
-
-const Field = ({ label, name, value, onChange, error, type = "text", placeholder, maxLength }: FieldProps) => (
-  <div>
-    <label className="block font-mono text-xs uppercase tracking-widest text-silver-400 mb-2">
-      {label}
-    </label>
-    <input
-      type={type}
-      name={name}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      maxLength={maxLength}
-      className="w-full bg-background border border-silver-700 px-4 py-3 text-white placeholder:text-silver-500 focus:outline-none focus:border-primary transition-colors"
-    />
-    {error && <p className="mt-1.5 text-xs text-primary">{error}</p>}
-  </div>
-);
-
 export default BulkSellers;
