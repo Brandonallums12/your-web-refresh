@@ -1,4 +1,4 @@
-import { CheckCircle2, MapPin, Clock, Phone } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import type { QuoteSubmission } from "./QuoteForm";
 
 interface ConfirmationProps {
