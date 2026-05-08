@@ -5,7 +5,7 @@ import { LiveBadge } from "@/components/LiveBadge";
 
 const FORM_HTML = `<iframe
   src="https://api.leadconnectorhq.com/widget/form/FSTNp5L5U1IKJRtxTSpo"
-  style="width:100%;height:557px;border:none;border-radius:3px"
+  style="width:100%;height:100%;border:none;border-radius:3px"
   id="inline-FSTNp5L5U1IKJRtxTSpo"
   data-layout="{'id':'INLINE'}"
   data-trigger-type="alwaysShow"
@@ -15,7 +15,7 @@ const FORM_HTML = `<iframe
   data-deactivation-type="neverDeactivate"
   data-deactivation-value=""
   data-form-name="PhoneFlipping"
-  data-height="557"
+  data-height="636"
   data-layout-iframe-id="inline-FSTNp5L5U1IKJRtxTSpo"
   data-form-id="FSTNp5L5U1IKJRtxTSpo"
   title="PhoneFlipping"
@@ -64,7 +64,7 @@ const BulkSellers = () => {
           </p>
         </div>
 
-        <div ref={formRef} />
+        <div ref={formRef} className="min-h-[636px]" />
       </div>
     </main>
   );
