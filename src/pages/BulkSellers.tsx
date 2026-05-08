@@ -36,4 +36,6 @@ const BulkSellers = () => {
       </div>
     </main>
   );
+};
+
 export default BulkSellers;
