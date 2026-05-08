@@ -31,7 +31,7 @@ export const Confirmation = ({ data, onBack }: ConfirmationProps) => {
             {data.device.type !== "Other" && <> ({data.storage} · {data.carrier})</>}.
           </p>
 
-          <div className="mt-10 grid sm:grid-cols-2 gap-4">
+          <div className="mt-10 gap-4">
             <div className="bg-background border border-border p-6">
               <div className="text-[10px] uppercase tracking-widest text-silver-500 mb-1">Submission</div>
               <div className="font-display text-2xl uppercase tracking-tight text-white">
