@@ -31,29 +31,6 @@ export const Confirmation = ({ data, onBack }: ConfirmationProps) => {
             {data.device.type !== "Other" && <> ({data.storage} · {data.carrier})</>}.
           </p>
 
-          <div className="mt-10 gap-4">
-            <div className="bg-background border border-border p-6">
-              <div className="text-[10px] uppercase tracking-widest text-silver-500 mb-1">Submission</div>
-              <div className="font-display text-2xl uppercase tracking-tight text-white">
-                {data.device.type === "Other" ? "Other device" : data.device.model}
-              </div>
-              <div className="text-xs text-silver-400 mt-2 font-mono uppercase tracking-widest">
-                {data.condition.label}
-                {data.device.type !== "Other" && <> · {data.storage} · {data.carrier}</>}
-              </div>
-            </div>
-          <div className="bg-background border border-border p-6">
-            <div className="text-[10px] uppercase tracking-widest text-silver-500 mb-1">Submission</div>
-            <div className="font-display text-2xl uppercase tracking-tight text-white">
-              {data.device.type === "Other" ? "Other device" : data.device.model}
-            </div>
-            <div className="text-xs text-silver-400 mt-2 font-mono uppercase tracking-widest">
-              {data.condition.label}
-              {data.device.type !== "Other" && <> · {data.storage} · {data.carrier}</>}
-            </div>
-          </div>
-          </div>
-
           <button
             onClick={onBack}
             className="mt-10 inline-flex items-center gap-2 border border-silver-600/60 px-7 py-4 uppercase font-bold tracking-widest text-silver-200 hover:border-primary hover:text-white transition-colors"
