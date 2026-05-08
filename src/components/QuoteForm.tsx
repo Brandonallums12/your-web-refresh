@@ -330,7 +330,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
             {/* Brand — only brands that make this category */}
             {category && !isOther && (
-              <BoxRow label="Brand">
+              <BoxRow label="Brand" autoScroll>
                 <div className="flex flex-wrap gap-2">
                   {availableBrands.map((b) => (
                     <Chip key={b} active={brand === b} onClick={() => pickBrand(b)}>
