@@ -414,7 +414,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
 
             {/* Storage */}
             {device && !isOther && (
-              <BoxRow label="Storage">
+              <BoxRow label="Storage" autoScroll>
                 {(device.type === "Tablet" || device.type === "Laptop" || device.type === "Console" || device.type === "Camera" || device.type === "Drone") && (
                   <p className="text-[11px] font-mono text-silver-500 mb-3 uppercase tracking-widest">
                     // Default selected — change only if needed
