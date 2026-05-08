@@ -1,4 +1,4 @@
-import { CheckCircle2, MapPin, Clock, Phone } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import type { QuoteSubmission } from "./QuoteForm";
 
 interface ConfirmationProps {
@@ -31,7 +31,7 @@ export const Confirmation = ({ data, onBack }: ConfirmationProps) => {
             {data.device.type !== "Other" && <> ({data.storage} · {data.carrier})</>}.
           </p>
 
-          <div className="mt-10 grid sm:grid-cols-2 gap-4">
+          <div className="mt-10 gap-4">
             <div className="bg-background border border-border p-6">
               <div className="text-[10px] uppercase tracking-widest text-silver-500 mb-1">Submission</div>
               <div className="font-display text-2xl uppercase tracking-tight text-white">
@@ -42,20 +42,16 @@ export const Confirmation = ({ data, onBack }: ConfirmationProps) => {
                 {data.device.type !== "Other" && <> · {data.storage} · {data.carrier}</>}
               </div>
             </div>
-            <div className="bg-background border border-border p-6 space-y-3 text-sm">
-              <div className="flex items-start gap-3">
-                <MapPin className="size-4 mt-0.5 text-primary shrink-0" />
-                <span className="text-silver-200">1240 W Covina Pkwy<br />West Covina, CA 91790</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <Clock className="size-4 mt-0.5 text-primary shrink-0" />
-                <span className="text-silver-200">Mon–Sat 10am–7pm · Sun 11am–5pm</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <Phone className="size-4 mt-0.5 text-primary shrink-0" />
-                <a href="tel:6265550198" className="text-silver-200 hover:text-primary font-mono">(626) 555-0198</a>
-              </div>
+          <div className="bg-background border border-border p-6">
+            <div className="text-[10px] uppercase tracking-widest text-silver-500 mb-1">Submission</div>
+            <div className="font-display text-2xl uppercase tracking-tight text-white">
+              {data.device.type === "Other" ? "Other device" : data.device.model}
             </div>
+            <div className="text-xs text-silver-400 mt-2 font-mono uppercase tracking-widest">
+              {data.condition.label}
+              {data.device.type !== "Other" && <> · {data.storage} · {data.carrier}</>}
+            </div>
+          </div>
           </div>
 
           <button
