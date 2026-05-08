@@ -43,16 +43,6 @@ const serialSchema = z
   .trim()
   .regex(/^[A-Za-z0-9-]{6,20}$/, { message: "Serial must be 6–20 letters/numbers." });
 
-const contactSchema = z.object({
-  name: z.string().trim().min(1, "Please enter your name.").max(100),
-  phone: z
-    .string()
-    .trim()
-    .min(7, "Phone number is too short.")
-    .max(20, "Phone number is too long.")
-    .regex(/^[+()\-.\s\d]+$/, "Phone number contains invalid characters."),
-  email: z.union([z.literal(""), z.string().trim().email("Invalid email address.").max(255)]),
-});
 
 interface QuoteFormProps {
   onSubmit: (data: QuoteSubmission) => void;
@@ -87,12 +77,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   const [imei, setImei] = useState("");
   const [imeiError, setImeiError] = useState<string | null>(null);
 
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
   const [otherDescription, setOtherDescription] = useState("");
-  const [wantsShipping, setWantsShipping] = useState(false);
-  const [contactErrors, setContactErrors] = useState<{ name?: string; phone?: string; email?: string }>({});
 
   // Brands available for the chosen category (derived from data)
   const availableBrands = useMemo<Brand[]>(() => {
@@ -165,19 +150,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
         return;
       }
     }
-    // Validate contact
-    const c = contactSchema.safeParse({ name, phone, email });
-    if (!c.success) {
-      const errs: { name?: string; phone?: string; email?: string } = {};
-      for (const issue of c.error.issues) {
-        const k = issue.path[0] as "name" | "phone" | "email";
-        if (k && !errs[k]) errs[k] = issue.message;
-      }
-      setContactErrors(errs);
-      toast.error("Please fix the highlighted fields.");
-      return;
-    }
-    setContactErrors({});
+    setImeiError(null);
     // For "Other", embed the user's description as the device model so it shows up everywhere.
     const submittedDevice = isOther
       ? { ...device, model: otherDescription.trim() || "Other device" }
@@ -189,10 +162,10 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
       condition,
       lockStatus,
       imei: lockStatus === "locked" ? imei.trim() : "",
-      name: name.trim(),
-      phone: phone.trim(),
-      email: email.trim(),
-      wantsShipping,
+      name: "",
+      phone: "",
+      email: "",
+      wantsShipping: false,
     });
   };
 
@@ -286,7 +259,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
       }
     }
     setImeiError(null);
-    setStep(2);
+    handleSubmit();
   };
 
   return (
@@ -301,7 +274,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
             <ArrowLeft className="size-3.5" /> Back
           </button>
           <span className="text-silver-600">/</span>
-          {["Device", "Condition", "Contact"].map((label, i) => (
+          {["Device", "Condition"].map((label, i) => (
             <span key={label} className="flex items-center gap-3">
               <button
                 onClick={() => i < step && setStep(i)}
@@ -310,7 +283,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               >
                 0{i + 1} {label}
               </button>
-              {i < 2 && <ChevronRight className="size-3 text-silver-600" />}
+              {i < 1 && <ChevronRight className="size-3 text-silver-600" />}
             </span>
           ))}
         </div>
@@ -714,113 +687,9 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
                 disabled={!condition || !lockStatus}
                 className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest hover:shadow-red transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none"
               >
-                Continue <ChevronRight className="size-4" />
+                Send my quote
               </button>
             </div>
-          </div>
-        )}
-
-        {/* STEP 2 — Contact */}
-        {step === 2 && device && condition && lockStatus && (
-          <div className="bg-surface/60 backdrop-blur-md border border-border p-6 md:p-10 animate-fade-up grid md:grid-cols-5 gap-8">
-            <div className="md:col-span-3">
-              <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tighter mb-2">Lock it in.</h2>
-              <p className="text-silver-400 mb-7">We'll text you with your custom quote within minutes.</p>
-
-              <div className="space-y-4">
-                <Field label="Your name">
-                  <input
-                    value={name}
-                    onChange={(e) => { setName(e.target.value); if (contactErrors.name) setContactErrors({ ...contactErrors, name: undefined }); }}
-                    placeholder="Jane Doe"
-                    maxLength={100}
-                    autoComplete="name"
-                    className={`w-full bg-background border px-4 py-3.5 focus:outline-none ${contactErrors.name ? "border-primary" : "border-border focus:border-primary"}`}
-                  />
-                  {contactErrors.name && <p className="text-primary text-xs mt-1 font-mono">{contactErrors.name}</p>}
-                </Field>
-                <Field label="Phone">
-                  <input
-                    value={phone}
-                    onChange={(e) => { setPhone(e.target.value); if (contactErrors.phone) setContactErrors({ ...contactErrors, phone: undefined }); }}
-                    placeholder="(626) 555-0123"
-                    inputMode="tel"
-                    maxLength={20}
-                    autoComplete="tel"
-                    className={`w-full bg-background border px-4 py-3.5 focus:outline-none ${contactErrors.phone ? "border-primary" : "border-border focus:border-primary"}`}
-                  />
-                  {contactErrors.phone && <p className="text-primary text-xs mt-1 font-mono">{contactErrors.phone}</p>}
-                </Field>
-                <Field label="Email (optional)">
-                  <input
-                    value={email}
-                    onChange={(e) => { setEmail(e.target.value); if (contactErrors.email) setContactErrors({ ...contactErrors, email: undefined }); }}
-                    placeholder="you@email.com"
-                    type="email"
-                    maxLength={255}
-                    autoComplete="email"
-                    className={`w-full bg-background border px-4 py-3.5 focus:outline-none ${contactErrors.email ? "border-primary" : "border-border focus:border-primary"}`}
-                  />
-                  {contactErrors.email && <p className="text-primary text-xs mt-1 font-mono">{contactErrors.email}</p>}
-                </Field>
-              </div>
-
-              <label className="mt-5 flex items-start gap-3 cursor-pointer p-4 border border-border bg-background/40 hover:border-primary/50 transition-colors">
-                <input
-                  type="checkbox"
-                  checked={wantsShipping}
-                  onChange={(e) => setWantsShipping(e.target.checked)}
-                  className="mt-0.5 size-5 accent-primary cursor-pointer"
-                />
-                <span className="text-sm text-silver-200">
-                  <span className="block font-mono text-[10px] uppercase tracking-widest text-primary mb-1">
-                    // Shipping option
-                  </span>
-                  I'd like to ship my device instead of dropping it off in West Covina.
-                </span>
-              </label>
-
-              <div className="flex justify-between mt-7">
-                <button
-                  onClick={() => setStep(1)}
-                  className="inline-flex items-center gap-2 border border-silver-600/60 px-6 py-4 uppercase font-bold tracking-widest text-silver-200 hover:border-primary hover:text-white transition-colors"
-                >
-                  <ArrowLeft className="size-4" /> Back
-                </button>
-                <button
-                  onClick={handleSubmit}
-                  className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest hover:shadow-red transition-all"
-                >
-                  Send my quote
-                </button>
-              </div>
-            </div>
-
-            <aside className="md:col-span-2 bg-background/60 border border-primary/30 p-6 h-fit">
-              <div className="text-[10px] font-bold uppercase tracking-widest text-silver-500 mb-3">// Your submission</div>
-              <div className="font-display text-lg uppercase tracking-tight">
-                {isOther ? "Other device" : `${device.brand} ${device.model}`}
-              </div>
-              {isOther ? (
-                <div className="text-silver-300 text-sm mt-1 leading-relaxed">{otherDescription.trim() || "—"}</div>
-              ) : (
-                <div className="text-silver-300 text-sm mt-1">{storage} · {carrier}</div>
-              )}
-              <div className="text-silver-400 text-sm mt-1">Condition: {condition.label}</div>
-              <div className="text-silver-400 text-sm mb-5 inline-flex items-center gap-1.5 mt-1">
-                {lockStatus === "clean" ? (
-                  <><ShieldCheck className="size-3.5 text-primary" /> Clean / Unlocked</>
-                ) : (
-                  <><ShieldAlert className="size-3.5 text-primary" /> {isOther ? "Account-locked · pending check" : "IMEI provided · pending check"}</>
-                )}
-              </div>
-              <div className="border-t border-border pt-5">
-                <div className="text-xs uppercase tracking-widest text-silver-500 mb-2">Custom cash offer</div>
-                <div className="font-mono text-sm text-silver-200 leading-relaxed">
-                  Sent to your phone after submission.
-                </div>
-              </div>
-            </aside>
           </div>
         )}
       </div>
