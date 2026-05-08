@@ -77,12 +77,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
   const [imei, setImei] = useState("");
   const [imeiError, setImeiError] = useState<string | null>(null);
 
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
   const [otherDescription, setOtherDescription] = useState("");
-  const [wantsShipping, setWantsShipping] = useState(false);
-  const [contactErrors, setContactErrors] = useState<{ name?: string; phone?: string; email?: string }>({});
 
   // Brands available for the chosen category (derived from data)
   const availableBrands = useMemo<Brand[]>(() => {
