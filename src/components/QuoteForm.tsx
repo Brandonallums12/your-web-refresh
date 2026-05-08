@@ -16,6 +16,7 @@ import {
   type DeviceType,
 } from "@/data/devices";
 import { toast } from "sonner";
+import { GHLFormEmbed } from "@/components/GHLFormEmbed";
 
 export type LockStatus = "clean" | "locked";
 
