@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { ArrowLeft, Check, ChevronRight, Smartphone, Sparkles, Search, Tablet, Laptop, Gamepad2, Camera, Plane, HelpCircle, ShieldCheck, ShieldAlert } from "lucide-react";
 import { z } from "zod";
 import {
