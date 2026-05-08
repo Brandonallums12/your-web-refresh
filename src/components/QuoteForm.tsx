@@ -155,19 +155,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
         return;
       }
     }
-    // Validate contact
-    const c = contactSchema.safeParse({ name, phone, email });
-    if (!c.success) {
-      const errs: { name?: string; phone?: string; email?: string } = {};
-      for (const issue of c.error.issues) {
-        const k = issue.path[0] as "name" | "phone" | "email";
-        if (k && !errs[k]) errs[k] = issue.message;
-      }
-      setContactErrors(errs);
-      toast.error("Please fix the highlighted fields.");
-      return;
-    }
-    setContactErrors({});
+    setImeiError(null);
     // For "Other", embed the user's description as the device model so it shows up everywhere.
     const submittedDevice = isOther
       ? { ...device, model: otherDescription.trim() || "Other device" }
@@ -179,10 +167,10 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
       condition,
       lockStatus,
       imei: lockStatus === "locked" ? imei.trim() : "",
-      name: name.trim(),
-      phone: phone.trim(),
-      email: email.trim(),
-      wantsShipping,
+      name: "",
+      phone: "",
+      email: "",
+      wantsShipping: false,
     });
   };
 
