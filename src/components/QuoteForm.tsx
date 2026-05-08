@@ -727,66 +727,7 @@ export const QuoteForm = ({ onSubmit, onCancel }: QuoteFormProps) => {
               <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tighter mb-2">Lock it in.</h2>
               <p className="text-silver-400 mb-7">We'll text you with your custom quote within minutes.</p>
 
-              <div className="space-y-4">
-                <Field label="Your name">
-                  <input
-                    value={name}
-                    onChange={(e) => { setName(e.target.value); if (contactErrors.name) setContactErrors({ ...contactErrors, name: undefined }); }}
-                    placeholder="Jane Doe"
-                    maxLength={100}
-                    autoComplete="name"
-                    className={`w-full bg-background border px-4 py-3.5 focus:outline-none ${contactErrors.name ? "border-primary" : "border-border focus:border-primary"}`}
-                  />
-                  {contactErrors.name && <p className="text-primary text-xs mt-1 font-mono">{contactErrors.name}</p>}
-                </Field>
-                <Field label="Phone">
-                  <input
-                    value={phone}
-                    onChange={(e) => { setPhone(e.target.value); if (contactErrors.phone) setContactErrors({ ...contactErrors, phone: undefined }); }}
-                    placeholder="(626) 555-0123"
-                    inputMode="tel"
-                    maxLength={20}
-                    autoComplete="tel"
-                    className={`w-full bg-background border px-4 py-3.5 focus:outline-none ${contactErrors.phone ? "border-primary" : "border-border focus:border-primary"}`}
-                  />
-                  {contactErrors.phone && <p className="text-primary text-xs mt-1 font-mono">{contactErrors.phone}</p>}
-                </Field>
-                <Field label="Email (optional)">
-                  <input
-                    value={email}
-                    onChange={(e) => { setEmail(e.target.value); if (contactErrors.email) setContactErrors({ ...contactErrors, email: undefined }); }}
-                    placeholder="you@email.com"
-                    type="email"
-                    maxLength={255}
-                    autoComplete="email"
-                    className={`w-full bg-background border px-4 py-3.5 focus:outline-none ${contactErrors.email ? "border-primary" : "border-border focus:border-primary"}`}
-                  />
-                  {contactErrors.email && <p className="text-primary text-xs mt-1 font-mono">{contactErrors.email}</p>}
-                </Field>
-              </div>
-
-              <label className="mt-5 flex items-start gap-3 cursor-pointer p-4 border border-border bg-background/40 hover:border-primary/50 transition-colors">
-                <input
-                  type="checkbox"
-                  checked={wantsShipping}
-                  onChange={(e) => setWantsShipping(e.target.checked)}
-                  className="mt-0.5 size-5 accent-primary cursor-pointer"
-                />
-                <span className="text-sm text-silver-200">
-                  <span className="block font-mono text-[10px] uppercase tracking-widest text-primary mb-1">
-                    // Shipping option
-                  </span>
-                  I'd like to ship my device instead of dropping it off in West Covina.
-                </span>
-              </label>
-
-              <div className="flex justify-between mt-7">
-                <button
-                  onClick={() => setStep(1)}
-                  className="inline-flex items-center gap-2 border border-silver-600/60 px-6 py-4 uppercase font-bold tracking-widest text-silver-200 hover:border-primary hover:text-white transition-colors"
-                >
-                  <ArrowLeft className="size-4" /> Back
-                </button>
+              <div className="mt-7">
                 <button
                   onClick={handleSubmit}
                   className="inline-flex items-center gap-2 bg-grad-red text-white px-7 py-4 uppercase font-bold tracking-widest hover:shadow-red transition-all"
