@@ -20,11 +20,10 @@ export const Confirmation = ({ data, onBack }: ConfirmationProps) => {
             // Quote confirmation #{code}
           </div>
           <h1 className="font-display text-4xl md:text-6xl uppercase tracking-tighter mb-4">
-            You're <span className="text-primary">locked in</span>, {data.name.split(" ")[0]}.
+            You're <span className="text-primary">locked in</span>.
           </h1>
           <p className="text-silver-300 text-lg max-w-xl">
-            We'll text <span className="font-mono text-white">{data.phone}</span> shortly with your
-            custom cash offer for your{" "}
+            We'll be in touch shortly with your custom cash offer for your{" "}
             <span className="text-white font-semibold">
               {data.device.type === "Other" ? data.device.model : `${data.device.brand} ${data.device.model}`}
             </span>
