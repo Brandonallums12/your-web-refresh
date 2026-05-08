@@ -62,7 +62,7 @@ const BulkSellers = () => {
           data-form-id="FSTNp5L5U1IKJRtxTSpo"
           title="PhoneFlipping"
         />
-        <script src="https://link.msgsndr.com/js/form_embed.js" />
+        </div>
       </div>
     </main>
   );
