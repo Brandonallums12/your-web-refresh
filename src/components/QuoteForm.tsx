@@ -43,16 +43,6 @@ const serialSchema = z
   .trim()
   .regex(/^[A-Za-z0-9-]{6,20}$/, { message: "Serial must be 6–20 letters/numbers." });
 
-const contactSchema = z.object({
-  name: z.string().trim().min(1, "Please enter your name.").max(100),
-  phone: z
-    .string()
-    .trim()
-    .min(7, "Phone number is too short.")
-    .max(20, "Phone number is too long.")
-    .regex(/^[+()\-.\s\d]+$/, "Phone number contains invalid characters."),
-  email: z.union([z.literal(""), z.string().trim().email("Invalid email address.").max(255)]),
-});
 
 interface QuoteFormProps {
   onSubmit: (data: QuoteSubmission) => void;
